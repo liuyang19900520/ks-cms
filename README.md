@@ -3,7 +3,7 @@
 感谢开源项目guns，项目详细介绍https://github.com/stylefeng/Guns 目前采用V5.1版本。
 
 ## 项目导入阶段
-1. 检查java环境、mysql环境、maven环境
+1. 检查java8环境、mysql5.7环境、maven环境、如果使用eclipse，需要配置lombok插件（https://www.cnblogs.com/AlanLee/p/9982983.html）
 2. 下载源码，导入ks-cms.sql
 3. 修改数据源，先修改application-local.yml下的数据库连接参数
 4. 启动项目,端口默认80
@@ -17,13 +17,14 @@
 * Spring Boot文档：https://docs.spring.io/spring-boot/docs/current/reference/html/
 
 ### CRDU实例：
+参考CRUD代码流程理解
+
 #### 配置阶段
 1. 创建业务表
 2. 添加菜单：系统管理》菜单管理
 3. 配置菜单：角色管理》权限配置
 4. 刷新
 
-#### 开发阶段
 
 
 
