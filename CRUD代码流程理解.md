@@ -135,6 +135,57 @@ spring:
 
 ```
 这下就回到了spring开发习惯的 controller service dao的结构中了。
+为了方便理解，我们还是再看一下这个常规的spring工程的结构
+DeptService是实现类，它继承了mybatis-plus的父类实现了其接口，我找到了其文档如下(https://mp.baomidou.com/guide/crud-interface.html#service-crud-%E6%8E%A5%E5%8F%A3)
+> 通用 Service CRUD 封装IService接口，进一步封装 CRUD 采用 get 查询单行 remove 删除 list 查询集合 page 分页 前缀命名方式区分 Mapper 层避免混淆，
+> 泛型 T 为任意实体对象
+> 建议如果存在自定义通用 Service 方法的可能，请创建自己的 IBaseService 继承 Mybatis-Plus 提供的基类
+> 对象 Wrapper 为 条件构造器
+
+为了方便理解，我们通俗的说一下ServiceImpl传入的2个泛型。
+* 首先传入的是Mapper，这个Mapper是使我们的dao层接口，mapper也继承了BaseMapper的基类
+* 其次传入了实体类型，我们知道mybatis-plus在代码生成上提供了很多方法，所以我们能够看到在Dept的实体类中对应了表名和字段的注解。
+
+这里我们多少一下，为什么在service曾也要继承ServiceImpl<M extends BaseMapper<T>, T>这个基类，我们看一下里面基本上帮我们实现了一些常用的方法，并且已经添加了事务，避免了我们手动配置。
+当然，如果service里不去继承，我认为也是没有问题的，就是回到了我们培训中遇到的普通的service模式。
+
+回到service中，我们的方法找到了。
+``` java
+   /**
+     * 获取ztree的节点列表
+     *
+     * @author fengshuonan
+     * @Date 2018/12/23 5:16 PM
+     */
+    public List<ZTreeNode> tree() {
+        return this.baseMapper.tree();
+    }
+
+```
+
+直接调用了dao层的方法。接口不看了，直接去找mapper
+```xml
+    <select id="tree" resultType="cn.stylefeng.guns.core.common.node.ZTreeNode">
+		select DEPT_ID AS id, PID as pId, SIMPLE_NAME as name,
+		(
+		CASE
+		WHEN (PID = 0 OR PID IS NULL) THEN
+		'true'
+		ELSE
+		'false'
+		END
+		) as open from sys_dept
+	</select>
+
+```
+
+mybatis mapper的语法我们就不看了，因为ZTreeNode这个javaBean中需要的属性分别是id，pid，name，open，所以我们需要在sql文中使用别名。
+
+回到我们controller中，得到的tree是一个各个部门的list，最后我们再生成一个顶级，这样为前端构造树形结构提供了json。
+
+
+
+
 
 
 
