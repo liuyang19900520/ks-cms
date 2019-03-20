@@ -16,15 +16,11 @@
 * laydate和layer组件文档：http://www.layui.com/alone.html
 * Spring Boot文档：https://docs.spring.io/spring-boot/docs/current/reference/html/
 
-### CRDU实例：
+### 初步了解流程：
 参考CRUD代码流程理解
 
-#### 配置阶段
-1. 创建业务表
-2. 添加菜单：系统管理》菜单管理
-3. 配置菜单：角色管理》权限配置
-4. 刷新
-
+### CRUD的功能理解：
+CRUD代码流程理解
 
 
 

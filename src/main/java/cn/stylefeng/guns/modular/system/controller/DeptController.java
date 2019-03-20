@@ -140,7 +140,7 @@ public class DeptController extends BaseController {
     }
 
     /**
-     * 新增部门
+     * 新增部门delete
      *
      * @author fengshuonan
      * @Date 2018/12/23 4:57 PM
