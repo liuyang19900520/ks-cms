@@ -1,0 +1,34 @@
+@layout("/common/_container.html",{js:["/assets/modular/attendance/myself.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">我的考勤</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md9 layui-col-lg10">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input id="name" class="layui-input" type="text" placeholder="当前月份"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
+                                </button>
+
+                                <button id="btnSave" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>保存
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="attendanceMyselfTable" lay-filter="attendanceMyselfTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@}

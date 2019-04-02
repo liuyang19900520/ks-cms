@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.attendance.mapper.AttendanceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord">
+        <id column="USER_ID" property="userId"/>
+        <id column="WORK_DATE" property="workDate"/>
+        <result column="ATTENDANCE_TYPE" property="attendanceType"/>
+        <result column="USER_NAME" property="userName"/>
+        <result column="START_TIME" property="startTime"/>
+        <result column="END_TIME" property="endTime"/>
+        <result column="VERSION" property="version"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="UPDATE_TIME" property="updateTime"/>
+        <result column="CREATE_USER" property="createUser"/>
+        <result column="UPDATE_USER" property="updateUser"/>
+    </resultMap>
+
+    <select id="selectMyAttendance" resultMap="BaseResultMap">
+        select a.*,b.NAME as 'USER_NAME' from attendance_record a
+        inner join sys_user b on a.USER_ID=b.USER_ID
+        where a.USER_ID=#{userId}
+        and DATE_FORMAT( a.WORK_DATE, '%Y%m' ) = #{selectMonth}
+    </select>
+
+
+</mapper>
