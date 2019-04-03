@@ -10,7 +10,7 @@ layui.use(['table', 'admin', 'ax'], function () {
     var AttendanceRecord = {
         tableId: "attendanceMyselfTable",
         condition: {
-            deptId: "",
+
             currentMonth: ""
         }
     };
@@ -22,10 +22,11 @@ layui.use(['table', 'admin', 'ax'], function () {
         return [[
             {type: 'checkbox'},
             {field: 'userId', hide: true, sort: true, title: 'ID'},
-            {field: 'userName', sort: true, title: '姓名'},
             {field: 'workDate', sort: true, title: '日期'},
             {field: 'startTime', sort: true, title: '上班时间'},
             {field: 'endTime', sort: true, title: '下班时间'},
+            {field: 'dayPeriod', sort: true, title: '工作时长'},
+
         ]];
     };
 
@@ -40,7 +41,6 @@ layui.use(['table', 'admin', 'ax'], function () {
     };
 
     var queryData = {};
-    queryData['userId'] = 1
     queryData['currentMonth'] = "201903";
 
     // 渲染表格
@@ -49,7 +49,6 @@ layui.use(['table', 'admin', 'ax'], function () {
         url: Feng.ctxPath + '/attendance/myself/list',
         where: queryData,
         height: "full-158",
-        cellMinWidth: 100,
         cols: AttendanceRecord.initColumn()
     });
 

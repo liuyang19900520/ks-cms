@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.attendance.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,12 +10,20 @@ import java.util.Date;
 public class AttendanceRecordDto implements Serializable {
 
     private Long userId;
+    private Integer attendanceType;
     private String userName;
+    @JSONField(format = "MM-dd")
     private Date workDate;
-    private Long startTime;
-    private Long endTime;
+    @JSONField(format = "HH:mm:ss")
+    private Date startTime;
+    @JSONField(format = "HH:mm:ss")
+    private Date endTime;
     private Integer hours;
-    private String selectMonth;
+    @JSONField(format = "HH:mm:ss")
+    private Date dayPeriod;
+
+    private String week;
+    private boolean restDay;
 
 
 }

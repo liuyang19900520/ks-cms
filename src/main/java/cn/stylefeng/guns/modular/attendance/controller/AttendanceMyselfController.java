@@ -17,7 +17,7 @@ package cn.stylefeng.guns.modular.attendance.controller;
 
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
-import cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord;
+import cn.stylefeng.guns.modular.attendance.model.AttendanceRecordDto;
 import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import com.google.common.collect.Maps;
@@ -68,7 +68,7 @@ public class AttendanceMyselfController extends BaseController {
     public Object list(@RequestParam(value = "currentMonth", required = false) String currentMonth) {
 
         ShiroUser currentUser = ShiroKit.getUser();
-        List<AttendanceRecord> attendanceRecords = attendanceService.listMyAttendance(currentUser.getId(), currentMonth);
+        List<AttendanceRecordDto> attendanceRecords = attendanceService.listMyAttendance(currentUser.getId(), currentMonth);
 
         HashMap<String, Object> result = Maps.newHashMap();
         result.put("code", "0");
