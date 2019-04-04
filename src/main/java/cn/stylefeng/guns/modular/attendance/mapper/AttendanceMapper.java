@@ -17,5 +17,7 @@ public interface AttendanceMapper {
 
     List<AttendanceRecord> selectMyAttendance(@Param("userId") Long userId, @Param("selectMonth") String selectMonth);
 
+    Long selectAttendanceType(@Param("userId") Long userId);
+
 
 }

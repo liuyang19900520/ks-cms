@@ -27,6 +27,17 @@
         where a.USER_ID=#{userId}
         and DATE_FORMAT( a.WORK_DATE, '%Y%m' ) = #{selectMonth}
     </select>
+    <select id="selectAttendanceType" resultType="java.lang.Long">
+        SELECT
+            m.ATTENDANCE_TYPE
+        FROM
+            customer_site_relation r
+            INNER JOIN customer_site m ON r.CUSTOMER_SITE_ID = m.CUSTOMER_SITE_ID
+        WHERE
+            r.USER_ID =#{userId}
+
+
+    </select>
 
 
 </mapper>

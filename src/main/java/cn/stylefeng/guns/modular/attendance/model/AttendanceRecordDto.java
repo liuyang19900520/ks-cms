@@ -19,8 +19,8 @@ public class AttendanceRecordDto implements Serializable {
     @JSONField(format = "HH:mm:ss")
     private Date endTime;
     private Integer hours;
-    @JSONField(format = "HH:mm:ss")
-    private Date dayPeriod;
+
+    private float dayPeriod;
 
     private String week;
     private boolean restDay;

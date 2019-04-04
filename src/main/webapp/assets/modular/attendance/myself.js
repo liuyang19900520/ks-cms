@@ -1,8 +1,9 @@
-layui.use(['table', 'admin', 'ax'], function () {
+layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
+    var $dateformatter = layui.dateformatter;
 
     /**
      * 系统管理--部门管理
@@ -10,10 +11,29 @@ layui.use(['table', 'admin', 'ax'], function () {
     var AttendanceRecord = {
         tableId: "attendanceMyselfTable",
         condition: {
-
             currentMonth: ""
         }
     };
+
+    var laydate = layui.laydate;
+
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#ipt-current-month', //指定元素
+        type: 'month',
+        value: new Date(),
+        format: 'yyyyMM',
+        done: function (value, date, endDate) {
+            console.log(value); //得到日期生成的值，如：2017-08-18
+            console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+            console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+
+            var queryData = {};
+            queryData['currentMonth'] = value
+            table.reload(AttendanceRecord.tableId, {where: queryData});
+
+        }
+    });
 
     /**
      * 初始化表格的列
@@ -25,8 +45,11 @@ layui.use(['table', 'admin', 'ax'], function () {
             {field: 'workDate', sort: true, title: '日期'},
             {field: 'startTime', sort: true, title: '上班时间'},
             {field: 'endTime', sort: true, title: '下班时间'},
-            {field: 'dayPeriod', sort: true, title: '工作时长'},
-
+            {
+                field: 'dayPeriod', sort: true, title: '工作时长', templet: function (d) {
+                    return d.dayPeriod.toFixed(2) + ' h'
+                }
+            },
         ]];
     };
 
@@ -35,13 +58,13 @@ layui.use(['table', 'admin', 'ax'], function () {
      */
     AttendanceRecord.search = function () {
         var queryData = {};
-        queryData['condition'] = $("#name").val();
-        queryData['deptId'] = AttendanceRecord.condition.deptId;
+        queryData['currentMonth'] = $("#ipt-current-month").val();
         table.reload(AttendanceRecord.tableId, {where: queryData});
     };
 
     var queryData = {};
-    queryData['currentMonth'] = "201903";
+    var currentMonth = $dateformatter(new Date(), "yyyyMM")
+    queryData['currentMonth'] = currentMonth;
 
     // 渲染表格
     var tableResult = table.render({
@@ -65,3 +88,6 @@ layui.use(['table', 'admin', 'ax'], function () {
     });
 
 });
+
+
+

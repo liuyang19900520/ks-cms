@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.attendance.mapper.AttendanceTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.attendance.entity.AttendanceType">
+        <id column="ATTENDANCE_TYPE" property="attendanceType"/>
+        <result column="STANDARD_MIN_TIME" property="standardMinTime"/>
+        <result column="STANDARD_MAX_TIME" property="standardMaxTime"/>
+        <result column="NOON_START" property="noonStart"/>
+        <result column="NOON_END" property="noonEnd"/>
+        <result column="EVENING_START" property="eveningStart"/>
+        <result column="EVENING_END" property="eveningEnd"/>
+        <result column="VERSION" property="version"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="UPDATE_TIME" property="updateTime"/>
+        <result column="CREATE_USER" property="createUser"/>
+        <result column="UPDATE_USER" property="updateUser"/>
+    </resultMap>
+
+</mapper>
