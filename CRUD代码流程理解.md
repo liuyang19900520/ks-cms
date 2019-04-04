@@ -215,4 +215,62 @@ serivce中我们还是简单说明几点：
 ```
 关于add方法，简单看，基本上就这些内容了。
 
+### 关注删除（如何将一条数据删除）
+在dept.html 的代码中，我们找得到一个id为tableBar的代码片段，看起来这应该就是添加在显示内容后的操作栏。
+于是在dept.js中initColumn方法中，我们看到这个tableBar 应该是添加在我们field属性后面的。事件的响应在detp.js的最后
+```js
+// 工具条点击事件
+    table.on('tool(' + Dept.tableId + ')', function (obj) {
+        var data = obj.data;
+        var layEvent = obj.event;
+
+        if (layEvent === 'edit') {
+            Dept.onEditDept(data);
+        } else if (layEvent === 'delete') {
+            Dept.onDeleteDept(data);
+        }
+    });
+```
+先看删除的方法onDeleteDept，一旦点击删除，弹出确认框判断是否执行删除的请求。执行的话，调用了之前介绍的ajax空间进行了请求，传入了参数deptId。
+
+回到服务端我们看一下这个方法是否有其他需要注意的地方。
+根据url，我们找到了controller的方法。其操作有散步
+1，缓存被删除的部门名称(这个部门名称为什么要缓存一下呢，主要是因为我们需要在打印日志的方法中进行操作) ，具体的意义先不用了解了
+代码在LogAop.java中,在讲日志处理的时候，我们还会回来介绍
+※（备注：删除dept的时候录入日志有BUG，后续会改正）
+``` java
+     String msg;
+            if (bussinessName.contains("修改") || bussinessName.contains("编辑")) {
+                Object obj1 = LogObjectHolder.me().get();
+                Map<String, String> obj2 = HttpContext.getRequestParameters();
+                msg = Contrast.contrastObj(dictClass, key, obj1, obj2);
+            } else {
+                Map<String, String> parameters = HttpContext.getRequestParameters();
+                AbstractDictMap dictMap = (AbstractDictMap) dictClass.newInstance();
+                msg = Contrast.parseMutiKey(dictMap, key, parameters);
+            }
+```
+
+2，调用删除方法
+``` java
+    @Transactional
+    public void deleteDept(Long deptId) {
+        Dept dept = deptMapper.selectById(deptId);
+
+        //根据like查询删除所有级联的部门
+        QueryWrapper<Dept> wrapper = new QueryWrapper<>();
+        wrapper = wrapper.like("PIDS", "%[" + dept.getDeptId() + "]%");
+        List<Dept> subDepts = deptMapper.selectList(wrapper);
+        for (Dept temp : subDepts) {
+            this.removeById(temp.getDeptId());
+        }
+
+        this.removeById(dept.getDeptId());
+    }
+```
+在这个方法中，我们看到除了删除本身的部门外，我们还要删除联级部门，也就是说，以该deptId为父部门的id，我们全部删除了之后，再删除自身。
+3，最后返回成功
+
+### 关注修改（可以理解为先向添加弹出表格中添加一条数据，再保存）
+
 
