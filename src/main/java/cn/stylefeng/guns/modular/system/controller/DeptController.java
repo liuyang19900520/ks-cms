@@ -36,6 +36,7 @@ import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,7 +69,7 @@ public class DeptController extends BaseController {
      */
     @RequestMapping("")
     public String index() {
-        return PREFIX + "dept.html";
+        return PREFIX + "dept2.html";
     }
 
     /**
@@ -90,7 +91,7 @@ public class DeptController extends BaseController {
      */
     @Permission
     @RequestMapping("/dept_update")
-    public String deptUpdate(@RequestParam("deptId") Long deptId) {
+    public String deptUpdate(@RequestParam("deptId") Long deptId ) {
 
         if (ToolUtil.isEmpty(deptId)) {
             throw new RequestEmptyException();
