@@ -7,6 +7,7 @@ layui.define(['jquery'], function (exports) {
         this.data = {};
         this.dataType = "json";
         this.async = false;
+        this.contentType= 'application/x-www-form-urlencoded;charset=UTF-8'
         this.success = success;
         this.error = error;
     };
@@ -26,6 +27,7 @@ layui.define(['jquery'], function (exports) {
                 type: me.type,
                 url: me.url,
                 dataType: me.dataType,
+                contentType:me.contentType,
                 async: me.async,
                 data: me.data,
                 beforeSend: function (data) {
@@ -68,7 +70,12 @@ layui.define(['jquery'], function (exports) {
         clear: function () {
             this.data = {};
             return this;
-        }
+        },
+
+        setContentType: function (contentType) {
+            this.contentType = contentType;
+            return this;
+        },
     };
 
     exports('ax', $ax);

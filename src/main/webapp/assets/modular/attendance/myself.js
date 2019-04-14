@@ -40,11 +40,11 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
      */
     AttendanceRecord.initColumn = function () {
         return [[
-            {type: 'checkbox'},
-            {field: 'userId', hide: true, sort: true, title: 'ID'},
+            {type: 'checkbox', LAY_CHECKED: true, hidden: true,},
+            {field: 'id', sort: true, title: 'ID'},
             {field: 'workDate', sort: true, title: '日期'},
-            {field: 'startTime', sort: true, title: '上班时间'},
-            {field: 'endTime', sort: true, title: '下班时间'},
+            {field: 'startTime', sort: true, title: '上班时间', edit: "text"},
+            {field: 'endTime', sort: true, title: '下班时间', edit: "text"},
             {
                 field: 'dayPeriod', sort: true, title: '工作时长', templet: function (d) {
                     return d.dayPeriod.toFixed(2) + ' h'
@@ -75,6 +75,14 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
         cols: AttendanceRecord.initColumn()
     });
 
+    //监听单元格编辑
+    table.on('edit(attendanceMyselfTable)', function (obj) {
+        var value = obj.value //得到修改后的值
+            , data = obj.data //得到所在行所有键值
+            , field = obj.field; //得到字段
+        layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
+    });
+
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
@@ -82,9 +90,24 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     });
 
 
-    // 导出excel
-    $('#btnExp').click(function () {
-        AttendanceRecord.exportExcel();
+    // 保存
+    $('#btnSave').click(function () {
+        var checkRows = table.checkStatus(AttendanceRecord.tableId);
+
+        var ajax = new $ax(Feng.ctxPath + "/attendance/myself/save", function (data) {
+            Feng.success("添加成功！");
+
+            //传给上个页面，刷新table用
+            admin.putTempData('formOk', true);
+            //关掉对话框
+            admin.closeThisDialog();
+        }, function (data) {
+            Feng.error("添加失败！" + data.responseJSON.message)
+        });
+        ajax.setContentType("application/json")
+        ajax.setData(JSON.stringify(checkRows.data));
+        ajax.start();
+
     });
 
 });

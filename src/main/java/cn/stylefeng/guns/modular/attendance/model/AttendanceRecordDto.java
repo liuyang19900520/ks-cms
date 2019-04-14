@@ -1,14 +1,17 @@
 package cn.stylefeng.guns.modular.attendance.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class AttendanceRecordDto implements Serializable {
+public class  AttendanceRecordDto implements Serializable {
 
+    private String id;
     private Long userId;
     private Integer attendanceType;
     private String userName;

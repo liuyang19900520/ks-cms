@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.attendance.service;
 
+import cn.stylefeng.guns.core.util.LDateUtils;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceType;
 import cn.stylefeng.guns.modular.attendance.mapper.AttendanceMapper;
@@ -54,6 +55,7 @@ public class AttendanceService {
                     break;
                 }
             }
+            oneDay.setId(LDateUtils.dateToString(oneDay.getWorkDate(), "yyyyMMdd") + userId);
 
             result.add(oneDay);
         }

@@ -23,10 +23,12 @@ import cn.stylefeng.roses.core.base.controller.BaseController;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,12 +59,6 @@ public class AttendanceMyselfController extends BaseController {
     }
 
 
-    /**
-     * 获取所有部门列表
-     *
-     * @author fengshuonan
-     * @Date 2018/12/23 4:57 PM
-     */
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(@RequestParam(value = "currentMonth", required = false) String currentMonth) {
@@ -76,6 +72,14 @@ public class AttendanceMyselfController extends BaseController {
         result.put("count", attendanceRecords.size());
         result.put("data", attendanceRecords);
         return result;
+    }
+
+
+    @RequestMapping(value = "/save")
+    @ResponseBody
+    public Object save(@RequestBody ArrayList<AttendanceRecordDto> records) {
+
+        return null;
     }
 
 }
