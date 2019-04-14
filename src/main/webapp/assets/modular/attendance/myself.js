@@ -53,18 +53,19 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
         ]];
     };
 
+    var queryData = {};
+    var currentMonth = $dateformatter(new Date(), "yyyyMM")
+    queryData['currentMonth'] = currentMonth;
+
     /**
      * 点击查询按钮
      */
     AttendanceRecord.search = function () {
-        var queryData = {};
         queryData['currentMonth'] = $("#ipt-current-month").val();
         table.reload(AttendanceRecord.tableId, {where: queryData});
     };
 
-    var queryData = {};
-    var currentMonth = $dateformatter(new Date(), "yyyyMM")
-    queryData['currentMonth'] = currentMonth;
+
 
     // 渲染表格
     var tableResult = table.render({
@@ -80,9 +81,17 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
         var value = obj.value //得到修改后的值
             , data = obj.data //得到所在行所有键值
             , field = obj.field; //得到字段
-        layer.msg('[ID: ' + data.id + '] ' + field + ' 字段更改为：' + value);
-    });
 
+        var reDateTime = /^(?:(?:[0-2][0-3])|(?:[0-1][0-9])):[0-5][0-9]$/;
+        var regExp = new RegExp(reDateTime);
+        if (!regExp.test(value)) {
+            // alert("日期格式不正确，正确格式为：2014-01-01");
+            layer.msg(value + "日期格式不正确，正确格式为：HH:mm");
+            return;
+        }
+
+
+    });
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
@@ -96,11 +105,9 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
 
         var ajax = new $ax(Feng.ctxPath + "/attendance/myself/save", function (data) {
             Feng.success("添加成功！");
+            queryData['currentMonth'] = $("#ipt-current-month").val();
+            table.reload(AttendanceRecord.tableId, {where: queryData});
 
-            //传给上个页面，刷新table用
-            admin.putTempData('formOk', true);
-            //关掉对话框
-            admin.closeThisDialog();
         }, function (data) {
             Feng.error("添加失败！" + data.responseJSON.message)
         });

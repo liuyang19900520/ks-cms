@@ -1,16 +1,20 @@
 package cn.stylefeng.guns.modular.attendance.service;
 
+import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.util.LDateUtils;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceType;
 import cn.stylefeng.guns.modular.attendance.mapper.AttendanceMapper;
 import cn.stylefeng.guns.modular.attendance.mapper.AttendanceTypeMapper;
 import cn.stylefeng.guns.modular.attendance.model.AttendanceRecordDto;
+import cn.stylefeng.roses.core.util.ToolUtil;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +33,7 @@ public class AttendanceService {
         List<AttendanceRecordDto> result = Lists.newArrayList();
         List<AttendanceRecord> resultDB = attendanceMapper.selectMyAttendance(userId, currentMonth);
 
-        Long typeId = attendanceMapper.selectAttendanceType(userId);
+        Integer typeId = attendanceMapper.selectAttendanceType(userId);
         AttendanceType attendanceType = attendanceTypeMapper.selectById(typeId);
 
         String year = currentMonth.substring(0, 4);
@@ -62,6 +66,37 @@ public class AttendanceService {
 
 
         return result;
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean recordAttendance(ArrayList<AttendanceRecordDto> records) {
+
+        Long userId = ShiroKit.getUser().getId();
+        Integer typeId = attendanceMapper.selectAttendanceType(userId);
+
+        for (AttendanceRecordDto input : records) {
+            AttendanceRecord oneRecord = new AttendanceRecord();
+            oneRecord.setUserId(userId);
+            oneRecord.setAttendanceType(typeId);
+
+            String id = input.getId();
+            String strDate = id.substring(0, 8);
+            oneRecord.setWorkDate(LDateUtils.stringToDate(strDate, "yyyyMMdd"));
+            oneRecord.setStartTime(input.getStartTime());
+            oneRecord.setEndTime(input.getEndTime());
+
+            if (!ToolUtil.isOneEmpty(oneRecord.getStartTime(), oneRecord.getEndTime())) {
+                attendanceMapper.insertAttendanceList(oneRecord);
+            }
+
+
+        }
+
+
+        return false;
+
+
     }
 
 

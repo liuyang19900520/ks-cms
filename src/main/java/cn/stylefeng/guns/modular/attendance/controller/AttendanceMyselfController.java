@@ -79,7 +79,7 @@ public class AttendanceMyselfController extends BaseController {
     @ResponseBody
     public Object save(@RequestBody ArrayList<AttendanceRecordDto> records) {
 
-        return null;
+        return attendanceService.recordAttendance(records);
     }
 
 }

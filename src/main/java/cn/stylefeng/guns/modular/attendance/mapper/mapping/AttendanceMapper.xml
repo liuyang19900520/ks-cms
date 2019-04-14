@@ -17,6 +17,26 @@
         <result column="CREATE_USER" property="createUser"/>
         <result column="UPDATE_USER" property="updateUser"/>
     </resultMap>
+    <insert id="insertAttendanceList" parameterType="cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord">
+
+      insert into attendance_record (
+      USER_ID, ATTENDANCE_TYPE, WORK_DATE, START_TIME, END_TIME,
+      CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER)
+      values
+      (#{userId},#{attendanceType},#{workDate},#{startTime},#{endTime},
+      CURRENT_TIMESTAMP,#{userId},CURRENT_TIMESTAMP,#{userId})
+      ON DUPLICATE KEY UPDATE
+      USER_ID = #{userId},
+      ATTENDANCE_TYPE = #{attendanceType},
+      WORK_DATE= #{workDate},
+      START_TIME = #{startTime},
+      END_TIME = #{endTime} ,
+      CREATE_TIME = CURRENT_TIMESTAMP,
+      CREATE_USER = #{userId},
+      UPDATE_TIME = CURRENT_TIMESTAMP,
+      UPDATE_USER = #{userId}
+
+    </insert>
 
     <select id="selectMyAttendance" resultMap="BaseResultMap">
         select a.*,
@@ -27,7 +47,7 @@
         where a.USER_ID=#{userId}
         and DATE_FORMAT( a.WORK_DATE, '%Y%m' ) = #{selectMonth}
     </select>
-    <select id="selectAttendanceType" resultType="java.lang.Long">
+    <select id="selectAttendanceType" resultType="java.lang.Integer">
         SELECT
             m.ATTENDANCE_TYPE
         FROM
