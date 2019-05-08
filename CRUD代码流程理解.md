@@ -271,6 +271,81 @@ serivce中我们还是简单说明几点：
 在这个方法中，我们看到除了删除本身的部门外，我们还要删除联级部门，也就是说，以该deptId为父部门的id，我们全部删除了之后，再删除自身。
 3，最后返回成功
 
-### 关注修改（可以理解为先向添加弹出表格中添加一条数据，再保存）
+### 关注修改（可以理解为先向添加弹出表格中显示一条数据，再保存）
+#### 显示数据
+* 在点击部门编辑的时候，将deptId传入url中
+* Controller的deptUpdate方法，弹出小窗口，并且记录日志。
+* 小窗口中通过ajax获取数据。其中getUrlParam()方法在common.js中，应该是在路径中的参数。
+* 在Controller中找到和查询详情的方法，@PathVariable("deptId") Long deptId获取url中的参数，之后调用mybatis-plus的根据主键查询的方法，得到详细信息。
+* BeanUtil.copyProperties方法主要实现将一个bean中的内容复制到另一个bean中。
+* 设置Pname(设置父部门名称)：还是在ConstantFactory中的方法
+``` java
+ @Override
+    @Cacheable(value = Cache.CONSTANT, key = "'" + CacheKey.DEPT_NAME + "'+#deptId")
+    public String getDeptName(Long deptId) {
+        if (deptId == null) {
+            return "";
+        } else if (deptId == 0L) {
+            return "顶级";
+        } else {
+            Dept dept = deptMapper.selectById(deptId);
+            if (ToolUtil.isNotEmpty(dept) && ToolUtil.isNotEmpty(dept.getFullName())) {
+                return dept.getFullName();
+            }
+            return "";
+        }
+    }
+```
+通过id查询名称，先从缓存再走DB。
+* form.val('deptForm', result); 显示在页面上。这里result得到的值需要与html中个元素的name一致才能赋值。
+* 表单提交再次调用Controller，依次调用service。其中deptSetPids设置了父部门id的字符串后，再调用更新的mapper方法完成数据库更新。
+
+#### 简单展开commonTree
+但我们在编辑框中点击上级部门的时候，会自动打开一个树形结构的菜单。
+请求路径是/system/commonTree，三个参数如下
+``` js
+var formName = encodeURIComponent("parent.DeptInfoDlg.data.pName");
+var formId = encodeURIComponent("parent.DeptInfoDlg.data.pid");
+var treeUrl = encodeURIComponent(Feng.ctxPath + "/dept/tree");
+```
+* formName：需要设置的显示名称
+* formId：需要设置的隐藏id
+* treeUrl：加载树的url
+
+在edit.js中的这个操作，主要是将这3个参数，编码后通过Controller解码之后，返回到tree_dig.html上。
+``` js
+var ztree = new $ZTree("zTree", "${treeUrl}");
+ztree.bindOnClick(ZTreeDlg.onClickItem);
+ztree.bindOnDblClick(ZTreeDlg.onDBClickItem);
+ztree.init();
+```
+初始化一个ztree，并且得到数加载的内容，和我们最早介绍的ztree的状态完全一样。
+
+而我们发现
+```js
+ var ZTreeDlg = {
+    index: parent.layer.getFrameIndex(window.name),
+    tempName: "",
+    tempId: ""
+};
+```
+ZTreeDlg,获得了FrameIndex，在layui文档中我们可以理解，这应该是获得当前弹出层的索引。
+var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+
+* onDBClickItem 应该是，将选中的值付给传入的formName，formId，然后关闭这个tree。tree关闭后，走dept_edit.js中的end回调
+``` js
+end: function () {
+    $("#pid").val(DeptInfoDlg.data.pid);
+    $("#pName").val(DeptInfoDlg.data.pName);
+}
+```
+最后向pid和pName的位置进行赋值。
+
+
+
+
+
+
+
 
 

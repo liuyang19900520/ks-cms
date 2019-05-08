@@ -40,7 +40,7 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
      */
     AttendanceRecord.initColumn = function () {
         return [[
-            {type: 'checkbox', LAY_CHECKED: true, hidden: true,},
+            {type: 'checkbox', LAY_CHECKED: true, hide: true,},
             {field: 'id', sort: true, title: 'ID'},
             {field: 'workDate', sort: true, title: '日期'},
             {field: 'startTime', sort: true, title: '上班时间', edit: "text"},
@@ -112,6 +112,7 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             Feng.error("添加失败！" + data.responseJSON.message)
         });
         ajax.setContentType("application/json")
+        alert(JSON.stringify(checkRows.data));
         ajax.setData(JSON.stringify(checkRows.data));
         ajax.start();
 
