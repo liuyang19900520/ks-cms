@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.attendance.mapper;
 
+import cn.stylefeng.guns.modular.attendance.entity.AttendanceAllRecord;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,5 +22,6 @@ public interface AttendanceMapper {
 
     Integer insertAttendanceList(AttendanceRecord record);
 
+    List<AttendanceAllRecord> selectUsers();
 
 }

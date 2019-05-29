@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.attendance.service;
 
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.util.LDateUtils;
+import cn.stylefeng.guns.modular.attendance.entity.AttendanceAllRecord;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceType;
 import cn.stylefeng.guns.modular.attendance.mapper.AttendanceMapper;
@@ -89,13 +90,28 @@ public class AttendanceService {
             if (!ToolUtil.isOneEmpty(oneRecord.getStartTime(), oneRecord.getEndTime())) {
                 attendanceMapper.insertAttendanceList(oneRecord);
             }
-
-
         }
-
-
         return false;
 
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public List<AttendanceAllRecord> selectAllUser(String currentMonth) {
+
+        List<AttendanceAllRecord> allUsers = attendanceMapper.selectUsers();
+
+        for (AttendanceAllRecord user : allUsers) {
+            List<AttendanceRecord> resultDB = attendanceMapper.selectMyAttendance(user.getUserId(), currentMonth);
+            AttendanceType attendanceType = attendanceTypeMapper.selectById(user.getAttendanceType());
+            float hoursInMonth = 0;
+            for (AttendanceRecord oneDay : resultDB) {
+                float workPeriod = computeDayPeriod(oneDay.getStartTime(), oneDay.getEndTime(), attendanceType);
+                hoursInMonth = hoursInMonth + workPeriod;
+            }
+            user.setHours(hoursInMonth);
+
+        }
+        return allUsers;
 
     }
 

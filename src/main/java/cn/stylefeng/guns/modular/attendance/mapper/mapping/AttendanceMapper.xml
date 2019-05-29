@@ -47,6 +47,7 @@
         where a.USER_ID=#{userId}
         and DATE_FORMAT( a.WORK_DATE, '%Y%m' ) = #{selectMonth}
     </select>
+
     <select id="selectAttendanceType" resultType="java.lang.Integer">
         SELECT
             m.ATTENDANCE_TYPE
@@ -55,8 +56,25 @@
             INNER JOIN customer_site m ON r.CUSTOMER_SITE_ID = m.CUSTOMER_SITE_ID
         WHERE
             r.USER_ID =#{userId}
+    </select>
 
-
+    <select id="selectUsers" resultType="cn.stylefeng.guns.modular.attendance.entity.AttendanceAllRecord">
+      SELECT
+        a.USER_ID as 'userId',
+        a.`NAME` AS 'USER_NAME',
+        b.ATTENDANCE_TYPE,
+        e.CUSTOMER_SITE_ID as 'customerSiteId',
+        e.CUSTOMER_SITE_NAME as 'customerSiteName',
+        e.CUSTOMER_SITE_ADDRESS as 'customerSiteAddress',
+        c.STANDARD_MAX_TIME as 'maxHours',
+        c.STANDARD_MIN_TIME as 'minHours'
+    FROM
+        sys_user a
+        LEFT JOIN attendance_record b ON a.USER_ID = b.USER_ID
+        LEFT JOIN attendance_type c ON b.ATTENDANCE_TYPE = c.ATTENDANCE_TYPE
+        LEFT JOIN customer_site_relation d ON d.USER_ID = d.USER_ID
+        LEFT JOIN customer_site e ON d.CUSTOMER_SITE_ID = e.CUSTOMER_SITE_ID
+    GROUP BY a.USER_ID
     </select>
 
 
