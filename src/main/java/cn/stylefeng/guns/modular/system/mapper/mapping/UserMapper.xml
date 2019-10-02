@@ -39,10 +39,52 @@
           UPDATE_TIME AS updateTime, UPDATE_USER AS updateUser, VERSION AS version
 	</sql>
 
+    <!--<select id="selectUsers" resultType="map">-->
+        <!--select-->
+        <!--<include refid="Base_Column_List"/>-->
+        <!--from sys_user-->
+        <!--where STATUS != 'DELETED'-->
+        <!--<if test="name != null and name != ''">-->
+            <!--and (PHONE like CONCAT('%',#{name},'%')-->
+            <!--or ACCOUNT like CONCAT('%',#{name},'%')-->
+            <!--or NAME like CONCAT('%',#{name},'%'))-->
+        <!--</if>-->
+        <!--<if test="deptId != null and deptId != 0">-->
+            <!--and (DEPT_ID = #{deptId} or DEPT_ID in ( select DEPT_ID from sys_dept where PIDS like CONCAT('%[', #{deptId}, ']%') ))-->
+        <!--</if>-->
+        <!--<if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">-->
+            <!--and (CREATE_TIME between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))-->
+        <!--</if>-->
+    <!--</select>-->
+
     <select id="selectUsers" resultType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from sys_user
+
+
+        SELECT
+        u.USER_ID AS userId,
+        u.AVATAR AS avatar,
+        u.ACCOUNT AS account,
+        u.NAME AS name,
+        u.BIRTHDAY AS birthday,
+        u.SEX AS sex,
+        u.EMAIL AS email,
+        u.PHONE AS phone,
+        u.ROLE_ID AS roleId,
+        u.DEPT_ID AS deptId,
+        u.STATUS AS status,
+        e.EMPLOYEE_ID AS employeeId,
+        e.EMPLOYEE_NAME_CN AS employeeNameCN,
+        e.EMPLOYEE_NAME_JP AS employeeNameJP,
+        e.EMPLOYEE_NAME_KANA AS employeeNameKANA,
+        e.ENTRY_TIME AS entryTime,
+        e.BIRTHDATE AS brithdate,
+        e.PROVINCE AS province,
+        e.CITY AS city,
+        e.STATION AS station,
+        e.ADDRESS AS address
+        FROM
+        sys_user u
+        LEFT JOIN employee e ON e.USER_ID = u.USER_ID
         where STATUS != 'DELETED'
         <if test="name != null and name != ''">
             and (PHONE like CONCAT('%',#{name},'%')
