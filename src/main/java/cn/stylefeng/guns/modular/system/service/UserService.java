@@ -10,14 +10,17 @@ import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
 import cn.stylefeng.guns.core.shiro.service.UserAuthService;
 import cn.stylefeng.guns.core.util.ApiMenuFilter;
+import cn.stylefeng.guns.modular.system.entity.Employee;
 import cn.stylefeng.guns.modular.system.entity.User;
 import cn.stylefeng.guns.modular.system.factory.UserFactory;
+import cn.stylefeng.guns.modular.system.mapper.EmployeeMapper;
 import cn.stylefeng.guns.modular.system.mapper.UserMapper;
 import cn.stylefeng.guns.modular.system.model.UserDto;
 import cn.stylefeng.roses.core.datascope.DataScope;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +45,9 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     @Autowired
     private UserAuthService userAuthService;
 
+    @Autowired
+    private EmployeeMapper employeeMapper;
+
     /**
      * 添加用戶
      *
@@ -61,6 +67,10 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         String password = ShiroKit.md5(user.getPassword(), salt);
 
         this.save(UserFactory.createUser(user, password, salt));
+
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employee, user);
+        employeeMapper.insertEmpoyee(employee);
     }
 
     /**
