@@ -65,11 +65,11 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         // 完善账号信息
         String salt = ShiroKit.getRandomSalt(5);
         String password = ShiroKit.md5(user.getPassword(), salt);
-
-        this.save(UserFactory.createUser(user, password, salt));
-
+        User userInsert=UserFactory.createUser(user, password, salt);
+        this.save(userInsert);
+        user.setUserId(userInsert.getUserId());
         Employee employee = new Employee();
-        BeanUtils.copyProperties(employee, user);
+        BeanUtils.copyProperties(user,employee);
         employeeMapper.insertEmpoyee(employee);
     }
 

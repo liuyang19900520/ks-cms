@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.system.entity.Employee">
 
         <id column="USER_ID" property="userId"/>
-        <result column="EMPLOYEE_ID" property="employeeID"/>
+        <result column="EMPLOYEE_ID" property="employeeId"/>
         <result column="EMPLOYEE_NAME_CN" property="employeeNameCN"/>
         <result column="EMPLOYEE_NAME_JP" property="employeeNameJP"/>
         <result column="EMPLOYEE_NAME_KANA" property="employeeNameKANA"/>
@@ -15,7 +15,7 @@
         <result column="ADDRESS" property="address"/>
         <result column="STATION" property="station"/>
         <result column="ENTRY_TIME" property="entryTime"/>
-        <result column="BIRTHDATE" property="birthDate"/>
+        <result column="BIRTHDATE" property="brithdate"/>
         <result column="POSITION_ID" property="positionID"/>
         <result column="CREATE_TIME" property="createTime"/>
         <result column="CREATE_USER" property="createUser"/>
@@ -29,9 +29,9 @@
         insert into employee (USER_ID, EMPLOYEE_ID, EMPLOYEE_NAME_CN, EMPLOYEE_NAME_JP, EMPLOYEE_NAME_KANA, ENTRY_TIME,
         BIRTHDATE, PROVINCE, CITY, STATION, ADDRESS, POSITION_ID,
         VERSION, CREATE_TIME, UPDATE_TIME, CREATE_USER, UPDATE_USER)
-        values   (#{userId},#{employeeID},#{employeeNameCN},#{employeeNameJP},#{employeeNameKANA},
-        #{entryTime}, #{birthDate},#{province},#{city},#{station},#{address},#{positionID},#{version},
-      CURRENT_TIMESTAMP,#{userId},CURRENT_TIMESTAMP,#{userId})
+        values   (#{userId},#{employeeId},#{employeeNameCN},#{employeeNameJP},#{employeeNameKANA},
+        #{entryTime}, #{brithdate},#{province},#{city},#{station},#{address},#{positionID},#{version},
+      CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,#{userId},#{userId})
 
     </insert>
 
