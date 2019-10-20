@@ -65,11 +65,17 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         // 完善账号信息
         String salt = ShiroKit.getRandomSalt(5);
         String password = ShiroKit.md5(user.getPassword(), salt);
+        //工厂类创建一个新的试题（bean） 给sys_user用
         User userInsert=UserFactory.createUser(user, password, salt);
+        //mybatis-plus框架对应的的插入操作，原则上调用dao层的方法
         this.save(userInsert);
+        //插入之后，就能到自动生成的userId，这个id必须和employee表的userID一样，不然你就没法关联
         user.setUserId(userInsert.getUserId());
+        //创建一个bean 装employee的东西供插入
         Employee employee = new Employee();
+
         BeanUtils.copyProperties(user,employee);
+        employee.setBrithdate(user.getBirthday());
         employeeMapper.insertEmpoyee(employee);
     }
 
@@ -93,6 +99,17 @@ public class UserService extends ServiceImpl<UserMapper, User> {
                 throw new ServiceException(BizExceptionEnum.NO_PERMITION);
             }
         }
+    }
+
+
+    /**
+     * 返回employee信息
+     *
+     * @author fengshuonan
+     * @Date 2018/12/24 22:53
+     */
+    public Employee getEmployeeInfo(Long id) {
+        return employeeMapper.selectEmployeeByUserId(id);
     }
 
     /**

@@ -27,6 +27,7 @@ import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
+import cn.stylefeng.guns.modular.system.entity.Employee;
 import cn.stylefeng.guns.modular.system.entity.User;
 import cn.stylefeng.guns.modular.system.factory.UserFactory;
 import cn.stylefeng.guns.modular.system.model.UserDto;
@@ -140,12 +141,25 @@ public class UserMgrController extends BaseController {
 
         this.userService.assertAuth(userId);
         User user = this.userService.getById(userId);
+        Employee employeeInfo = userService.getEmployeeInfo(userId);
+
         Map<String, Object> map = UserFactory.removeUnSafeFields(user);
 
         HashMap<Object, Object> hashMap = CollectionUtil.newHashMap();
         hashMap.putAll(map);
         hashMap.put("roleName", ConstantFactory.me().getRoleName(user.getRoleId()));
         hashMap.put("deptName", ConstantFactory.me().getDeptName(user.getDeptId()));
+
+        //将employeeInfo的信息一个一个传到map中，map负责返回到页面上，页面name和map的key相对应
+        hashMap.put("address",employeeInfo.getAddress());
+        hashMap.put("station",employeeInfo.getStation());
+        hashMap.put("city",employeeInfo.getCity());
+        hashMap.put("province",employeeInfo.getProvince());
+        hashMap.put("entryTime",employeeInfo.getEntryTime());
+        hashMap.put("employeeNameKANA",employeeInfo.getEmployeeNameKANA());
+        hashMap.put("employeeNameJP",employeeInfo.getEmployeeNameJP());
+        hashMap.put("employeeNameCN",employeeInfo.getEmployeeNameCN());
+
 
         return ResponseData.success(hashMap);
     }

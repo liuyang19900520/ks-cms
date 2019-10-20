@@ -42,7 +42,6 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
             {field: 'city', sort: true, title: '籍贯城市'},
             {field: 'station', sort: true, title: '车站'},
             {field: 'address', sort: true, title: '现住址'},
-            {field: 'createTime', sort: true, title: '创建时间'},
             {field: 'status', sort: true, templet: '#statusTpl', title: '状态'},
             {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 280}
         ]];

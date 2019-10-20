@@ -19,8 +19,10 @@ import java.util.Map;
  * @since 2018-12-07
  */
 @Repository
-public interface EmployeeMapper extends BaseMapper<User> {
+public interface EmployeeMapper extends BaseMapper<Employee> {
 
     Integer insertEmpoyee(Employee e);
+
+    Employee selectEmployeeByUserId(@Param("userId") Long id);
 
 }

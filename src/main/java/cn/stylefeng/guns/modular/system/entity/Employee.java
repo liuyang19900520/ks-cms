@@ -23,14 +23,18 @@ public class Employee implements Serializable {
 
     private Long userId;
 
-    private Long positionID;
+    private Long positionId;
     private String employeeId;
+    @TableField("EMPLOYEE_NAME_CN")
     private String employeeNameCN;
+    @TableField("EMPLOYEE_NAME_JP")
     private String employeeNameJP;
+    @TableField("EMPLOYEE_NAME_KANA")
     private String employeeNameKANA;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date entryTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @TableField("BIRTHDATE")
     private Date brithdate;
     private String  province;
     private String  city;

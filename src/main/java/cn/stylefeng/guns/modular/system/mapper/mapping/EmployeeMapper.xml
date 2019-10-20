@@ -16,7 +16,7 @@
         <result column="STATION" property="station"/>
         <result column="ENTRY_TIME" property="entryTime"/>
         <result column="BIRTHDATE" property="brithdate"/>
-        <result column="POSITION_ID" property="positionID"/>
+        <result column="POSITION_ID" property="positionId"/>
         <result column="CREATE_TIME" property="createTime"/>
         <result column="CREATE_USER" property="createUser"/>
         <result column="UPDATE_TIME" property="updateTime"/>
@@ -34,6 +34,12 @@
       CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,#{userId},#{userId})
 
     </insert>
+    <select id="selectEmployeeByUserId" resultMap="BaseResultMap">
+
+        select * from employee
+        where USER_ID=#{userId}
+
+    </select>
 
 
 </mapper>
