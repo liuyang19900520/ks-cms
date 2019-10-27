@@ -17,6 +17,7 @@ package cn.stylefeng.guns.modular.attendance.controller;
 
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
+import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
 import cn.stylefeng.guns.modular.attendance.model.AttendanceRecordDto;
 import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
@@ -25,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class AttendanceMyselfController extends BaseController {
      *
      * @return
      */
-    @RequestMapping("/index")
+    @RequestMapping("")
     public String index() {
         return PREFIX + "attendance-myself.html";
     }
@@ -61,17 +61,23 @@ public class AttendanceMyselfController extends BaseController {
 
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(@RequestParam(value = "currentMonth", required = false) String currentMonth) {
+    public Object list() {
 
         ShiroUser currentUser = ShiroKit.getUser();
-        List<AttendanceRecordDto> attendanceRecords = attendanceService.listMyAttendance(currentUser.getId(), currentMonth);
+        List<ViewAttendance> viewAttendances = attendanceService.listMyAttendanceByMonth(currentUser.getId());
 
+
+//        ShiroUser currentUser = ShiroKit.getUser();
+//        List<AttendanceRecordDto> attendanceRecords = attendanceService.listMyAttendance(currentUser.getId(), currentMonth);
+//
         HashMap<String, Object> result = Maps.newHashMap();
         result.put("code", "0");
         result.put("msg", "success");
-        result.put("count", attendanceRecords.size());
-        result.put("data", attendanceRecords);
+        result.put("count", viewAttendances.size());
+        result.put("data", viewAttendances);
         return result;
+
+
     }
 
 

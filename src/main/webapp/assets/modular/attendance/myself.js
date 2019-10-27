@@ -41,15 +41,20 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     AttendanceRecord.initColumn = function () {
         return [[
             {type: 'checkbox', LAY_CHECKED: true, hide: true,},
-            {field: 'id', sort: true, title: 'ID'},
-            {field: 'workDate', sort: true, title: '日期'},
-            {field: 'startTime', sort: true, title: '上班时间', edit: "text"},
-            {field: 'endTime', sort: true, title: '下班时间', edit: "text"},
-            {
-                field: 'dayPeriod', sort: true, title: '工作时长', templet: function (d) {
-                    return d.dayPeriod.toFixed(2) + ' h'
-                }
-            },
+            {field: 'employeeId', sort: true, title: 'ID', hide: true},
+            {field: 'workMonth', sort: true, title: '月份'},
+            {field: 'employeeNameCN', sort: true, title: '姓名', edit: "text"},
+            {field: 'customerSiteName', sort: true, title: '现场名称', edit: "text"},
+            {field: 'projectName', sort: true, title: '项目名称', edit: "text"},
+            {field: 'companyName', sort: true, title: '客户名称', edit: "text"},
+            {field: 'workTime', sort: true, title: '工作时长', edit: "text"},
+            {field: 'standardMinTime', sort: true, title: '最低工作时长', edit: "text"},
+            {field: 'standardMaxTime', sort: true, title: '加班计算工时', edit: "text"},
+            // {
+            //     field: 'workTime', sort: true, title: '工作时长', templet: function (d) {
+            //         return d.dayPeriod.toFixed(2) + ' h'
+            //     }
+            // },
         ]];
     };
 
