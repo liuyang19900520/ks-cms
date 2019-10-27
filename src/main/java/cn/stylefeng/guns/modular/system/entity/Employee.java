@@ -22,7 +22,7 @@ public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long userId;
-
+    @TableField("POSITION_ID")
     private Long positionId;
     private String employeeId;
     @TableField("EMPLOYEE_NAME_CN")
@@ -63,5 +63,7 @@ public class Employee implements Serializable {
      */
     @TableField("VERSION")
     private Integer version;
+
+    private String status;
 
 }

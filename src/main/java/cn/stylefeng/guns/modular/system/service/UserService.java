@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
      * @author fengshuonan
      * @Date 2018/12/24 22:51
      */
+    @Transactional
     public void addUser(UserDto user) {
 
         // 判断账号是否重复
