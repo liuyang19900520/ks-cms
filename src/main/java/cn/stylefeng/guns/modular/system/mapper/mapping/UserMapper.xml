@@ -85,7 +85,8 @@
         FROM
         sys_user u
         LEFT JOIN employee e ON e.USER_ID = u.USER_ID
-        where STATUS != 'DELETED'
+        where u.STATUS != 'DELETED'
+        and e.STATUS != 'DELETED'
         <if test="name != null and name != ''">
             and (PHONE like CONCAT('%',#{name},'%')
             or ACCOUNT like CONCAT('%',#{name},'%')
