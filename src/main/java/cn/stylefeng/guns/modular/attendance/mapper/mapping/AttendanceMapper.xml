@@ -78,4 +78,13 @@
     </select>
 
 
+    <select id="selectMyAttendanceByMonth"
+            resultType="cn.stylefeng.guns.modular.attendance.entity.ViewAttendance">
+        select  * from v_attendance
+        where EMPLOYEE_ID=#{employeeId}
+
+        order by WORK_MONTH desc
+    </select>
+
+
 </mapper>

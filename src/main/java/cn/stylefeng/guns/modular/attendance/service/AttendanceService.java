@@ -5,11 +5,16 @@ import cn.stylefeng.guns.core.util.LDateUtils;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceAllRecord;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceType;
+import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
 import cn.stylefeng.guns.modular.attendance.mapper.AttendanceMapper;
 import cn.stylefeng.guns.modular.attendance.mapper.AttendanceTypeMapper;
+import cn.stylefeng.guns.modular.attendance.model.AttendanceDto;
 import cn.stylefeng.guns.modular.attendance.model.AttendanceRecordDto;
+import cn.stylefeng.guns.modular.system.entity.Employee;
+import cn.stylefeng.guns.modular.system.mapper.EmployeeMapper;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.google.common.collect.Lists;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +33,21 @@ public class AttendanceService {
 
     @Resource
     AttendanceTypeMapper attendanceTypeMapper;
+
+    @Resource
+    EmployeeMapper employeeMapper;
+
+
+    public List<ViewAttendance> listMyAttendanceByMonth(Long userId) {
+        Employee employee = employeeMapper.selectEmployeeByUserId(userId);
+        Long employeeId = employee.getEmployeeId();
+
+        //将这个employeeId传入查询视图的mapper中
+        List<ViewAttendance> viewAttendances = attendanceMapper.selectMyAttendanceByMonth(employeeId);
+
+        return viewAttendances;
+
+    }
 
     public List<AttendanceRecordDto> listMyAttendance(Long userId, String currentMonth) {
 

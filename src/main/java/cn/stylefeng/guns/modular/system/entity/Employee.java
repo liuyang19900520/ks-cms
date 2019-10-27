@@ -24,7 +24,7 @@ public class Employee implements Serializable {
     private Long userId;
 
     private Long positionId;
-    private String employeeId;
+    private Long employeeId;
     @TableField("EMPLOYEE_NAME_CN")
     private String employeeNameCN;
     @TableField("EMPLOYEE_NAME_JP")
