@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -89,9 +90,26 @@ public class UserService extends ServiceImpl<UserMapper, User> {
      */
     public void editUser(UserDto user) {
         User oldUser = this.getById(user.getUserId());
+        Employee oldEmployee=employeeMapper.selectEmployeeByUserId(user.getUserId());
+
+
 
         if (ShiroKit.hasRole(Const.ADMIN_NAME)) {
             this.updateById(UserFactory.editUser(user, oldUser));
+
+            Employee newEmployee=new Employee();
+            BeanUtils.copyProperties(user,newEmployee);
+            newEmployee.setEmployeeId(oldEmployee.getEmployeeId());
+            newEmployee.setUpdateTime(new Date());
+            newEmployee.setUpdateUser(ShiroKit.getUserNotNull().getId());
+            newEmployee.setCreateTime(oldEmployee.getCreateTime());
+            newEmployee.setCreateUser(oldEmployee.getCreateUser());
+            newEmployee.setVersion(oldEmployee.getVersion());
+            newEmployee.setPositionId(oldEmployee.getPositionId());
+            newEmployee.setBrithdate(oldEmployee.getBrithdate());
+            newEmployee.setStatus(oldEmployee.getStatus());
+
+            employeeMapper.updateById(newEmployee);
         } else {
             this.assertAuth(user.getUserId());
             ShiroUser shiroUser = ShiroKit.getUserNotNull();
