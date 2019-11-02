@@ -146,6 +146,9 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         }
         this.assertAuth(userId);
         this.setStatus(userId, ManagerStatus.DELETED.getCode());
+        Employee employee=employeeMapper.selectEmployeeByUserId(userId);
+        employee.setStatus(ManagerStatus.DELETED.getCode());
+        employeeMapper.updateById(employee);
     }
 
     /**
@@ -156,6 +159,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
      */
     public int setStatus(Long userId, String status) {
         return this.baseMapper.setStatus(userId, status);
+
     }
 
     /**
