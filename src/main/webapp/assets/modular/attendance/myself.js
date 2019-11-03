@@ -123,6 +123,18 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
 
     });
 
+    $('#btnInput').click(function () {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '考勤录入',
+            content: Feng.ctxPath + '/attendance/myself/input',
+            end: function () {
+                admin.getTempData('formOk') && table.reload(MgrUser.tableId);
+            }
+        });
+    });
+
 });
 
 

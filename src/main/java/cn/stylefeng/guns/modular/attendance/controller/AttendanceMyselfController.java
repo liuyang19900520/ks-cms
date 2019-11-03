@@ -21,6 +21,7 @@ import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
 import cn.stylefeng.guns.modular.attendance.model.AttendanceRecordDto;
 import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
+import cn.stylefeng.roses.core.reqres.response.SuccessResponseData;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,7 +50,18 @@ public class AttendanceMyselfController extends BaseController {
 
 
     /**
-     * 我的考勤
+     * 我的考勤input
+     *
+     * @return
+     */
+    @RequestMapping("/input")
+    public String inputIndex() {
+        return PREFIX + "attendance_input.html";
+    }
+
+
+    /**
+     * 我的考勤input
      *
      * @return
      */
@@ -78,6 +90,22 @@ public class AttendanceMyselfController extends BaseController {
         return result;
 
 
+    }
+
+
+    /**
+     * 考勤详情
+     *
+     * @author fengshuonan
+     * @Date 2018/12/23 4:57 PM
+     */
+    @RequestMapping(value = "/message")
+    @ResponseBody
+    public Object detail() {
+        ViewAttendance attendance = this.attendanceService.getCustomerSiteInfo();
+//        AttendanceRecordDto attendanceRecordDto = new AttendanceRecordDto();
+//        BeanUtil.copyProperties(attendance, attendanceRecordDto);
+        return SuccessResponseData.success(attendance);
     }
 
 

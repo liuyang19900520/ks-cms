@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -28,6 +29,9 @@ public interface AttendanceMapper {
     List<AttendanceAllRecord> selectUsers();
 
     List<ViewAttendance> selectMyAttendanceByMonth(@Param("employeeId") Long employeeId);
+
+    Map<String,Object> selectCustomerSiteInfoForAddForm(@Param("employeeId") Long employeeId);
+
 
 
 }

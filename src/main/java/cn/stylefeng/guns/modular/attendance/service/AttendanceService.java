@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.attendance.service;
 
 import cn.stylefeng.guns.core.shiro.ShiroKit;
+import cn.stylefeng.guns.core.shiro.ShiroUser;
 import cn.stylefeng.guns.core.util.LDateUtils;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceAllRecord;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord;
@@ -8,22 +9,17 @@ import cn.stylefeng.guns.modular.attendance.entity.AttendanceType;
 import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
 import cn.stylefeng.guns.modular.attendance.mapper.AttendanceMapper;
 import cn.stylefeng.guns.modular.attendance.mapper.AttendanceTypeMapper;
-import cn.stylefeng.guns.modular.attendance.model.AttendanceDto;
 import cn.stylefeng.guns.modular.attendance.model.AttendanceRecordDto;
 import cn.stylefeng.guns.modular.system.entity.Employee;
 import cn.stylefeng.guns.modular.system.mapper.EmployeeMapper;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.google.common.collect.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AttendanceService {
@@ -48,6 +44,24 @@ public class AttendanceService {
         return viewAttendances;
 
     }
+
+    public ViewAttendance getCustomerSiteInfo() {
+        ShiroUser currentUser = ShiroKit.getUser();
+        Employee employee = employeeMapper.selectEmployeeByUserId(currentUser.getId());
+        Long employeeId = employee.getEmployeeId();
+        Map<String, Object> mapResult = attendanceMapper.selectCustomerSiteInfoForAddForm(employeeId);
+        ViewAttendance customerSiteInfo=new ViewAttendance();
+
+        customerSiteInfo.setCompanyName((String) mapResult.get("COMPANY_NAME"));
+        customerSiteInfo.setProjectName((String) mapResult.get("PROJECT_NAME"));
+        customerSiteInfo.setCustomerSiteName((String) mapResult.get("CUSTOMER_SITE_NAME"));
+        customerSiteInfo.setEmployeeId((Long) mapResult.get("EMPLOYEE_ID"));
+        customerSiteInfo.setEmployeeNameCN(currentUser.getName());
+
+        return customerSiteInfo;
+
+    }
+
 
     public List<AttendanceRecordDto> listMyAttendance(Long userId, String currentMonth) {
 
