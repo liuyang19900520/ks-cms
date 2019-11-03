@@ -15,16 +15,26 @@
  */
 package cn.stylefeng.guns.modular.attendance.controller;
 
+import cn.stylefeng.guns.core.common.annotion.BussinessLog;
+import cn.stylefeng.guns.core.common.annotion.Permission;
+import cn.stylefeng.guns.core.common.constant.Const;
+import cn.stylefeng.guns.core.common.constant.dictmap.UserDict;
+import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
 import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
 import cn.stylefeng.guns.modular.attendance.model.AttendanceRecordDto;
 import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
+import cn.stylefeng.guns.modular.system.model.UserDto;
 import cn.stylefeng.roses.core.base.controller.BaseController;
+import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.core.reqres.response.SuccessResponseData;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,6 +42,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.validation.Valid;
 
 /**
  * 部门控制器
@@ -114,6 +126,20 @@ public class AttendanceMyselfController extends BaseController {
     public Object save(@RequestBody ArrayList<AttendanceRecordDto> records) {
 
         return attendanceService.recordAttendance(records);
+    }
+    
+    /**
+     * 添加考勤
+     *
+     * @author fengshuonan
+     * @Date 2018/12/24 22:44
+     */
+    @RequestMapping("/add")  
+    @ResponseBody
+    public ResponseData add(ViewAttendance attendance) {
+        
+        this.attendanceService.addAttendancer(attendance);
+        return SUCCESS_TIP;
     }
 
 }

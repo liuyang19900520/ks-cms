@@ -130,7 +130,7 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             title: '考勤录入',
             content: Feng.ctxPath + '/attendance/myself/input',
             end: function () {
-                admin.getTempData('formOk') && table.reload(MgrUser.tableId);
+                admin.getTempData('formOk') && table.reload();
             }
         });
     });

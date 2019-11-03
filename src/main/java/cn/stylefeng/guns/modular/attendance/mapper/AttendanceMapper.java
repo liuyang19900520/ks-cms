@@ -32,6 +32,9 @@ public interface AttendanceMapper {
 
     Map<String,Object> selectCustomerSiteInfoForAddForm(@Param("employeeId") Long employeeId);
 
+    Integer insertAttendance(ViewAttendance attendance);
+	
+
 
 
 }

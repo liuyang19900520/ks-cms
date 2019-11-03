@@ -57,9 +57,7 @@ public class AttendanceService {
         customerSiteInfo.setCustomerSiteName((String) mapResult.get("CUSTOMER_SITE_NAME"));
         customerSiteInfo.setEmployeeId((Long) mapResult.get("EMPLOYEE_ID"));
         customerSiteInfo.setEmployeeNameCN(currentUser.getName());
-
         return customerSiteInfo;
-
     }
 
 
@@ -221,9 +219,16 @@ public class AttendanceService {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
         String p = decimalFormat.format(x);//format 返回的是字符串
 
-        ;
 
         return Float.parseFloat(p);
     }
+    
+//添加考勤
+	public void addAttendancer(ViewAttendance attendance) {
+		Long userId = ShiroKit.getUser().getId();
+		attendance.setUserId(userId);
+		attendanceMapper.insertAttendance(attendance);
+		
+	}
 
 }

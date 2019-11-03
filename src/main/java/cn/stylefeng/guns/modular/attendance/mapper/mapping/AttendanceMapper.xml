@@ -16,6 +16,10 @@
         <result column="UPDATE_TIME" property="updateTime"/>
         <result column="CREATE_USER" property="createUser"/>
         <result column="UPDATE_USER" property="updateUser"/>
+        <result column="EMPLOYEE_ID" property="employeeId"/>
+        <result column="WORK_MONTH" property="workMonth"/>
+        <result column="WORK_TIME" property="workTime"/>
+        <result column="FILE_URL" property="fileUrl"/>
     </resultMap>
     <insert id="insertAttendanceList" parameterType="cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord">
 
@@ -80,9 +84,8 @@
 
     <select id="selectMyAttendanceByMonth"
             resultType="cn.stylefeng.guns.modular.attendance.entity.ViewAttendance">
-        select  * from v_attendance
+        select * from v_attendance
         where EMPLOYEE_ID=#{employeeId}
-
         order by WORK_MONTH desc
     </select>
 
@@ -91,5 +94,14 @@
         where EMPLOYEE_ID=#{employeeId}
     </select>
 
+ <insert id="insertAttendance" parameterType="cn.stylefeng.guns.modular.attendance.entity.ViewAttendance">
 
+      insert into attendance_quick_record (
+      USER_ID, EMPLOYEE_ID, WORK_MONTH, WORK_TIME, FILE_URL,
+      CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER)
+      values
+      (#{userId},#{employeeId},#{workMonth},#{workTime},null,
+      CURRENT_TIMESTAMP,#{userId},CURRENT_TIMESTAMP,#{userId})      
+
+    </insert> 
 </mapper>
