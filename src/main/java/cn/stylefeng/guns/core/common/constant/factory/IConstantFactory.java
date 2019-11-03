@@ -138,5 +138,10 @@ public interface IConstantFactory {
      * 获取所有父部门id
      */
     List<Long> getParentDeptIds(Long deptId);
+    
+    /**
+     * 获取客户公司名称
+     */
+    String getCompanyName(Long customerID);
 
 }
