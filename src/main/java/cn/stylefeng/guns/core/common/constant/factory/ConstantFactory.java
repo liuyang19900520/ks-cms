@@ -327,5 +327,21 @@ public class ConstantFactory implements IConstantFactory {
         return parentDeptIds;
     }
 
+	@Override
+	public String getCompanyName(Long customerID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+//    @Override
+//    public String getCompanyNameById(Long customerId) {
+//        User user = userMapper.selectById(customerId);
+//        if (user != null) {
+//            return user.getName();
+//        } else {
+//            return "--";
+//        }
+//    }
+
 
 }
