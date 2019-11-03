@@ -54,13 +54,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label">电话</label>
         <div class="layui-input-block">
-            <input name="phone" placeholder="请输入电话" type="text" class="layui-input"/>
+            <input name="phone" placeholder="请输入电话" type="text" class="layui-input" lay-verify="required|japanesephone" required/>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">中文名<span style="color: red;">*</span></label>
         <div class="layui-input-block">
-            <input name="employeeNameCN" placeholder="中文名" type="text" class="layui-input"/>
+            <input name="employeeNameCN" placeholder="中文名" type="text" class="layui-input" lay-verify="required" required/>
         </div>
     </div>
     <div class="layui-form-item">

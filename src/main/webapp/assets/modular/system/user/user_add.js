@@ -45,7 +45,9 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
             if (value !== $('#userForm input[name=password]').val()) {
                 return '两次密码输入不一致';
             }
-        }
+        },
+        japanesephone:[/^0(|7|8|9)0\d{8}$/, '电话号码不符合规则'],
+
     });
 
     // 渲染时间选择框

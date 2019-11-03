@@ -86,5 +86,10 @@
         order by WORK_MONTH desc
     </select>
 
+    <select id="selectCustomerSiteInfoForAddForm" resultType="java.util.Map">
+       select  DISTINCT EMPLOYEE_ID,CUSTOMER_SITE_NAME,PROJECT_NAME,COMPANY_NAME from v_attendance
+        where EMPLOYEE_ID=#{employeeId}
+    </select>
+
 
 </mapper>
