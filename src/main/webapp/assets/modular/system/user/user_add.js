@@ -54,7 +54,9 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
     laydate.render({
         elem: '#birthday'
     });
-
+    laydate.render({
+        elem: '#entryTime'
+    });
     // 表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         var ajax = new $ax(Feng.ctxPath + "/mgr/add", function (data) {

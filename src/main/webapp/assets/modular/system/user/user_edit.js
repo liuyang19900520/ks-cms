@@ -42,6 +42,24 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
             }
         });
     });
+    $('#Submit').click(function () {
+        $("#userForm").validate({
+
+            rules : {
+                employeeNameCN :{
+                    required : true,
+
+                },
+            },
+            messages : {
+                employeeNameCN : {
+                    required : "中文名不能为空",
+                },
+            }
+        })
+
+
+    })
 
     // 添加表单验证方法
     form.verify({
@@ -50,7 +68,12 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
             if (value !== $('#userForm input[name=password]').val()) {
                 return '两次密码输入不一致';
             }
-        }
+        },
+        employeeNameCN: function (value) {
+            if (value == null || value == "") {
+                return '';
+            }
+        },
     });
 
     // 渲染时间选择框
