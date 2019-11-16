@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>33
 
 <script type="text/html" id="tableBar">
     @if(shiro.hasPermission("/dept/update")){
@@ -35,6 +35,9 @@
     @}
     @if(shiro.hasPermission("/dept/delete")){
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+    @}
+    @if(shiro.hasPermission("/dept/add")){
+    <a class="layui-btn layui-btn-xs" lay-event="add"><i class="layui-icon">&#xe654;</i>添加现场</a>
     @}
 </script>
 @}
