@@ -17,7 +17,6 @@ package cn.stylefeng.guns.modular.claim.wrapper;
 
 import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import cn.stylefeng.roses.core.base.warpper.BaseControllerWrapper;
-import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.page.PageResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -40,6 +39,7 @@ public class MyselfWrapper extends BaseControllerWrapper {
         super(multi);
     }
 
+
     public MyselfWrapper(Page<Map<String, Object>> page) {
         super(page);
     }
@@ -48,14 +48,9 @@ public class MyselfWrapper extends BaseControllerWrapper {
         super(pageResult);
     }
 
+
     @Override
     protected void wrapTheMap(Map<String, Object> map) {
-        Long pid = (Long) map.get("pid");
-
-        if (ToolUtil.isEmpty(pid) || pid.equals(0)) {
-            map.put("pName", "--");
-        } else {
-            map.put("pName", ConstantFactory.me().getCompanyName(pid));
-        }
+        map.put("claimType", ConstantFactory.me().getClaimTypeByCode((String) map.get("claimType")));
     }
 }

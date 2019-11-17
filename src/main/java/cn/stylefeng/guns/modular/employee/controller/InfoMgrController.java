@@ -15,41 +15,19 @@
  */
 package cn.stylefeng.guns.modular.employee.controller;
 
-import java.util.List;
 import java.util.Map;
 
-import org.beetl.ext.simulate.JsonUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.stylefeng.guns.core.common.annotion.BussinessLog;
 import cn.stylefeng.guns.core.common.annotion.Permission;
-import cn.stylefeng.guns.core.common.constant.dictmap.DictMap;
-import cn.stylefeng.guns.core.common.constant.dictmap.MyselfDict;
-import cn.stylefeng.guns.core.common.constant.dictmap.MyselfMap;
-import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
-import cn.stylefeng.guns.core.log.LogObjectHolder;
-import cn.stylefeng.guns.modular.claim.service.MyselfService;
 import cn.stylefeng.guns.modular.claim.wrapper.MyselfWrapper;
 import cn.stylefeng.guns.modular.employee.service.InfoMgrService;
-import cn.stylefeng.guns.modular.system.entity.Dict;
-import cn.stylefeng.guns.modular.system.entity.Myself;
-import cn.stylefeng.guns.modular.system.model.MyselfDto;
 import cn.stylefeng.roses.core.base.controller.BaseController;
-import cn.stylefeng.roses.core.reqres.response.ResponseData;
-import cn.stylefeng.roses.core.util.ToolUtil;
-import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
-import io.swagger.annotations.ApiOperation;
 
 /**
  * 客户信息控制器

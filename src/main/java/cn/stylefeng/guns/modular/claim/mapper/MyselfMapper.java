@@ -1,4 +1,4 @@
-package cn.stylefeng.guns.modular.system.mapper;
+package cn.stylefeng.guns.modular.claim.mapper;
 
 import java.util.Map;
 
@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import cn.stylefeng.guns.modular.system.entity.Myself;
+import cn.stylefeng.guns.modular.claim.entity.Myself;
 
 /**
  * <p>

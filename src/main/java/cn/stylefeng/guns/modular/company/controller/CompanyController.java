@@ -198,33 +198,9 @@ public class CompanyController extends BaseController {
     @ResponseBody
     public ResponseData delete(@RequestParam Long customerID) {
 
-        //缓存被删除的部门名称
-        LogObjectHolder.me().set(ConstantFactory.me().getCompanyName(customerID));
-
         companyService.removeById(customerID);
 
         return SUCCESS_TIP;
     }
-
-    /**
-     * 录入现场信息
-     *
-     * @author fengshuonan
-     * @Date 2018/12/23 4:57 PM
-     */
-    //  @RequestMapping("/company_site_add")
-    // public String companyAdd1() {
-    // return PREFIX + "customer_site_add.html";
-    // }
-
-    //@BussinessLog(value = "添加现场信息", key = "customerID", dict = CustomerSiteDict.class)
-    //@RequestMapping(value = "/company_add1")
-    //@Permission(Const.ADMIN_NAME)
-    //@ResponseBody
-    //public ResponseData add(CustomerSite customer) {
-    //this.customerSiteService.addCustomerSite(customer);
-    //return SUCCESS_TIP;
-    //  }
-
 
 }

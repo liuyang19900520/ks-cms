@@ -18,6 +18,7 @@ package cn.stylefeng.guns.modular.claim.controller;
 import java.util.List;
 import java.util.Map;
 
+import cn.stylefeng.guns.modular.system.mapper.DictMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +39,7 @@ import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.modular.claim.service.MyselfService;
 import cn.stylefeng.guns.modular.claim.wrapper.MyselfWrapper;
 import cn.stylefeng.guns.modular.system.entity.Dict;
-import cn.stylefeng.guns.modular.system.entity.Myself;
+import cn.stylefeng.guns.modular.claim.entity.Myself;
 import cn.stylefeng.guns.modular.system.model.MyselfDto;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
@@ -124,7 +125,7 @@ public class MyselfController extends BaseController {
         }
         //缓存部门修改前详细信息
         Myself myself = myselfService.getById(claimId);
-        LogObjectHolder.me().set(myself);
+
 
         return PREFIX + "myself_edit.html";
     }
@@ -168,9 +169,6 @@ public class MyselfController extends BaseController {
     @Permission
     @ResponseBody
     public ResponseData delete(@RequestParam Long claimId) {
-
-        //缓存被删除的部门名称
-        LogObjectHolder.me().set(ConstantFactory.me().getCompanyName(claimId));
 
         myselfService.removeById(claimId);
 

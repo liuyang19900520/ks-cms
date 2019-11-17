@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.claim.mapper.MyselfMapper">
+
+	<!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.claim.entity.Myself">
+        <id column="CLAIM_ID" property="claimId"/>
+        <result column="EMPLOYEE_ID" property="employeeId"/>
+        <result column="EMPLOYEE_NAME" property="employeeName"/>
+        <result column="CLAIM_DATE" property="claimDate"/>
+        <result column="PRICE" property="price"/>
+        <result column="PIC_URL" property="picUrl"/>
+        <result column="CLAIM_TYPE" property="claimType"/>
+        <result column="CLAIM_STATUS" property="claimStatus"/>
+        <result column="REMARK" property="remark"/>
+        <result column="CREATE_TIME" property="createTime"/>
+        <result column="CREATE_USER" property="createUser"/>
+        <result column="UPDATE_TIME" property="updateTime"/>
+        <result column="UPDATE_USER" property="updateUser"/>
+        <result column="VERSION" property="version"/>
+    </resultMap>
+    
+	<!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+  			CLAIM_ID as claimId,
+        	EMPLOYEE_ID as employeeId,
+        	EMPLOYEE_NAME as employeeName,
+			CLAIM_DATE as claimDate,
+			PRICE as price,
+			PIC_URL as picUrl,
+			CLAIM_TYPE as claimType,
+			CLAIM_STATUS as claimStatus,
+			REMARK as remark,
+			CREATE_TIME as createTime,
+			CREATE_USER as createUser,
+			UPDATE_TIME as updateTime,
+			UPDATE_USER as updateUser,
+			VERSION as version
+    </sql>
+    <select id="list" resultType="map">
+        select
+        <include refid="Base_Column_List"></include>
+        from claim
+        <if test="condition != null and condition != ''">
+            where DATE_FORMAT( CLAIM_DATE, '%Y%m' ) = #{selectMonth}
+        </if>
+        order by CREATE_TIME DESC
+    </select>
+
+</mapper>
