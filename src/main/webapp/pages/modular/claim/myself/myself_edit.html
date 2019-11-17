@@ -1,0 +1,42 @@
+@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/claim/myself/myself_edit.js"]}){
+<form id="claimForm" lay-filter="claimForm" class="layui-form model-form">
+    <input name="claimId" type="hidden"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">日期<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input id="claimDate" name="claimDate" placeholder="请输入日期" type="text" class="layui-input" autocomplete="off"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">金额<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input name="price" placeholder="请输入金额" type="text" class="layui-input" lay-verify="required" required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">图片URL</label>
+        <div class="layui-input-block">
+            <input name="picUrl" placeholder="请输入图片URL" type="text" class="layui-input" lay-verify="required" required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">报销类型<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+			<select id="claimType" name="claimType">
+			  <option value =""></option>
+			</select>
+		</div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <input name="remark" placeholder="请输入备注" type="text" class="layui-input" lay-verify="required" required/>
+        </div>
+    </div>
+        <div class="layui-form-item text-right">
+        <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>
+    </div>
+    
+</form>
+@}
