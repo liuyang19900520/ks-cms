@@ -34,15 +34,15 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         ]];
     };
 
-    /**
-     * 点击查询按钮
-     */
-    Company.search = function () {
-        var queryData = {};
-        queryData['condition'] = $("#condition").val();
-        //queryData['customerID'] = Company.condition.customerID;
-        table.reload(Company.tableId, {where: queryData});
-    };
+    // /**
+    //  * 点击查询按钮
+    //  */
+    // Company.search = function () {
+    //     var queryData = {};
+    //     queryData['condition'] = $("#condition").val();
+    //     //queryData['customerID'] = Company.condition.customerID;
+    //     table.reload(Company.tableId, {where: queryData});
+    // };
 
     /**
      * 弹出录入窗口
@@ -58,6 +58,25 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             }
         });
     };
+
+    /**
+     * 弹出窗口
+     */
+    Company.openAdd1Company = function () {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '添加客户信息',
+            content: Feng.ctxPath + 'customer/company/company_add_site',
+            end: function () {
+                admin.getTempData('formOk') && table.reload(Company.tableId);
+            }
+        });
+    };
+
+
+
+
 
     /**
      * 点击编辑角色
@@ -125,6 +144,8 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         	Company.onEditCompany(data);
         } else if (layEvent === 'delete') {
         	Company.onDeleteCompany(data);
+        } else if (layEvent === 'add'){
+            Company.openAdd1Company(data);
         }
     });
 });
