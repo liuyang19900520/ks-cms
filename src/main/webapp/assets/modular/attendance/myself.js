@@ -21,7 +21,6 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     laydate.render({
         elem: '#ipt-current-month', //指定元素
         type: 'month',
-        value: new Date(),
         format: 'yyyyMM',
         done: function (value, date, endDate) {
             console.log(value); //得到日期生成的值，如：2017-08-18
@@ -42,13 +41,13 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             {type: 'checkbox', LAY_CHECKED: true, hide: true,},
             {field: 'employeeId', sort: true, title: 'ID', hide: true},
             {field: 'workMonth', sort: true, title: '月份'},
-            {field: 'employeeNameCN', sort: true, title: '姓名', edit: "text"},
-            {field: 'customerSiteName', sort: true, title: '现场名称', edit: "text"},
-            {field: 'projectName', sort: true, title: '项目名称', edit: "text"},
-            {field: 'companyName', sort: true, title: '客户名称', edit: "text"},
-            {field: 'workTime', sort: true, title: '工作时长', edit: "text"},
-            {field: 'standardMinTime', sort: true, title: '最低工作时长', edit: "text"},
-            {field: 'standardMaxTime', sort: true, title: '加班计算工时', edit: "text"},
+            {field: 'employeeNameCN', sort: true, title: '姓名'},
+            {field: 'customerSiteName', sort: true, title: '现场名称'},
+            {field: 'projectName', sort: true, title: '项目名称'},
+            {field: 'companyName', sort: true, title: '客户名称'},
+            {field: 'workTime', sort: true, title: '工作时长'},
+            {field: 'standardMinTime', sort: true, title: '最低工作时长'},
+            {field: 'standardMaxTime', sort: true, title: '加班计算工时'},
             {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 150}
             // {
             //     field: 'workTime', sort: true, title: '工作时长', templet: function (d) {
@@ -59,8 +58,8 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     };
 
     var queryData = {};
-    var currentMonth = $dateformatter(new Date(), "yyyyMM")
-    queryData['currentMonth'] = currentMonth;
+    // var currentMonth = $dateformatter(new Date(), "yyyyMM")
+    queryData['currentMonth'] = null;
 
     /**
      * 点击搜索按钮
@@ -84,19 +83,19 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     });
 
     //监听单元格编辑
-    table.on('edit(attendanceMyselfTable)', function (obj) {
-        var value = obj.value //得到修改后的值
-            , data = obj.data //得到所在行所有键值
-            , field = obj.field; //得到字段
-
-        var reDateTime = /^(?:(?:[0-2][0-3])|(?:[0-1][0-9])):[0-5][0-9]$/;
-        var regExp = new RegExp(reDateTime);
-        if (!regExp.test(value)) {
-            // alert("日期格式不正确，正确格式为：2014-01-01");
-            layer.msg(value + "日期格式不正确，正确格式为：HH:mm");
-            return;
-        }
-    });
+    // table.on('edit(attendanceMyselfTable)', function (obj) {
+    //     var value = obj.value //得到修改后的值
+    //         , data = obj.data //得到所在行所有键值
+    //         , field = obj.field; //得到字段
+    //
+    //     var reDateTime = /^(?:(?:[0-2][0-3])|(?:[0-1][0-9])):[0-5][0-9]$/;
+    //     var regExp = new RegExp(reDateTime);
+    //     if (!regExp.test(value)) {
+    //         // alert("日期格式不正确，正确格式为：2014-01-01");
+    //         layer.msg(value + "日期格式不正确，正确格式为：HH:mm");
+    //         return;
+    //     }
+    // });
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
@@ -126,7 +125,7 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
         top.layui.admin.open({
             type: 2,
             title: '编辑考勤',
-            content: Feng.ctxPath + '/attendance/myself/attendance_edit?workMonth= '+ data.workMonth,            
+            content: Feng.ctxPath + '/attendance/myself/attendance_edit?workMonth='+ data.workMonth,
             end: function () {
                 admin.getTempData('formOk') && table.reload(AttendanceRecord.tableId);
             }

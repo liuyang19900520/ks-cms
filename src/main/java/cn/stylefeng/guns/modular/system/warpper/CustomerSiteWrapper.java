@@ -50,12 +50,6 @@ public class CustomerSiteWrapper extends BaseControllerWrapper {
 
     @Override
     protected void wrapTheMap(Map<String, Object> map) {
-        Long pid = (Long) map.get("pid");
 
-        if (ToolUtil.isEmpty(pid) || pid.equals(0)) {
-            map.put("pName", "--");
-        } else {
-            map.put("pName", ConstantFactory.me().getCustomerSiteName(pid));
-        }
     }
 }

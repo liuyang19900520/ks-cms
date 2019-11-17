@@ -27,6 +27,7 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
 
     // 表单提交事件
     form.on('submit(btnSubmit)', function (data) {
+
         var ajax = new $ax(Feng.ctxPath + "/attendance/myself/update", function (data) {
             Feng.success("修改成功！");
 
@@ -38,7 +39,9 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
         }, function (data) {
             Feng.error("修改失败！" + data.responseJSON.message)
         });
-        ajax.set(data.field);
+        ajax.setContentType("application/json;charset=UTF-8")
+        ajax.setData(JSON.stringify(data.field));
+
         ajax.start();
     });
 });

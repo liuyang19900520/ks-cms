@@ -46,7 +46,8 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
          }, function (data) {
              Feng.error("添加成功！" + data.responseJSON.message)
          });
-        ajax.set(data.field);
+         ajax.setContentType("application/json;charset=UTF-8")
+         ajax.setData(JSON.stringify(data.field));
          ajax.start();
      });
 });

@@ -86,6 +86,9 @@
             resultType="cn.stylefeng.guns.modular.attendance.entity.ViewAttendance">
         select * from v_attendance
         where EMPLOYEE_ID=#{employeeId}
+        <if test="currentMonth != null">
+            AND WORK_MONTH=#{currentMonth}
+        </if>
         order by WORK_MONTH desc
     </select>
 

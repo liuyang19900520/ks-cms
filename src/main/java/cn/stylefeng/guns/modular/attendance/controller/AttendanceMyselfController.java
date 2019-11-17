@@ -15,34 +15,32 @@
  */
 package cn.stylefeng.guns.modular.attendance.controller;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import cn.stylefeng.guns.core.common.annotion.Permission;
+import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
+import cn.stylefeng.guns.core.log.LogObjectHolder;
+import cn.stylefeng.guns.core.shiro.ShiroKit;
+import cn.stylefeng.guns.core.shiro.ShiroUser;
+import cn.stylefeng.guns.core.util.LDateUtils;
+import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
+import cn.stylefeng.guns.modular.attendance.model.AttendanceRecordDto;
+import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
+import cn.stylefeng.roses.core.base.controller.BaseController;
+import cn.stylefeng.roses.core.reqres.response.ResponseData;
+import cn.stylefeng.roses.core.reqres.response.SuccessResponseData;
+import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.google.common.collect.Maps;
 
-import cn.stylefeng.guns.core.common.annotion.BussinessLog;
-import cn.stylefeng.guns.core.common.annotion.Permission;
-import cn.stylefeng.guns.core.common.constant.dictmap.DeptDict;
-import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
-import cn.stylefeng.guns.core.log.LogObjectHolder;
-import cn.stylefeng.guns.core.shiro.ShiroKit;
-import cn.stylefeng.guns.core.shiro.ShiroUser;
-import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
-import cn.stylefeng.guns.modular.attendance.model.AttendanceRecordDto;
-import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
-import cn.stylefeng.guns.modular.system.entity.Dept;
-import cn.stylefeng.roses.core.base.controller.BaseController;
-import cn.stylefeng.roses.core.reqres.response.ResponseData;
-import cn.stylefeng.roses.core.reqres.response.SuccessResponseData;
-import cn.stylefeng.roses.core.util.ToolUtil;
-import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * 部门控制器
@@ -81,13 +79,18 @@ public class AttendanceMyselfController extends BaseController {
         return PREFIX + "attendance-myself.html";
     }
 
-//渲染表格
+    //渲染表格
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list() {
+    public Object list(@RequestParam String currentMonth) {
+
+        Date currentMonthDate = null;
+        if (currentMonth != null && !currentMonth.equals("")) {
+            currentMonthDate = LDateUtils.stringToDate(currentMonth, "yyyyMM");
+        }
 
         ShiroUser currentUser = ShiroKit.getUser();
-        List<ViewAttendance> viewAttendances = attendanceService.listMyAttendanceByMonth(currentUser.getId());
+        List<ViewAttendance> viewAttendances = attendanceService.listMyAttendanceByMonth(currentMonthDate, currentUser.getId());
         HashMap<String, Object> result = Maps.newHashMap();
         result.put("code", "0");
         result.put("msg", "success");
@@ -106,7 +109,7 @@ public class AttendanceMyselfController extends BaseController {
     @RequestMapping(value = "/message")
     @ResponseBody
     public Object detail() {
-        ViewAttendance attendance = this.attendanceService.getCustomerSiteInfo();       
+        ViewAttendance attendance = this.attendanceService.getCustomerSiteInfo();
         return SuccessResponseData.success(attendance);
     }
 
@@ -117,17 +120,17 @@ public class AttendanceMyselfController extends BaseController {
 
         return attendanceService.recordAttendance(records);
     }
-    
+
     /**
      * 添加考勤
      *
      * @author fengshuonan
      * @Date 2018/12/24 22:44
      */
-    @RequestMapping("/add")  
+    @RequestMapping("/add")
     @ResponseBody
-    public ResponseData add(ViewAttendance attendance) {
-        
+    public ResponseData add(@RequestBody ViewAttendance attendance) {
+
         this.attendanceService.addAttendancer(attendance);
         return SUCCESS_TIP;
     }
@@ -140,15 +143,10 @@ public class AttendanceMyselfController extends BaseController {
      */
     @Permission
     @RequestMapping("/attendance_edit")
-    public String attendanceEdit(@RequestParam("workMonth") Date workMonth) {
-        if (ToolUtil.isEmpty(workMonth)) {
-            throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
-        }
-        ViewAttendance viewAttendance = attendanceService.selectMonthEmployee(workMonth);
-        LogObjectHolder.me().set(viewAttendance);
+    public String attendanceEdit() {
         return PREFIX + "attendance_edit.html";
     }
-    
+
     /**
      * 编辑考勤显示详情
      *
@@ -157,40 +155,46 @@ public class AttendanceMyselfController extends BaseController {
      */
     @RequestMapping("/edit_message")
     @ResponseBody
-    public Object editMassage(@RequestParam Date workMonth) {
-    	
-        ViewAttendance attendance = this.attendanceService.selectMonthEmployee(workMonth);
-        return SuccessResponseData.success(attendance);
-        
+    public Object editMassage(@RequestParam String workMonth) {
+
+        Date workMonthDate = LDateUtils.stringToDate(workMonth, "yyyyMM");
+        if (ToolUtil.isEmpty(workMonth)) {
+            throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
+        }
+        ViewAttendance viewAttendance = attendanceService.selectMonthEmployee(workMonthDate);
+        LogObjectHolder.me().set(viewAttendance);
+        return SuccessResponseData.success(viewAttendance);
+
     }
-    
+
     /**
      * 编辑考勤
      *
      * @author fengshuonan
      * @Date 2018/12/23 4:57 PM
      */
-   // @BussinessLog(value = "编辑考勤", key = "simpleName", dict = DeptDict.class)
+    // @BussinessLog(value = "编辑考勤", key = "simpleName", dict = DeptDict.class)
     @RequestMapping(value = "/update")
     @Permission
     @ResponseBody
-    public ResponseData update(ViewAttendance attendance) {
-    	attendanceService.editAttendanceService(attendance);
+    public ResponseData update(@RequestBody ViewAttendance attendance) {
+        attendanceService.editAttendanceService(attendance);
         return SUCCESS_TIP;
     }
 
     /**
      * 删除考勤
      *
-     * @author 
+     * @author
      * @Date 2019/11/09 14:28 PM
      */
-   // @BussinessLog(value = "删除考勤", key = "simpleName", dict = DeptDict.class)
+    // @BussinessLog(value = "删除考勤", key = "simpleName", dict = DeptDict.class)
     @RequestMapping(value = "/attendance_delete")
     @Permission
     @ResponseBody
-    public ResponseData delete(@RequestParam Date workMonth) {
-    	attendanceService.deleteAttendanceService(workMonth);
+    public ResponseData delete(@RequestParam String workMonth) {
+        Date workMonthDate = LDateUtils.stringToDate(workMonth, "yyyyMM");
+        attendanceService.deleteAttendanceService(workMonthDate);
         return SUCCESS_TIP;
     }
 }

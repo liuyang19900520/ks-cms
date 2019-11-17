@@ -41,12 +41,12 @@ public class AttendanceService {
     EmployeeMapper employeeMapper;
 
 
-    public List<ViewAttendance> listMyAttendanceByMonth(Long userId) {
+    public List<ViewAttendance> listMyAttendanceByMonth(Date selectMonth,Long userId) {
         Employee employee = employeeMapper.selectEmployeeByUserId(userId);
         Long employeeId = employee.getEmployeeId();
 
         //将这个employeeId传入查询视图的mapper中
-        List<ViewAttendance> viewAttendances = attendanceMapper.selectMyAttendanceByMonth(employeeId);
+        List<ViewAttendance> viewAttendances = attendanceMapper.selectMyAttendanceByMonth(selectMonth,employeeId);
 
         return viewAttendances;
 

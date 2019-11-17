@@ -29,7 +29,7 @@ public interface AttendanceMapper {
 
     List<AttendanceAllRecord> selectUsers();
 
-    List<ViewAttendance> selectMyAttendanceByMonth(@Param("employeeId") Long employeeId);
+    List<ViewAttendance> selectMyAttendanceByMonth(@Param("currentMonth") Date currentMonth,@Param("employeeId") Long employeeId);
 
     Map<String,Object> selectCustomerSiteInfoForAddForm(@Param("employeeId") Long employeeId);
 

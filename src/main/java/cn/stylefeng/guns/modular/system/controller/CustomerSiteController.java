@@ -153,9 +153,6 @@ public class CustomerSiteController extends BaseController {
     @ResponseBody
     public ResponseData delete(@RequestParam Long customerID) {
 
-        //缓存被删除的部门名称
-        LogObjectHolder.me().set(ConstantFactory.me().getCustomerSiteName(customerID));
-
         customerSiteService.removeById(customerID);
 
         return SUCCESS_TIP;
