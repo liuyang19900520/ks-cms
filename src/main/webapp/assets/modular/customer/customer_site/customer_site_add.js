@@ -18,6 +18,8 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
 
             //关掉对话框
             admin.closeThisDialog();
+
+
         }, function (data) {
             Feng.error("添加失败！" + data.responseJSON.message)
         });

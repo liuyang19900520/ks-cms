@@ -30,7 +30,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             {field: 'ceoName', sort: true, title: '社长姓名'},
             {field: 'ceoTel', sort: true, title: '社长联系方式'},
             {field: 'ceoMail', sort: true, title: '社长邮箱'},
-            {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
+            {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 280}
         ]];
     };
 
@@ -62,20 +62,19 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     /**
      * 弹出窗口
      */
-    Company.openAdd1Company = function () {
+    Company.openAdd1Company = function (data) {
+
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
             title: '添加客户信息',
-            content: Feng.ctxPath + 'customer/company/company_add_site',
+            content: Feng.ctxPath + 'customer/company/company_add_site?customerID=' + data.customerID,
             end: function () {
-                admin.getTempData('formOk') && table.reload(Company.tableId);
+                location.href="/customer/site";
+
             }
         });
     };
-
-
-
 
 
     /**
@@ -148,4 +147,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             Company.openAdd1Company(data);
         }
     });
+
+
+
 });

@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import cn.stylefeng.guns.modular.system.entity.Company;
 import cn.stylefeng.guns.modular.system.entity.InfoMgr;
 
 /**

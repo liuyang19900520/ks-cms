@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.stylefeng.guns.modular.system.mapper.CustomerSiteMapper">
+<mapper namespace="cn.stylefeng.guns.modular.company.mapper.CustomerSiteMapper">
 
 	<!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.system.entity.CustomerSite">
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.company.entity.CustomerSite">
         <id column="CUSTOMER_ID" property="customerID"/>
-        <id column="CUSTOMER_SITE_ID" property="customersiteID"/>
-        <result column="CUSTOMER_SITE_NAME" property="customersiteName"/>
-        <result column="CUSTOMER_SITE_ADDRESS" property="customersiteAddress"/>
-        <result column="CUSTOMER_SITE_STATION" property="customersiteStation"/>
+        <id column="CUSTOMER_SITE_ID" property="customerSiteID"/>
+        <result column="CUSTOMER_SITE_NAME" property="customerSiteName"/>
+        <result column="CUSTOMER_SITE_ADDRESS" property="customerSiteAddress"/>
+        <result column="CUSTOMER_SITE_STATION" property="customerSiteStation"/>
         <result column="CREATE_TIME" property="createTime"/>
         <result column="CREATE_USER" property="createUser"/>
         <result column="UPDATE_TIME" property="updateTime"/>
@@ -27,7 +27,7 @@
 			UPDATE_TIME as updateTime,
 			UPDATE_USER as updateUser
     </sql>
-    <!--select id="selectCustomerSite"  resultType="cn.stylefeng.guns.modular.system.entity.CustomerSite">
+    <!--select id="selectCustomerSite"  resultType="cn.stylefeng.guns.modular.company.entity.CustomerSite">
         select *
         from
         <!-where CUSTOMER_SITE_NAME = #{customersiteName}-->
@@ -42,5 +42,9 @@
             where CUSTOMER_SITE_NAME like CONCAT('%',#{customersiteName},'%')
         </if>
     </select>
+    <select id="getMaxCustomerSiteId" resultType="long">
+        select max(CUSTOMER_SITE_ID)+1 from customer_site;
+    </select>
+
 
 </mapper>

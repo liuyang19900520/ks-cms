@@ -19,8 +19,7 @@ import java.util.Map;
 
 import cn.stylefeng.guns.core.common.constant.Const;
 import cn.stylefeng.guns.core.common.constant.dictmap.CustomerSiteDict;
-import cn.stylefeng.guns.modular.system.entity.CustomerSite;
-import cn.stylefeng.guns.modular.system.service.CustomerSiteService;
+import cn.stylefeng.guns.modular.company.entity.CustomerSite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,16 +33,13 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.stylefeng.guns.core.common.annotion.BussinessLog;
 import cn.stylefeng.guns.core.common.annotion.Permission;
 import cn.stylefeng.guns.core.common.constant.dictmap.CompanyDict;
-import cn.stylefeng.guns.core.common.constant.dictmap.DeptDict;
 import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.modular.company.service.CompanyService;
 import cn.stylefeng.guns.modular.company.wrapper.CompanyWrapper;
-import cn.stylefeng.guns.modular.system.entity.Company;
-import cn.stylefeng.guns.modular.system.entity.Dept;
+import cn.stylefeng.guns.modular.company.entity.Company;
 import cn.stylefeng.guns.modular.system.model.CompanyDto;
-import cn.stylefeng.guns.modular.system.warpper.NoticeWrapper;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -64,7 +60,7 @@ public class CompanyController extends BaseController {
     @Autowired
     private CompanyService companyService;
     @Autowired
-    private CustomerSiteService customerSiteService;
+    private CompanyService.CustomerSiteService customerSiteService;
 
     /**
      * 跳转到客户信息管理首页
@@ -76,6 +72,7 @@ public class CompanyController extends BaseController {
     public String index() {
         return PREFIX + "company.html";
     }
+
     /**
      * 获取客户信息列表
      *
@@ -90,7 +87,7 @@ public class CompanyController extends BaseController {
         Page<Map<String, Object>> wrap = new CompanyWrapper(list).wrap();
         return LayuiPageFactory.createPageInfo(wrap);
     }
-    
+
     /**
      * 跳转到录入用户信息详细页
      *
@@ -101,6 +98,7 @@ public class CompanyController extends BaseController {
     public String companyAdd() {
         return PREFIX + "company_add.html";
     }
+
     /**
      * 录入用户信息
      *
@@ -133,9 +131,10 @@ public class CompanyController extends BaseController {
     @Permission(Const.ADMIN_NAME)
     @ResponseBody
     public ResponseData add(CustomerSite customer) {
-    this.customerSiteService.addCustomerSite(customer);
-    return SUCCESS_TIP;
-     }
+        this.customerSiteService.addCustomerSite(customer);
+        return SUCCESS_TIP;
+    }
+
     /**
      * 跳转到修改客户信息详细页
      *
@@ -155,6 +154,7 @@ public class CompanyController extends BaseController {
 
         return PREFIX + "company_edit.html";
     }
+
     /**
      * 客户信息详细页信息
      *
@@ -170,6 +170,7 @@ public class CompanyController extends BaseController {
         BeanUtil.copyProperties(company, companyDto);
         return companyDto;
     }
+
     /**
      * 修改客户信息
      *
@@ -184,6 +185,7 @@ public class CompanyController extends BaseController {
         companyService.editCompany(company);
         return SUCCESS_TIP;
     }
+
     /**
      * 删除部门
      *
@@ -210,19 +212,19 @@ public class CompanyController extends BaseController {
      * @author fengshuonan
      * @Date 2018/12/23 4:57 PM
      */
-  //  @RequestMapping("/company_site_add")
-   // public String companyAdd1() {
-       // return PREFIX + "customer_site_add.html";
-   // }
+    //  @RequestMapping("/company_site_add")
+    // public String companyAdd1() {
+    // return PREFIX + "customer_site_add.html";
+    // }
 
     //@BussinessLog(value = "添加现场信息", key = "customerID", dict = CustomerSiteDict.class)
-   //@RequestMapping(value = "/company_add1")
+    //@RequestMapping(value = "/company_add1")
     //@Permission(Const.ADMIN_NAME)
     //@ResponseBody
     //public ResponseData add(CustomerSite customer) {
-        //this.customerSiteService.addCustomerSite(customer);
-       //return SUCCESS_TIP;
-  //  }
+    //this.customerSiteService.addCustomerSite(customer);
+    //return SUCCESS_TIP;
+    //  }
 
 
 }

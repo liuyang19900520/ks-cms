@@ -8,6 +8,9 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
     // 让当前iframe弹层高度适应
     admin.iframeAuto();
 
+    var customerId=Feng.getUrlParam("customerID");
+    $("#ipt-add-customer-id").val(customerId);
+
     // 表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         var ajax = new $ax(Feng.ctxPath + "/customer/company/company_add1", function (data) {
@@ -18,9 +21,11 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
 
             //关掉对话框
             admin.closeThisDialog();
+
         }, function (data) {
             Feng.error("添加失败！" + data.responseJSON.message)
         });
+        alert(JSON.stringify(data.field))
         ajax.set(data.field);
         ajax.start();
     });
