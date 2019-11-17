@@ -1,9 +1,8 @@
 @layout("/common/_container.html",{js:["/assets/modular/attendance/list.js"]}){
 
 <div class="layui-body-header">
-    <span class="layui-body-header-title">我的考勤</span>
+    <span class="layui-body-header-title">考勤总汇</span>
 </div>
-
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
@@ -15,12 +14,13 @@
                                 <input type="text" class="layui-input" id="ipt-current-month">
                             </div>
                             <div class="layui-inline">
+                                <input type="text" class="layui-input" id="ipt-current-name" placeholder="请输入姓名">
+                            </div>
+                            <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
                                 </button>
-
                                 <button id="btnSave" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>保存
                                 </button>
-
                             </div>
                         </div>
                     </div>
@@ -30,5 +30,8 @@
         </div>
     </div>
 </div>
-
+<script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>   
+</script>
 @}

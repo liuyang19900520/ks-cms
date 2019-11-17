@@ -31,7 +31,6 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             var queryData = {};
             queryData['currentMonth'] = value
             table.reload(AttendanceRecord.tableId, {where: queryData});
-
         }
     });
 
@@ -41,13 +40,14 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     AttendanceRecord.initColumn = function () {
         return [[
             {type: 'checkbox'},
-            {field: 'userId', sort: true, title: 'ID'},
-            {field: 'userName', sort: true, title: '姓名'},
-            {field: 'customerSiteName', sort: true, title: '现场名称'},
-            {field: 'maxHours', sort: true, title: '标准最长时长'},
-            {field: 'minHours', sort: true, title: '标准最短时长'},
-            {field: 'hours', sort: true, title: '工作时间'},
-            {field: 'check', sort: true, title: '确认'}
+            {field: 'workMonth', sort: true, title: '月份'},
+            {field: 'employeeId', sort: true, title: '员工号'},
+            {field: 'employeeNameCN', sort: true, title: '姓名', edit: "text"},
+            {field: 'workTime', sort: true, title: '工作时长', edit: "text"},
+            {field: 'projectName', sort: true, title: '项目名称', edit: "text"},
+            {field: 'customerSiteName', sort: true, title: '现场名称', edit: "text"},
+            {field: 'companyName', sort: true, title: '客户名称', edit: "text"},
+            {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 150}
         ]];
     };
 
@@ -55,11 +55,18 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     var currentMonth = $dateformatter(new Date(), "yyyyMM")
     queryData['currentMonth'] = currentMonth;
 
+ // 搜索按钮点击事件
+    $('#btnSearch').click(function () {
+        AttendanceRecord.search();
+    });
+
+
     /**
-     * 点击查询按钮
+     * 点击搜索按钮
      */
     AttendanceRecord.search = function () {
         queryData['currentMonth'] = $("#ipt-current-month").val();
+        queryData['currentName'] = $("#ipt-current-name").val();
         table.reload(AttendanceRecord.tableId, {where: queryData});
     };
 
@@ -86,34 +93,9 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             layer.msg(value + "日期格式不正确，正确格式为：HH:mm");
             return;
         }
-
-
     });
 
-    // 搜索按钮点击事件
-    $('#btnSearch').click(function () {
-        AttendanceRecord.search();
-    });
-
-
-    // 保存
-    $('#btnSave').click(function () {
-        var checkRows = table.checkStatus(AttendanceRecord.tableId);
-
-        var ajax = new $ax(Feng.ctxPath + "/attendance/myself/save", function (data) {
-            Feng.success("添加成功！");
-            queryData['currentMonth'] = $("#ipt-current-month").val();
-            table.reload(AttendanceRecord.tableId, {where: queryData});
-
-        }, function (data) {
-            Feng.error("添加失败！" + data.responseJSON.message)
-        });
-        ajax.setContentType("application/json")
-        alert(JSON.stringify(checkRows.data));
-        ajax.setData(JSON.stringify(checkRows.data));
-        ajax.start();
-
-    });
+   
 
 });
 
