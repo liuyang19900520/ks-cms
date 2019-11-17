@@ -57,11 +57,9 @@ public class AttendanceListController extends BaseController {
 
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(@RequestParam(value = "currentMonth", required = false) String currentMonth) {
+    public Object list() {
 
-        List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllUser(currentMonth);
-
-
+        List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance();
         HashMap<String, Object> result = Maps.newHashMap();
         result.put("code", "0");
         result.put("msg", "success");

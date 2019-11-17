@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.attendance.service;
 
+import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
 import cn.stylefeng.guns.core.util.LDateUtils;
@@ -13,12 +14,18 @@ import cn.stylefeng.guns.modular.attendance.model.AttendanceRecordDto;
 import cn.stylefeng.guns.modular.system.entity.Employee;
 import cn.stylefeng.guns.modular.system.mapper.EmployeeMapper;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -57,9 +64,7 @@ public class AttendanceService {
         customerSiteInfo.setCustomerSiteName((String) mapResult.get("CUSTOMER_SITE_NAME"));
         customerSiteInfo.setEmployeeId((Long) mapResult.get("EMPLOYEE_ID"));
         customerSiteInfo.setEmployeeNameCN(currentUser.getName());
-
         return customerSiteInfo;
-
     }
 
 
@@ -221,9 +226,69 @@ public class AttendanceService {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
         String p = decimalFormat.format(x);//format 返回的是字符串
 
-        ;
 
         return Float.parseFloat(p);
     }
+    
+//添加考勤
+	public void addAttendancer(ViewAttendance attendance) {
+		Long userId = ShiroKit.getUser().getId();
+		attendance.setUserId(userId);
+		attendanceMapper.insertAttendance(attendance);
+		
+	}
+	//获取我的考勤缓存
+	
+
+	public ViewAttendance selectMonthEmployee(Date workMonth) {
+		ShiroUser currentUser = ShiroKit.getUser();
+        Employee employee = employeeMapper.selectEmployeeByUserId(currentUser.getId());
+        Long employeeId = employee.getEmployeeId();
+                      
+        Map<String, Object> mapResult = attendanceMapper.selectMonthEmployeeID(employeeId,workMonth);
+        ViewAttendance monthEmployee=new ViewAttendance();
+
+        monthEmployee.setWorkMonth((Date) mapResult.get("WORK_MONTH"));
+        monthEmployee.setEmployeeId((Long) mapResult.get("EMPLOYEE_ID"));
+        monthEmployee.setEmployeeNameCN((String) mapResult.get("EMPLOYEE_NAME_CN"));
+        monthEmployee.setCompanyName((String)mapResult.get("COMPANY_NAME"));
+        monthEmployee.setCustomerSiteName((String) mapResult.get("CUSTOMER_SITE_NAME"));
+        monthEmployee.setProjectName((String) mapResult.get("PROJECT_NAME"));
+        monthEmployee.setWorkTime((Float) mapResult.get("WORK_TIME"));               
+        return monthEmployee;
+	}
+
+	public void editAttendanceService(ViewAttendance attendance) {
+		if (ToolUtil.isOneEmpty(attendance, attendance.getWorkMonth(), attendance.getEmployeeId(), attendance.getEmployeeNameCN(), 
+				attendance.getCompanyName(), attendance.getCustomerSiteName(), attendance.getProjectName(), attendance.getWorkTime())) {
+            throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
+        }
+
+		Date workMonth=attendance.getWorkMonth();
+		Float workTime=attendance.getWorkTime();
+		Long employeeId=attendance.getEmployeeId();
+        attendanceMapper.updateMonthEmployeeID(workMonth,workTime,employeeId);
+		
+	}
+//删除考勤
+	public void deleteAttendanceService(Date workMonth) {
+		if (ToolUtil.isOneEmpty(workMonth)) {
+			throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
+        }
+		ShiroUser currentUser = ShiroKit.getUser();
+        Employee employee = employeeMapper.selectEmployeeByUserId(currentUser.getId());
+        Long employeeId = employee.getEmployeeId();
+	        attendanceMapper.deleteMonthEmployeeID(workMonth,employeeId);
+        }
+
+	public List<AttendanceAllRecord> selectAllAttendance() {
+		
+		 List<AttendanceAllRecord> attendanceAllRecord = attendanceMapper.selectAllMyAttendance();
+	        return attendanceAllRecord;
+	}
+		
+	
+
+	
 
 }

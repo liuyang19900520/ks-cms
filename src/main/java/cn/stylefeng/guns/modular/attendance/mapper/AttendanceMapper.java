@@ -6,6 +6,7 @@ import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,14 @@ public interface AttendanceMapper {
 
     Map<String,Object> selectCustomerSiteInfoForAddForm(@Param("employeeId") Long employeeId);
 
+    Integer insertAttendance(ViewAttendance attendance);
 
+	Map<String, Object> selectMonthEmployeeID(@Param("employeeId")Long employeeId, @Param("workMonth")Date workMonth);
+
+	Integer updateMonthEmployeeID(@Param("workMonth")Date workMonth, @Param("workTime")Float workTime,@Param("employeeId") Long employeeId);
+
+	Integer deleteMonthEmployeeID(@Param("workMonth") Date workMonth,@Param("employeeId") Long employeeId);
+
+	List<AttendanceAllRecord> selectAllMyAttendance();
 
 }
