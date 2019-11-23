@@ -37,11 +37,18 @@
         select
         <include refid="Base_Column_List"></include>
         from customer
-        <if test="condition != null and condition != ''">
-            where COMPANY_NAME like CONCAT('%',#{condition},'%') 
-               or COMPANY_ADDRESS like CONCAT('%',#{condition},'%')
+        <if test="companyName != null and companyName != ''">
+            where COMPANY_NAME like CONCAT('%',#{companyName},'%')
+               or COMPANY_ADDRESS like CONCAT('%',#{companyName},'%')
         </if>
         order by CREATE_TIME DESC
     </select>
+
+    <update id="updateByCustomerID" parameterType="cn.stylefeng.guns.modular.company.entity.Company">
+        UPDATE customer
+        SET COMPANY_NAME=#{companyName},COMPANY_ADDRESS=#{companyAddress},TEL=#{tel},
+        MAIL=#{mail},CEO_NAME=#{ceoName},CEO_TEL=#{ceoTel},CEO_MAIL=#{ceoMail}
+        WHERE CUSTOMER_ID=#{customerID}
+    </update>
 
 </mapper>

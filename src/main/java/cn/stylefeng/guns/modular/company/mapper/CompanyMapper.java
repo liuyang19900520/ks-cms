@@ -1,7 +1,9 @@
 package cn.stylefeng.guns.modular.company.mapper;
 
+import java.util.Date;
 import java.util.Map;
 
+import cn.stylefeng.roses.core.datascope.DataScope;
 import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -21,5 +23,7 @@ public interface CompanyMapper extends BaseMapper<Company> {
     /**
      * 获取所有部门列表
      */
-	Page<Map<String, Object>> list(@Param("page") Page page, @Param("condition") String condition);
+	Page<Map<String, Object>> list(@Param("page") Page page, @Param("dataScope") DataScope dataScope, @Param("companyName") String companyName);
+    Integer updateByCustomerID(@Param("customerID") Long customerID,@Param("companyName") String companyName, @Param("companyAddress")String companyAddress, @Param("tel") String tel,@Param("mail") String mail,@Param("ceoName") String ceoName,
+                               @Param("ceoTel") String ceoTel,@Param("ceoMail") String ceoMail);
 }
