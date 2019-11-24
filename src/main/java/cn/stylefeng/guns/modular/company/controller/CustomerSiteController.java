@@ -49,7 +49,7 @@ public class CustomerSiteController extends BaseController {
     private String PREFIX = "/modular/customer/customer_site/";
 
    @Autowired
-   private CompanyService.CustomerSiteService customerSiteService;
+  // private CompanyService.CustomerSiteService customerSiteService;
 
 
 
@@ -63,21 +63,21 @@ public class CustomerSiteController extends BaseController {
      * @author tongyue
      * @Date 2018/12/23 6:31 PM
      */
-    @RequestMapping(value = "/list")
-    @Permission
-    @ResponseBody
-    public Object list(@RequestParam(required = false) String customersiteName) {
-        if (ShiroKit.isAdmin()) {
-            Page<Map<String, Object>> sites = customerSiteService.list(null,customersiteName );
-            Page wrapped = new  CustomerSiteWrapper(sites).wrap();
-            return LayuiPageFactory.createPageInfo(wrapped);
-        } else {
-            DataScope dataScope = new DataScope(ShiroKit.getDeptDataScope());
-            Page<Map<String, Object>> sites = customerSiteService.list(dataScope,customersiteName );
-            Page wrapped = new CustomerSiteWrapper(sites).wrap();
-            return LayuiPageFactory.createPageInfo(wrapped);
-        }
-    }
+   // @RequestMapping(value = "/list")
+   // @Permission
+   // @ResponseBody
+    //public Object list(@RequestParam(required = false) String customersiteName) {
+       // if (ShiroKit.isAdmin()) {
+           // Page<Map<String, Object>> sites = customerSiteService.list(null,customersiteName );
+           // Page wrapped = new  CustomerSiteWrapper(sites).wrap();
+         //   return LayuiPageFactory.createPageInfo(wrapped);
+       // } else {
+           // DataScope dataScope = new DataScope(ShiroKit.getDeptDataScope());
+          //  Page<Map<String, Object>> sites = customerSiteService.list(dataScope,customersiteName );
+          //  Page wrapped = new CustomerSiteWrapper(sites).wrap();
+          //  return LayuiPageFactory.createPageInfo(wrapped);
+      //  }
+   // }
 
     /**
      * 跳转到录入现场信息详细页
@@ -97,7 +97,7 @@ public class CustomerSiteController extends BaseController {
      * @Date 2018/12/23 4:57 PM
      */
     @BussinessLog(value = "添加现场信息", key = "customerID", dict = CustomerSiteDict.class)
-    @RequestMapping(value = "/add")
+   // @RequestMapping(value = "/add")
     @Permission(Const.ADMIN_NAME)
     @ResponseBody
     //public ResponseData add(@Valid CustomerSiteDto customer, BindingResult result) {
@@ -108,10 +108,10 @@ public class CustomerSiteController extends BaseController {
       //  return SUCCESS_TIP;
    // }
 
-    public ResponseData add(CustomerSite customer) {
-        this.customerSiteService.addCustomerSite(customer);
-        return SUCCESS_TIP;
-    }
+    //public ResponseData add(CustomerSite customer) {
+        //this.customerSiteService.addCustomerSite(customer);
+        //return SUCCESS_TIP;
+  //  }
 
 
 
@@ -136,7 +136,7 @@ public class CustomerSiteController extends BaseController {
     @ResponseBody
     public ResponseData delete(@RequestParam Long customerID) {
 
-        customerSiteService.removeById(customerID);
+        //customerSiteService.removeById(customerID);
 
         return SUCCESS_TIP;
     }

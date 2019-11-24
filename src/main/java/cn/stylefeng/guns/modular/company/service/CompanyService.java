@@ -6,6 +6,7 @@ import cn.stylefeng.guns.modular.company.entity.Company;
 import cn.stylefeng.guns.modular.company.entity.CustomerSite;
 import cn.stylefeng.guns.modular.company.mapper.CompanyMapper;
 import cn.stylefeng.guns.modular.company.mapper.CustomerSiteMapper;
+import cn.stylefeng.guns.modular.system.model.CompanyDto;
 import cn.stylefeng.roses.core.datascope.DataScope;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -30,16 +32,17 @@ public class CompanyService extends ServiceImpl<CompanyMapper, Company> {
 
     @Resource
     private CompanyMapper companyMapper;
-
+    @Resource
+    private CustomerSiteMapper customerSiteMapper;
     /**
      * 获取所有客户信息列表
      *
      * @author fengshuonan
      * @Date 2018/12/23 5:16 PM
      */
-    public Page<Map<String, Object>> list(String condition) {
+    public Page<Map<String, Object>> list(DataScope dataScope,String companyName) {
         Page page = LayuiPageFactory.defaultPage();
-        return this.baseMapper.list(page, condition);
+        return this.baseMapper.list(page, dataScope,companyName);
     }
 
     /**
@@ -66,37 +69,23 @@ public class CompanyService extends ServiceImpl<CompanyMapper, Company> {
     @Transactional(rollbackFor = Exception.class)
     public void editCompany(Company company) {
 
-        if (ToolUtil.isOneEmpty(company, company.getCustomerID())) {
+        if (ToolUtil.isOneEmpty(company, company.getCustomerID(),company.getCompanyName(),company.getCompanyAddress()
+        ,company.getTel(),company.getMail(),company.getCeoName(),company.getCeoTel(), company.getCeoMail())) {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
-        this.updateById(company);
+        //this.updateById(company);
+        Long customerID=company.getCustomerID();
+        String companyName=company.getCompanyName();
+        String companyAddress=company.getCompanyAddress();
+        String tel=company.getTel();
+        String mail=company.getMail();
+        String ceoName=company.getCeoName();
+        String ceoTel=company.getCeoTel();
+        String ceoMail=company.getCeoMail();
+        companyMapper.updateByCustomerID(customerID,companyName,companyAddress,tel,mail,ceoName,ceoTel,ceoMail);
     }
 
-    /**
-     * <p>
-     * 部门表 服务实现类
-     * </p>
-     *
-     * @author stylefeng
-     * @since 2018-12-07
-     */
-    @Service
-    public static class CustomerSiteService extends ServiceImpl<CustomerSiteMapper, CustomerSite> {
 
-        @Resource
-        private CustomerSiteMapper customerSiteMapper;
-
-        /**
-         * 获取所有现场信息列表
-         *
-         * @author fengshuonan
-         * @Date 2018/12/23 5:16 PM
-         */
-        public Page<Map<String, Object>> list(DataScope dataScope, String customersiteName) {
-            Page page = LayuiPageFactory.defaultPage();
-            return this.baseMapper.list(page, dataScope, customersiteName);
-
-        }
 
         /**
          * 客户信息录入
@@ -104,15 +93,15 @@ public class CompanyService extends ServiceImpl<CompanyMapper, Company> {
          * @author fengshuonan
          * @Date 2018/12/23 5:00 PM
          */
-        @Transactional(rollbackFor = Exception.class)
-        public void addCustomerSite(CustomerSite customer) {
+       // @Transactional(rollbackFor = Exception.class)
+       // public void addCustomerSite(CustomerSite customer) {
 
-            customer.setCustomerSiteID(customerSiteMapper.getMaxCustomerSiteId());
+          //  customer.setCustomerSiteID(customerSiteMapper.getMaxCustomerSiteId());
 
-            if (ToolUtil.isOneEmpty(customer)) {
-                throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
-            }
-            this.save(customer);
-        }
-    }
+           // if (ToolUtil.isOneEmpty(customer)) {
+                //throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
+            //}
+           // this.save(customer);
+      //  }
+   // }
 }

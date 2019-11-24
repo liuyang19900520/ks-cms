@@ -94,7 +94,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         });
     };
 
-    /**
+       /**
      * 点击删除角色
      *
      * @param data 点击按钮时候的行数据
