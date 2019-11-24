@@ -1,0 +1,24 @@
+@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/employee/info/projAssign.js"]}){
+<form id="userForm" lay-filter="userForm" class="layui-form model-form">
+    <input name="userId" type="hidden"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">客户<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input name="name" placeholder="请输入" type="text" class="layui-input" lay-verify="required" required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">现场</label>
+        <div class="layui-input-block">
+            <input id="birthday" name="birthday" placeholder="请输入" type="text" class="layui-input" autocomplete="off"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">项目<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input name="email" placeholder="请输入" type="text" class="layui-input" lay-verify="required|email" required />
+        </div>
+    </div>
+</form>
+@}
+
