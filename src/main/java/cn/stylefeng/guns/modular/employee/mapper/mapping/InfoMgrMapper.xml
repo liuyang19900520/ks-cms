@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.employee.mapper.InfoMgrMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.employee.entity.InfoMgr">
+        <id column="EMPLOYEE_ID" property="employeeId"/>
+        <result column="EMPLOYEE_NAME_CN" property="employeeNameCn"/>
+        <result column="PROJECT_NAME" property="projectName"/>
+        <result column="CUSTOMER_SITE_NAME" property="customerSiteName"/>
+        <result column="COMPANY_NAME" property="companyName"/>
+    </resultMap>
+
+    <select id="list" resultType="map">
+	select 
+		e.EMPLOYEE_ID as employeeId,
+		e.EMPLOYEE_NAME_CN as employeeNameCn,
+		c.COMPANY_NAME as companyName,
+		cs.CUSTOMER_SITE_NAME as customerSiteName,
+		p.PROJECT_NAME as projectName
+	from
+		project_relation  pr
+		left join project p on pr.PROJECT_ID = p.PROJECT_ID
+		left join employee e on pr.USER_ID = e.USER_ID
+		left join customer_site cs on pr.CUSTOMER_SITE_ID = cs.CUSTOMER_SITE_ID
+		left join customer c on cs.CUSTOMER_ID = c.CUSTOMER_ID
+		<if test="condition != null and condition != ''">
+	            where EMPLOYEE_NAME_CN like CONCAT('%',#{condition},'%') 
+	    </if>
+    </select>
+
+</mapper>
