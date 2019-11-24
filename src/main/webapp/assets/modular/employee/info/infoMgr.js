@@ -49,9 +49,8 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            area:["400px","550px"],
             title: '员工个人信息',
-            content: Feng.ctxPath + 'employee/info/open_detail?userId=' + data.userId,
+            content: Feng.ctxPath + 'info/open_detail?userId=' + data.userId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(infoMgr.tableId);
             }
@@ -67,7 +66,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             type: 2,
             title: '项目分配',
             area: ['300px', '400px'],
-            content: Feng.ctxPath + 'employee/info/proj_assign?userId=' + data.userId,
+            content: Feng.ctxPath + 'info/project/assign?userId=' + data.userId,
             end: function () {
                 table.reload(infoMgr.tableId);
             }

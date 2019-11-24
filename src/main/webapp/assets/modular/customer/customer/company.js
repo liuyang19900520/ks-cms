@@ -37,12 +37,13 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     // /**
     //  * 点击查询按钮
     //  */
-    // Company.search = function () {
-    //     var queryData = {};
-    //     queryData['condition'] = $("#condition").val();
-    //     //queryData['customerID'] = Company.condition.customerID;
-    //     table.reload(Company.tableId, {where: queryData});
-    // };
+    Company.search = function () {
+        var queryData = {};
+        // queryData['condition'] = $("#condition").val();
+         queryData['companyName'] = $("#companyName").val();
+        //queryData['customerID'] = Company.condition.customerID;
+        table.reload(Company.tableId, {where: queryData});
+    };
 
     /**
      * 弹出录入窗口

@@ -1,13 +1,3 @@
-/**
- * 用户详情对话框
- */
-var UserInfoDlg = {
-    data: {
-        deptId: "",
-        deptName: ""
-    }
-};
-
 layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
@@ -20,12 +10,32 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
     admin.iframeAuto();
 
     //获取用户信息
-    var ajax = new $ax(Feng.ctxPath + "/mgr/getUserInfo?userId=" + Feng.getUrlParam("userId"));
+    var ajax = new $ax(Feng.ctxPath + "/employee/info/getCompanies?userId=" + Feng.getUrlParam("userId"));
     var result = ajax.start();
+
+
+    var optionsCompany;
+    $.each(result, function (key, value) {  //循环遍历后台传过来的json数据
+        optionsCompany += "<option value=\"" + value.customerID + "\" >" + value.companyName + "</option>";
+    });
+    $("#sel-company").append("<option value=''>请选择客户</option> " + optionsCompany);
+
+    form.on('select(sel-company)', function(data){
+        var sitePath = Feng.ctxPath + "/employee/info/customer-site/" + $("#sel-company").val();
+        var ajaxSite = new $ax(sitePath);
+        var sites = ajaxSite.start();
+        alert(JSON.stringify(sites))
+        var optionsSites
+
+        $.each(sites, function (key, value) {  //循环遍历后台传过来的json数据
+            optionsSites += "<option value=\"" + value.customerSiteID + "\" >" + value.customerSiteName + "</option>";
+        });
+        $("#sel-site").html("<option value=''>请选择现场</option> " + optionsSites); //获得要赋值的select的id，进行赋值
+
+        form.render('select');//select是固定写法 不是选择器
+
+    });
+
     form.val('userForm', result.data);
 
-    // 渲染时间选择框
-    laydate.render({
-        elem: '#birthday'
-    });
 });

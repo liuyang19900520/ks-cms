@@ -21,6 +21,7 @@ import cn.stylefeng.guns.core.common.constant.Const;
 import cn.stylefeng.guns.core.common.constant.dictmap.CustomerSiteDict;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.modular.company.entity.CustomerSite;
+import cn.stylefeng.guns.modular.company.service.CustomerSiteService;
 import cn.stylefeng.guns.modular.system.warpper.CustomerSiteWrapper;
 import cn.stylefeng.roses.core.datascope.DataScope;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class CompanyController extends BaseController {
     @Autowired
     private CompanyService companyService;
    // @Autowired
-    //private CustomerSiteService customerSiteService;
+    private CustomerSiteService customerSiteService;
 
     /**
      * 跳转到客户信息管理首页
@@ -134,19 +135,19 @@ public class CompanyController extends BaseController {
      * @author fengshuonan
      * @Date 2018/12/23 4:57 PM
      */
-   // @RequestMapping("/company_add_site")
-    //public String companyAdd1() {
-        //return PREFIX + "company_add_site.html";
-  //  }
+    @RequestMapping("/company_add_site")
+    public String companyAdd1() {
+        return PREFIX + "company_add_site.html";
+    }
 
-   // @BussinessLog(value = "添加现场信息", key = "customerID", dict = CustomerSiteDict.class)
-   // @RequestMapping(value = "/company_add1")
-    //@Permission(Const.ADMIN_NAME)
-   // @ResponseBody
-   // public ResponseData add(CustomerSite customer) {
-        //this.customerSiteService.addCustomerSite(customer);
-       // return SUCCESS_TIP;
-   // }
+    @BussinessLog(value = "添加现场信息", key = "customerID", dict = CustomerSiteDict.class)
+    @RequestMapping(value = "/company_add1")
+    @Permission(Const.ADMIN_NAME)
+    @ResponseBody
+    public ResponseData add(CustomerSite customer) {
+        this.customerSiteService.addCustomerSite(customer);
+        return SUCCESS_TIP;
+    }
 
     /**
      * 跳转到修改客户信息详细页

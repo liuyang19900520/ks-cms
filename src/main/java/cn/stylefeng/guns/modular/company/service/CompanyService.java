@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -86,22 +87,8 @@ public class CompanyService extends ServiceImpl<CompanyMapper, Company> {
     }
 
 
+    public List<Company> listForSelect(){
+        return  this.list();
+    }
 
-        /**
-         * 客户信息录入
-         *
-         * @author fengshuonan
-         * @Date 2018/12/23 5:00 PM
-         */
-       // @Transactional(rollbackFor = Exception.class)
-       // public void addCustomerSite(CustomerSite customer) {
-
-          //  customer.setCustomerSiteID(customerSiteMapper.getMaxCustomerSiteId());
-
-           // if (ToolUtil.isOneEmpty(customer)) {
-                //throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
-            //}
-           // this.save(customer);
-      //  }
-   // }
 }

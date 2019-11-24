@@ -18,6 +18,8 @@ package cn.stylefeng.guns.modular.employee.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.stylefeng.guns.modular.company.service.CompanyService;
+import cn.stylefeng.guns.modular.company.service.CustomerSiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,11 +66,15 @@ import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 public class InfoMgrController extends BaseController {
 
     private String PREFIX = "/modular/employee/info/";
-    
+
     @Autowired
     private InfoMgrService infoMgrService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CompanyService companyService;
+    @Autowired
+    private CustomerSiteService customerSiteService;
 
     /**
      * 跳转到员工信息管理首页
@@ -80,6 +86,7 @@ public class InfoMgrController extends BaseController {
     public String index() {
         return PREFIX + "infoMgr.html";
     }
+
     /**
      * 获取员工信息列表
      *
@@ -87,20 +94,19 @@ public class InfoMgrController extends BaseController {
      * @Date 2018/12/23 6:31 PM
      */
     @RequestMapping(value = "/list")
-    @Permission
     @ResponseBody
     public Object list(String condition) {
         Page<Map<String, Object>> list = this.infoMgrService.list(condition);
         Page<Map<String, Object>> wrap = new InfoMgrWrapper(list).wrap();
         return LayuiPageFactory.createPageInfo(wrap);
-    } 
+    }
+
     /**
      * 跳转到修改客户信息详细页
      *
      * @author fengshuonan
      * @Date 2018/12/23 4:56 PM
      */
-    @Permission
     @RequestMapping("/open_detail")
     public String openDetail(@RequestParam("userId") Long userId) {
 
@@ -113,6 +119,7 @@ public class InfoMgrController extends BaseController {
 
         return PREFIX + "infoDetail.html";
     }
+
     /**
      * 获取用户详情
      *
@@ -138,31 +145,52 @@ public class InfoMgrController extends BaseController {
         hashMap.put("deptName", ConstantFactory.me().getDeptName(user.getDeptId()));
 
         //将employeeInfo的信息一个一个传到map中，map负责返回到页面上，页面name和map的key相对应
-        hashMap.put("address",employeeInfo.getAddress());
-        hashMap.put("station",employeeInfo.getStation());
-        hashMap.put("city",employeeInfo.getCity());
-        hashMap.put("province",employeeInfo.getProvince());
-        hashMap.put("entryTime",employeeInfo.getEntryTime());
-        hashMap.put("employeeNameKANA",employeeInfo.getEmployeeNameKANA());
-        hashMap.put("employeeNameJP",employeeInfo.getEmployeeNameJP());
-        hashMap.put("employeeNameCN",employeeInfo.getEmployeeNameCN());
+        hashMap.put("address", employeeInfo.getAddress());
+        hashMap.put("station", employeeInfo.getStation());
+        hashMap.put("city", employeeInfo.getCity());
+        hashMap.put("province", employeeInfo.getProvince());
+        hashMap.put("entryTime", employeeInfo.getEntryTime());
+        hashMap.put("employeeNameKANA", employeeInfo.getEmployeeNameKANA());
+        hashMap.put("employeeNameJP", employeeInfo.getEmployeeNameJP());
+        hashMap.put("employeeNameCN", employeeInfo.getEmployeeNameCN());
 
 
         return ResponseData.success(hashMap);
     }
+
     /**
      * 跳转到角色分配页面
      *
      * @author fengshuonan
      * @Date 2018/12/24 22:43
      */
-    @Permission
-    @RequestMapping("/proj_assign")
-    public String projAssign(@RequestParam Long userId, Model model) {
-        if (ToolUtil.isEmpty(userId)) {
-            throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
-        }
-        model.addAttribute("userId", userId);
+    @RequestMapping("/project/assign")
+    public String projAssign(Model model) {
         return PREFIX + "projAssign.html";
     }
+
+    /**
+     * 获取所有客户信息
+     *
+     * @author liuyang
+     * @Date 2018/12/24 22:43
+     */
+    @RequestMapping("/getCompanies")
+    @ResponseBody
+    public Object getCompanies() {
+        return companyService.listForSelect();
+    }
+
+    /**
+     * 获取所有客户信息
+     *
+     * @author liuyang
+     * @Date 2018/12/24 22:43
+     */
+    @RequestMapping("/customer-site/{customerId}")
+    @ResponseBody
+    public Object getCustomerSites(@PathVariable Long customerId) {
+        return customerSiteService.listForSelect(customerId);
+    }
+
 }
