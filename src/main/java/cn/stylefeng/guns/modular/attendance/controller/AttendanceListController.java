@@ -15,8 +15,10 @@
  */
 package cn.stylefeng.guns.modular.attendance.controller;
 
+import cn.stylefeng.guns.core.util.LDateUtils;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceAllRecord;
 import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
+import cn.stylefeng.guns.modular.system.entity.Dict;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,7 +62,10 @@ public class AttendanceListController extends BaseController {
     @ResponseBody
     public Object list() {
 
-        List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance();
+    	 Date currentMonth = null;
+         String currentId=null;
+         String isok=null;
+        List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance(currentMonth,currentId,isok);
         HashMap<String, Object> result = Maps.newHashMap();
         result.put("code", "0");
         result.put("msg", "success");
@@ -67,6 +73,28 @@ public class AttendanceListController extends BaseController {
         result.put("data", attendanceAllRecords);
         return result;
     }
+    
+    @RequestMapping(value = "/checklist")
+    @ResponseBody
+    public Object checklist(@RequestParam String currentMonthDate,@RequestParam String currentId,@RequestParam String isok) {
 
-
+    	 Date currentMonth = null;
+         if (currentMonthDate != null && !currentMonthDate.equals("")) {
+             currentMonth = LDateUtils.stringToDate(currentMonthDate, "yyyyMM");
+         }
+        List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance(currentMonth,currentId,isok);
+        HashMap<String, Object> result = Maps.newHashMap();
+        result.put("code", "0");
+        result.put("msg", "success");
+        result.put("count", attendanceAllRecords.size());
+        result.put("data", attendanceAllRecords);
+        return result;
+    }
+    
+    @RequestMapping(value = "/getEmployeeType")
+    @ResponseBody
+    public List<Dict> getEmployeeType() {
+        List<Dict> list = attendanceService.getEmployee();
+        return list;
+    }
 }

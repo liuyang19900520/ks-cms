@@ -130,6 +130,16 @@
     <select id="selectAllMyAttendance"
             resultType="cn.stylefeng.guns.modular.attendance.entity.ViewAttendance">
         select * from v_attendance
+        where 1=1
+        <if test="currentMonth != null">
+            AND WORK_MONTH=#{currentMonth}
+        </if>
+        <if test="currentId != null">
+            AND EMPLOYEE_ID=#{currentId}
+        </if>
+        <if test="isok != null">//未选择Flag
+            AND EMPLOYEE_ID=1
+        </if>
         order by WORK_MONTH desc
     </select>
 </mapper>

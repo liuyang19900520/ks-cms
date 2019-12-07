@@ -22,7 +22,6 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
     var ajax = new $ax(Feng.ctxPath + "/attendance/myself/edit_message?workMonth=" + Feng.getUrlParam("workMonth"));       
     var result = ajax.start();
     form.val('attendanceEditForm', result.data);
-
     
 
     // 表单提交事件
@@ -41,7 +40,6 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
         });
         ajax.setContentType("application/json;charset=UTF-8")
         ajax.setData(JSON.stringify(data.field));
-
         ajax.start();
     });
 });

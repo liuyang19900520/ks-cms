@@ -11,6 +11,7 @@ import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
 import cn.stylefeng.guns.modular.attendance.mapper.AttendanceMapper;
 import cn.stylefeng.guns.modular.attendance.mapper.AttendanceTypeMapper;
 import cn.stylefeng.guns.modular.attendance.model.AttendanceRecordDto;
+import cn.stylefeng.guns.modular.system.entity.Dict;
 import cn.stylefeng.guns.modular.system.entity.Employee;
 import cn.stylefeng.guns.modular.system.mapper.EmployeeMapper;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -281,10 +282,15 @@ public class AttendanceService {
 	        attendanceMapper.deleteMonthEmployeeID(workMonth,employeeId);
         }
 
-	public List<AttendanceAllRecord> selectAllAttendance() {
+	public List<AttendanceAllRecord> selectAllAttendance(Date currentMonth, String currentId, String isok) {
 		
-		 List<AttendanceAllRecord> attendanceAllRecord = attendanceMapper.selectAllMyAttendance();
+		 List<AttendanceAllRecord> attendanceAllRecord = attendanceMapper.selectAllMyAttendance(currentMonth,currentId,isok);
 	        return attendanceAllRecord;
+	}
+
+	public List<Dict> getEmployee() {
+		
+		return null;
 	}
 		
 	
