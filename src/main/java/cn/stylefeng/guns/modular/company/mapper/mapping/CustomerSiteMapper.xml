@@ -39,12 +39,15 @@
         <include refid="Base_Column_List"></include>
         from customer_site
         <if test="customersiteName != null and customersiteName != ''">
-            where CUSTOMER_SITE_NAME like CONCAT('%',#{customersiteName},'%')
+            where CUSTOMER_SITE_NAME like CONCAT('%',#{customerSiteName},'%')
         </if>
     </select>
     <select id="getMaxCustomerSiteId" resultType="long">
         select max(CUSTOMER_SITE_ID)+1 from customer_site;
     </select>
-
-
+    <update id="updateByCustomerID" parameterType="cn.stylefeng.guns.modular.company.entity.CustomerSite">
+        UPDATE customer_site
+        SET CUSTOMER_SITE_NAME=#{customerSiteName},CUSTOMER_SITE_ADDRESS=#{customerSiteAddress},CUSTOMER_SITE_STATION=#{customerSiteStation}
+        WHERE CUSTOMER_ID=#{customerID}
+    </update>
 </mapper>
