@@ -41,6 +41,7 @@
         <if test="customersiteName != null and customersiteName != ''">
             where CUSTOMER_SITE_NAME like CONCAT('%',#{customerSiteName},'%')
         </if>
+        order by CUSTOMER_ID asc
     </select>
     <select id="getMaxCustomerSiteId" resultType="long">
         select max(CUSTOMER_SITE_ID)+1 from customer_site;

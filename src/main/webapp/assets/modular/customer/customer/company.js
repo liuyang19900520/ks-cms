@@ -68,11 +68,13 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '添加客户信息',
+            title: '添加现场信息',
             content: Feng.ctxPath + 'customer/company/company_add_site?customerID=' + data.customerID,
             end: function () {
-                location.href="/customer/site";
+                $("#aaa").click(function(){
+                    location.href="/customer/site";
 
+                });
             }
         });
     };
@@ -121,7 +123,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         url: Feng.ctxPath + 'company/list',
         page: true,
         height: "full-158",
-        cellMinWidth: 100,
+        cellMinWidth: 128,
         cols: Company.initColumn()
     });
 

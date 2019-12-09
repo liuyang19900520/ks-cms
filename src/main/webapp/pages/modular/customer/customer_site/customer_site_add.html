@@ -1,6 +1,14 @@
 @layout("/common/_container.html",{js:["/assets/modular/customer/customer_site/customer_site_add.js"]}){
 <form id="customerForm" lay-filter="customerForm" class="layui-form model-form">
     <input name="customerId" type="hidden"/>
+    <input name="customerSiteId" type="hidden"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">客户公司<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <select id="sel-company" name="company" lay-filter="sel-company" lay-verify="required">
+            </select>
+        </div>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">现场名称<span style="color: red;">*</span></label>
         <div class="layui-input-block">
