@@ -1,8 +1,22 @@
 @layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/customer/project/project_add.js"]}){
 <form id="projectForm" lay-filter="projectForm" class="layui-form model-form">
-    <input name="projectId" type="hidden"/>
-    <input name="customerSiteID" type="hidden"/>
+    <!--input name="projectId" type="hidden"/-->
+    <!--input name="customerSiteID" type="hidden"/-->
     <!--input name="customerSiteId" type="hidden"/-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">客户公司<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <select id="sel-company" name="company" lay-filter="sel-company" lay-verify="required">
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">现场名称<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <select id="sel-site" name="sel-site" lay-filter="sel-site" lay-verify="required">
+            </select>
+        </div>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">项目名称<span style="color: red;">*</span></label>
         <div class="layui-input-block">

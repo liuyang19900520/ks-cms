@@ -26,4 +26,14 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
         ajax.set(data.field);
         ajax.start();
     });
+    //获取用户信息
+    var ajax = new $ax(Feng.ctxPath + "/customer/site/getCompanies");
+    var result = ajax.start();
+
+    var optionsCompany;
+    $.each(result, function (key, value) {  //循环遍历后台传过来的json数据
+        optionsCompany += "<option value=\"" + value.customerID + "\" >" + value.companyName + "</option>";
+    });
+    $("#sel-company").append("<option value=''>请选择客户</option> " + optionsCompany);
+    form.render('select');
 });

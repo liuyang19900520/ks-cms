@@ -46,7 +46,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '添加客户信息',
+            title: '添加现场信息',
             content: Feng.ctxPath + 'customer/site/customersite_add',
             end: function () {
                 admin.getTempData('formOk') && table.reload(Customer.tableId);

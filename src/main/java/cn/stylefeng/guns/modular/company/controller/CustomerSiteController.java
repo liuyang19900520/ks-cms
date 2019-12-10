@@ -26,6 +26,7 @@ import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.modular.company.entity.CustomerSite;
 import cn.stylefeng.guns.modular.company.entity.Project;
+import cn.stylefeng.guns.modular.company.service.CompanyService;
 import cn.stylefeng.guns.modular.company.service.CustomerSiteService;
 import cn.stylefeng.guns.modular.company.service.ProjectService;
 import cn.stylefeng.guns.modular.system.model.CustomerSiteDto;
@@ -60,6 +61,8 @@ public class CustomerSiteController extends BaseController {
     private CustomerSiteService customerSiteService;
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private CompanyService companyService;
 
 
     @RequestMapping("")
@@ -201,5 +204,17 @@ public class CustomerSiteController extends BaseController {
     public ResponseData customerSiteEdit(CustomerSite customerSite) {
         customerSiteService.editCustomer(customerSite);
         return SUCCESS_TIP;
+    }
+
+    /**
+     * 获取所有客户信息
+     *
+     * @author liuyang
+     * @Date 2018/12/24 22:43
+     */
+    @RequestMapping("/getCompanies")
+    @ResponseBody
+    public Object getCompanies() {
+        return companyService.listForSelect();
     }
 }
