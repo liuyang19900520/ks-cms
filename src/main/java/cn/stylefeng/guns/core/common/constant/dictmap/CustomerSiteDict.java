@@ -28,10 +28,10 @@ public class CustomerSiteDict extends AbstractDictMap {
     @Override
     public void init() {
         put("customerID", "客户ID");
-        put("customersiteID", "客户现场ID");
-        put("customersiteName", "客户现场名称");
-        put("customersiteAddress", "客户现场地址");
-        put("customersiteStation", "客户现场车站");
+        put("customerSiteID", "客户现场ID");
+        put("customerSiteName", "客户现场名称");
+        put("customerSiteAddress", "客户现场地址");
+        put("customerSiteStation", "客户现场车站");
     }
 
     @Override

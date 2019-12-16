@@ -22,17 +22,17 @@ public class CustomerSiteDto implements Serializable {
     /**
      * 客户现场ID
      */
-    private Long customersiteID;
+    private Long customerSiteID;
     /**
      * 客户现场名称
      */
-    private String customersiteName;
+    private String customerSiteName;
     /**
      * 客户现场地址
      */
-    private String customersiteAddress;
+    private String customerSiteAddress;
     /**
      * 客户现场车站
      */
-    private String customersiteStation;
+    private String customerSiteStation;
 }

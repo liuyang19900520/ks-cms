@@ -18,10 +18,10 @@
 	<!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
   			CUSTOMER_ID as customerID,
-  			CUSTOMER_SITE_ID as customersiteID,
-        	CUSTOMER_SITE_NAME as customersiteName,
-			CUSTOMER_SITE_ADDRESS as customersiteAddress,
-			CUSTOMER_SITE_STATION as customersiteStation,
+  			CUSTOMER_SITE_ID as customerSiteID,
+        	CUSTOMER_SITE_NAME as customerSiteName,
+			CUSTOMER_SITE_ADDRESS as customerSiteAddress,
+			CUSTOMER_SITE_STATION as customerSiteStation,
 			CREATE_TIME as createTime,
 			CREATE_USER as createUser,
 			UPDATE_TIME as updateTime,
@@ -46,6 +46,7 @@
     <select id="getMaxCustomerSiteId" resultType="long">
         select max(CUSTOMER_SITE_ID)+1 from customer_site;
     </select>
+
     <update id="updateByCustomerID" parameterType="cn.stylefeng.guns.modular.company.entity.CustomerSite">
         UPDATE customer_site
         SET CUSTOMER_SITE_NAME=#{customerSiteName},CUSTOMER_SITE_ADDRESS=#{customerSiteAddress},CUSTOMER_SITE_STATION=#{customerSiteStation}

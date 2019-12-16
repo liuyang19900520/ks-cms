@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.Map;
 
 /**
@@ -79,14 +80,14 @@ public class CustomerSiteController extends BaseController {
     @RequestMapping(value = "/list")
     @Permission
     @ResponseBody
-    public Object list(@RequestParam(required = false) String customersiteName) {
+    public Object list(@RequestParam(required = false) String customerSiteName) {
         if (ShiroKit.isAdmin()) {
-            Page<Map<String, Object>> sites = customerSiteService.list(null, customersiteName);
+            Page<Map<String, Object>> sites = customerSiteService.list(null, customerSiteName);
             Page wrapped = new CustomerSiteWrapper(sites).wrap();
             return LayuiPageFactory.createPageInfo(wrapped);
         } else {
             DataScope dataScope = new DataScope(ShiroKit.getDeptDataScope());
-            Page<Map<String, Object>> sites = customerSiteService.list(dataScope, customersiteName);
+            Page<Map<String, Object>> sites = customerSiteService.list(dataScope, customerSiteName);
             Page wrapped = new CustomerSiteWrapper(sites).wrap();
             return LayuiPageFactory.createPageInfo(wrapped);
         }
@@ -112,7 +113,7 @@ public class CustomerSiteController extends BaseController {
      */
     @BussinessLog(value = "添加现场信息", key = "customerID", dict = CustomerSiteDict.class)
     @RequestMapping(value = "/add")
-    @Permission(Const.ADMIN_NAME)
+//    @Permission(Const.ADMIN_NAME)
     @ResponseBody
     public ResponseData add(CustomerSite customer) {
         this.customerSiteService.addCustomerSite(customer);
@@ -165,32 +166,34 @@ public class CustomerSiteController extends BaseController {
      */
     @Permission
     @RequestMapping("/customer_site_edit")
-    public String openEditPage(@RequestParam("customerID") Long customerID) {
+    public String openEditPage(@RequestParam("customerSiteID") Long customerSiteID) {
 
-        if (ToolUtil.isEmpty(customerID)) {
+        if (ToolUtil.isEmpty(customerSiteID)) {
             throw new RequestEmptyException();
         }
         //缓存部门修改前详细信息
-        CustomerSite customerSite =customerSiteService.getById(customerID);
+        CustomerSite customerSite = customerSiteService.getById(customerSiteID);
         LogObjectHolder.me().set(customerSite);
 
         return PREFIX + "customer_site_edit.html";
     }
+
     /**
      * 现场信息详细页信息
      *
      * @author fengshuonan
      * @Date 2018/12/23 4:57 PM
      */
-    @RequestMapping(value = "/detail/{customerID}")
+    @RequestMapping(value = "/detail/{customerSiteID}")
     @Permission
     @ResponseBody
-    public Object detail(@PathVariable("customerID") Long customerID) {
-       CustomerSite customerSite = customerSiteService.getById(customerID);
+    public Object detail(@PathVariable("customerSiteID") Long customerSiteID) {
+        CustomerSite customerSite = customerSiteService.getCustomerSiteByCustomerSiteID(customerSiteID);
         CustomerSiteDto customerSiteDto = new CustomerSiteDto();
         BeanUtil.copyProperties(customerSite, customerSiteDto);
         return customerSiteDto;
     }
+
     /**
      * 修改客户信息
      *
@@ -202,7 +205,7 @@ public class CustomerSiteController extends BaseController {
     @Permission
     @ResponseBody
     public ResponseData customerSiteEdit(CustomerSite customerSite) {
-        customerSiteService.editCustomer(customerSite);
+//        customerSiteService.editCustomer(customerSite);
         return SUCCESS_TIP;
     }
 

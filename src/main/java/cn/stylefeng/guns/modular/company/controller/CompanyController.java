@@ -63,7 +63,7 @@ public class CompanyController extends BaseController {
 
     @Autowired
     private CompanyService companyService;
-   // @Autowired
+    @Autowired
     private CustomerSiteService customerSiteService;
 
     /**
@@ -86,17 +86,17 @@ public class CompanyController extends BaseController {
     @RequestMapping(value = "/list")
     @Permission
     @ResponseBody
-    public Object list(@RequestParam(required = false) String companyName){
-    //Page<Map<String, Object>> list = this.companyService.list(condition);
-       // Page<Map<String, Object>> wrap = new CompanyWrapper(list).wrap();
-       // return LayuiPageFactory.createPageInfo(wrap);
+    public Object list(@RequestParam(required = false) String companyName) {
+        //Page<Map<String, Object>> list = this.companyService.list(condition);
+        // Page<Map<String, Object>> wrap = new CompanyWrapper(list).wrap();
+        // return LayuiPageFactory.createPageInfo(wrap);
         if (ShiroKit.isAdmin()) {
-            Page<Map<String, Object>> companys = companyService.list(null,companyName);
+            Page<Map<String, Object>> companys = companyService.list(null, companyName);
             Page wrapped = new CompanyWrapper(companys).wrap();
             return LayuiPageFactory.createPageInfo(wrapped);
         } else {
             DataScope dataScope = new DataScope(ShiroKit.getDeptDataScope());
-            Page<Map<String, Object>> companys = companyService.list(dataScope,companyName);
+            Page<Map<String, Object>> companys = companyService.list(dataScope, companyName);
             Page wrapped = new CompanyWrapper(companys).wrap();
             return LayuiPageFactory.createPageInfo(wrapped);
         }

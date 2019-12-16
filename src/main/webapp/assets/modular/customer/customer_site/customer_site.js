@@ -23,21 +23,21 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         return [[
             {type: 'checkbox'},
             {field: 'customerID', hide: true, sort: true, title: '公司ID'},
-            {field: 'customersiteID', sort: true, title: '客户现场ID'},
-            {field: 'customersiteName', sort: true, title: '客户现场名称'},
-            {field: 'customersiteAddress', sort: true, title: '客户现场地址'},
-            {field: 'customersiteStation', sort: true, title: '客户现场车站'},
-            {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 200}
+            {field: 'customerSiteID', sort: true, title: '客户现场ID'},
+            {field: 'customerSiteName', sort: true, title: '客户现场名称'},
+            {field: 'customerSiteAddress', sort: true, title: '客户现场地址'},
+            {field: 'customerSiteStation', sort: true, title: '客户现场车站'},
+            {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 300}
         ]];
     };
 
-     /**
+    /**
      * 点击查询按钮
-      */
-     Customer.search = function () {
+     */
+    Customer.search = function () {
         var queryData = {};
-        queryData['customersiteName'] = $("#customersiteName").val();
-        table.reload( Customer.tableId, {where: queryData});
+        queryData['customerSiteName'] = $("#customerSiteName").val();
+        table.reload(Customer.tableId, {where: queryData});
     };
     /**
      * 弹出录入窗口
@@ -53,7 +53,6 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             }
         });
     };
-
 
 
     /**
@@ -97,7 +96,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         top.layui.admin.open({
             type: 2,
             title: '修改现场信息',
-            content: Feng.ctxPath + 'customer/site/customer_site_edit?customerID=' + data.customerID,
+            content: Feng.ctxPath + 'customer/site/customer_site_edit?customerSiteID=' + data.customerSiteID,
             end: function () {
                 admin.getTempData('formOk') && table.reload(Customer.tableId);
             }
@@ -111,18 +110,16 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     Customer.onDeleteUser = function (data) {
         var operation = function () {
             var ajax = new $ax(Feng.ctxPath + "/customer/site/delete", function () {
-                table.reload( Customer.tableId);
+                table.reload(Customer.tableId);
                 Feng.success("删除成功!");
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
-            ajax.set("customerID", data.customerID);
+            ajax.set("customersiteID", data.customersiteID);
             ajax.start();
         };
         Feng.confirm("是否删除项目" + data.customerSiteName + "?", operation);
     };
-
-
 
 
     // 渲染表格
@@ -152,7 +149,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             Customer.onEditCustomer(data);
         } else if (layEvent === 'delete') {
             Customer.onDeleteUser(data);
-        } else if (layEvent === 'add'){
+        } else if (layEvent === 'add') {
             Customer.openAddProject(data);
         }
     });

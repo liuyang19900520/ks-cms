@@ -33,7 +33,7 @@ var laydate = layui.laydate;
 
             var queryData = {};
             queryData['currentMonth'] = value
-            table.reload(AttendanceRecord.tableId, {where: queryData});
+            // table.reload(AttendanceRecord.tableId, {where: queryData});
         }
     });
     

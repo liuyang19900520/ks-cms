@@ -1,7 +1,6 @@
-@layout("/common/_container.html",{js:["/assets/modular/customer/customer_site/customer_site_add.js"]}){
-<form id="customerForm" lay-filter="customerForm" class="layui-form model-form">
-    <input name="customerId" type="hidden"/>
-    <input name="customerSiteId" type="hidden"/>
+@layout("/common/_container.html",{js:["/assets/modular/customer/customer_site/customer_site_edit.js"]}){
+<form id="customerSiteForm" lay-filter="customerSiteForm" class="layui-form model-form">
+    <input name="customerSiteID" type="hidden"/>
     <div class="layui-form-item">
         <label class="layui-form-label">客户公司<span style="color: red;">*</span></label>
         <div class="layui-input-block">
@@ -12,8 +11,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">现场名称<span style="color: red;">*</span></label>
         <div class="layui-input-block">
-            <input id="customerSiteName" name="customerSiteName" placeholder="请输入客户现场名称" type="text" class="layui-input"
-                   lay-verify="required" required autocomplete="off"/>
+            <input id="customerSiteName" name="customerSiteName" placeholder="请输入客户现场名称" type="text" class="layui-input" lay-verify="required"
+                   required autocomplete="off"/>
         </div>
     </div>
     <div class="layui-form-item">

@@ -11,7 +11,7 @@ guns:
     open: false
     url: jdbc:mysql://127.0.0.1:3306/guns_test?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=Japan
     username: root
-    password: root
+    password: 1234
     dataSourceNames:
     - dataSourceGuns
     - dataSourceBiz
