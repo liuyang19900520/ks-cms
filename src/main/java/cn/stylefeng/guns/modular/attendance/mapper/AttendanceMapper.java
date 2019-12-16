@@ -41,6 +41,6 @@ public interface AttendanceMapper {
 
 	Integer deleteMonthEmployeeID(@Param("workMonth") Date workMonth,@Param("employeeId") Long employeeId);
 
-	List<AttendanceAllRecord> selectAllMyAttendance();
+	List<AttendanceAllRecord> selectAllMyAttendance(@Param("currentMonth") Date currentMonth,@Param("currentId") String currentId,@Param("isok") String isok);
 
 }

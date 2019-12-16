@@ -19,14 +19,24 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
     // 让当前iframe弹层高度适应
     admin.iframeAuto();
 
-    //日期显示当前月
+  
+var laydate = layui.laydate;
+ //执行一个laydate实例
     laydate.render({
-        elem: '#workMonth',
-        value: new Date(),
-        done: function (value, obj) {
+        elem: '#ipt-current-month', //指定元素
+        type: 'month',
+        format: 'yyyyMM',
+        done: function (value, date, endDate) {
+            console.log(value); //得到日期生成的值，如：2017-08-18
+            console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+            console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+
+            var queryData = {};
+            queryData['currentMonth'] = value
+            table.reload(AttendanceRecord.tableId, {where: queryData});
         }
     });
-
+    
     // //获取用户信息
     var ajax = new $ax(Feng.ctxPath + "/attendance/myself/message");
     var result = ajax.start();

@@ -29,8 +29,9 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
 
             var queryData = {};
-            queryData['currentMonth'] = value
+            queryData['currentMonth'] = value            
             table.reload(AttendanceRecord.tableId, {where: queryData});
+            
         }
     });
 
@@ -52,8 +53,9 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     };
 
     var queryData = {};
-    var currentMonth = $dateformatter(new Date(), "yyyyMM")
-    queryData['currentMonth'] = currentMonth;
+    //var currentMonth = $dateformatter(new Date(), "yyyyMM")
+    queryData['currentMonth'] = null;
+    
 
  // 搜索按钮点击事件
     $('#btnSearch').click(function () {
@@ -65,9 +67,21 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
      * 点击搜索按钮
      */
     AttendanceRecord.search = function () {
-        queryData['currentMonth'] = $("#ipt-current-month").val();
-        queryData['currentName'] = $("#ipt-current-name").val();
-        table.reload(AttendanceRecord.tableId, {where: queryData});
+    var check=null;
+    if($('#check-box').is(':checked')) {
+    check=1;
+     }
+        queryData['currentMonthDate'] = $("#ipt-current-month").val();
+        queryData['currentId'] = $("#ipt-current-name").val();
+        queryData['isok']=check;
+        //table.reload(AttendanceRecord.tableId, {where: queryData});
+        var tableResult = table.render({
+        elem: '#' + AttendanceRecord.tableId,
+        url: Feng.ctxPath + '/attendance/list/checklist',
+        where: queryData,
+        height: "full-158",
+        cols: AttendanceRecord.initColumn()
+    });
     };
 
 
@@ -80,21 +94,36 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
         cols: AttendanceRecord.initColumn()
     });
 
-    //监听单元格编辑
-    table.on('edit(attendanceListTable)', function (obj) {
-        var value = obj.value //得到修改后的值
-            , data = obj.data //得到所在行所有键值
-            , field = obj.field; //得到字段
+    
+function init() { 
+    	//打开页面时初始化下拉列表
+    	getClaimType();
+        }; 
+        init(); 
+        //获取姓名
+        function getClaimType(){
+        	$.ajax({
+        		type: 'POST',
+        		url: Feng.ctxPath + "/attendance/list/getEmployeeType",
+        		data: {
+        			
+        		},
+        		dataType: "json",
+        		error: function (request) {
 
-        var reDateTime = /^(?:(?:[0-2][0-3])|(?:[0-1][0-9])):[0-5][0-9]$/;
-        var regExp = new RegExp(reDateTime);
-        if (!regExp.test(value)) {
-            // alert("日期格式不正确，正确格式为：2014-01-01");
-            layer.msg(value + "日期格式不正确，正确格式为：HH:mm");
-            return;
-        }
-    });
-
+        		},
+        		success: function (data) {
+        			$("#claimType").empty();
+        			$("#claimType").append("<option value="+0+">---请选择员工---</option>");
+        			
+        			$.each(data, function(i){
+        				$("#claimType").append("<option value="+data[i].code+">"+data[i].name+"</option>");
+        			});
+        			form.render();
+        		}
+        	});
+        	
+         }
    
 
 });
