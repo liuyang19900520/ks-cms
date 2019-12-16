@@ -46,7 +46,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '添加客户信息',
+            title: '添加现场信息',
             content: Feng.ctxPath + 'customer/site/customersite_add',
             end: function () {
                 admin.getTempData('formOk') && table.reload(Customer.tableId);
@@ -64,7 +64,40 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         top.layui.admin.open({
             type: 2,
             title: '添加项目信息',
-            content: Feng.ctxPath + 'customer/site/customersite_add_project',
+            content: Feng.ctxPath + 'customer/site/customerSite_add_project',
+            end: function () {
+                admin.getTempData('formOk') && table.reload(Customer.tableId);
+            }
+        });
+    };
+    /**
+     * 弹出窗口
+     */
+    Customer.openAddProject = function (data) {
+
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '添加项目信息',
+            content: Feng.ctxPath + 'customer/site/customerSite_add_project?customerSiteID=' + data.customerSiteID,
+            end: function () {
+                admin.getTempData('formOk') && table.reload(Customer.tableId);
+            }
+        });
+    };
+
+
+    /**
+     * 点击编辑角色
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    Customer.onEditCustomer = function (data) {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '修改现场信息',
+            content: Feng.ctxPath + 'customer/site/customer_site_edit?customerID=' + data.customerID,
             end: function () {
                 admin.getTempData('formOk') && table.reload(Customer.tableId);
             }
@@ -83,10 +116,10 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
-            ajax.set("customerId", data.customerId);
+            ajax.set("customerID", data.customerID);
             ajax.start();
         };
-        Feng.confirm("是否删除用户" + data.customersiteName + "?", operation);
+        Feng.confirm("是否删除项目" + data.customerSiteName + "?", operation);
     };
 
 
@@ -101,17 +134,6 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         cellMinWidth: 100,
         cols: Customer.initColumn()
     });
-
-    // 工具条点击事件
-    table.on('tool(' + Customer.tableId + ')', function (obj) {
-        var data = obj.data;
-        var layEvent = obj.event;
-        if (layEvent === 'delete') {
-            Customer.onDeleteUser(data);
-        } else if (layEvent === 'add'){
-            Customer.openAdd1Customer(data);
-        }
-    });
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
         Customer.search();
@@ -119,5 +141,19 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
         Customer.openAddCustomer();
+    });
+
+    // 工具条点击事件
+    table.on('tool(' + Customer.tableId + ')', function (obj) {
+        var data = obj.data;
+        var layEvent = obj.event;
+
+        if (layEvent === 'edit') {
+            Customer.onEditCustomer(data);
+        } else if (layEvent === 'delete') {
+            Customer.onDeleteUser(data);
+        } else if (layEvent === 'add'){
+            Customer.openAddProject(data);
+        }
     });
 });
