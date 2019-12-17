@@ -147,13 +147,13 @@ public class CustomerSiteController extends BaseController {
      * @author fengshuonan
      * @Date 2018/12/23 4:57 PM
      */
-    @BussinessLog(value = "删除部门", key = "customerID", dict = CustomerSiteDict.class)
+    @BussinessLog(value = "删除部门", key = "customerSiteID", dict = CustomerSiteDict.class)
     @RequestMapping(value = "/delete")
     @Permission
     @ResponseBody
-    public ResponseData delete(@RequestParam Long customerID) {
+    public ResponseData delete(@RequestParam("customerSiteID") Long customerSiteID) {
 
-        customerSiteService.removeById(customerID);
+        customerSiteService.deleteCustomerSiteByCustomerSiteID(customerSiteID);
 
         return SUCCESS_TIP;
     }
@@ -200,12 +200,12 @@ public class CustomerSiteController extends BaseController {
      * @author fengshuonan
      * @Date 2018/12/23 4:57 PM
      */
-    @BussinessLog(value = "修改现场信息", key = "customerID", dict = CustomerSiteDict.class)
+    @BussinessLog(value = "修改现场信息", key = "customerSiteID", dict = CustomerSiteDict.class)
     @RequestMapping(value = "/customerSiteEdit")
     @Permission
     @ResponseBody
     public ResponseData customerSiteEdit(CustomerSite customerSite) {
-//        customerSiteService.editCustomer(customerSite);
+        customerSiteService.updateSite(customerSite);
         return SUCCESS_TIP;
     }
 

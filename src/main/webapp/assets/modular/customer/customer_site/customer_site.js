@@ -115,7 +115,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
-            ajax.set("customersiteID", data.customersiteID);
+            ajax.set("customerSiteID", data.customerSiteID);
             ajax.start();
         };
         Feng.confirm("是否删除项目" + data.customerSiteName + "?", operation);

@@ -37,8 +37,14 @@ public class CustomerSiteService extends ServiceImpl<CustomerSiteMapper, Custome
     public CustomerSite getCustomerSiteByCustomerSiteID(Long siteId) {
         QueryWrapper<CustomerSite> queryWhere = new QueryWrapper<CustomerSite>();
         queryWhere.eq("customer_site_id", siteId);
-
         return this.list(queryWhere).get(0);
+    }
+
+
+    public void deleteCustomerSiteByCustomerSiteID(Long siteId) {
+        QueryWrapper<CustomerSite> queryWhere = new QueryWrapper<CustomerSite>();
+        queryWhere.eq("customer_site_id", siteId);
+        this.remove(queryWhere);
     }
 
     /**
@@ -65,6 +71,12 @@ public class CustomerSiteService extends ServiceImpl<CustomerSiteMapper, Custome
         queryWhere.eq("customer_id", customerId);
 
         return this.list(queryWhere);
+    }
+
+    public void updateSite(CustomerSite customer) {
+        QueryWrapper<CustomerSite> queryWhere = new QueryWrapper<CustomerSite>();
+        queryWhere.eq("customer_site_id", customer.getCustomerSiteID());
+        this.update(customer,queryWhere);
     }
 
 }
