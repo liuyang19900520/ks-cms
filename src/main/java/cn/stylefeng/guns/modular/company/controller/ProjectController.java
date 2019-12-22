@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 package cn.stylefeng.guns.modular.company.controller;
+
 import cn.hutool.core.bean.BeanUtil;
 import cn.stylefeng.guns.core.common.annotion.BussinessLog;
 import cn.stylefeng.guns.core.common.annotion.Permission;
-import cn.stylefeng.guns.core.common.constant.dictmap.CompanyDict;
 import cn.stylefeng.guns.core.common.constant.dictmap.ProjectDict;
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
-import cn.stylefeng.guns.modular.company.entity.Company;
+import cn.stylefeng.guns.modular.attendance.entity.AttendanceType;
+import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
 import cn.stylefeng.guns.modular.company.entity.Project;
 import cn.stylefeng.guns.modular.company.service.ProjectService;
 import cn.stylefeng.guns.modular.company.wrapper.ProjectWrapper;
-import cn.stylefeng.guns.modular.system.model.CompanyDto;
 import cn.stylefeng.guns.modular.system.model.ProjectDto;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.datascope.DataScope;
@@ -34,6 +34,8 @@ import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +43,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,9 +59,11 @@ public class ProjectController extends BaseController {
     private String PREFIX = "/modular/customer/customer_project/";
 
     @Autowired
-   private ProjectService projectService;
-   // @Autowired
-    //private CustomerSiteService customerSiteService;
+    private ProjectService projectService;
+
+    @Autowired
+    private AttendanceService attendanceService;
+
 
     /**
      * 跳转到客户信息管理首页
@@ -70,6 +75,7 @@ public class ProjectController extends BaseController {
     public String index() {
         return PREFIX + "project.html";
     }
+
     /**
      * 获取客户信息列表
      *
@@ -80,17 +86,17 @@ public class ProjectController extends BaseController {
     @Permission
     @ResponseBody
     public Object list(@RequestParam(required = false) String projectName) {
-    if (ShiroKit.isAdmin()) {
-    Page<Map<String, Object>> projects = projectService.list(null,projectName );
-    Page wrapped = new ProjectWrapper(projects).wrap();
-      return LayuiPageFactory.createPageInfo(wrapped);
-    } else {
-    DataScope dataScope = new DataScope(ShiroKit.getDeptDataScope());
-      Page<Map<String, Object>> projects = projectService.list(dataScope,projectName);
-      Page wrapped = new ProjectWrapper(projects).wrap();
-      return LayuiPageFactory.createPageInfo(wrapped);
-     }
-     }
+        if (ShiroKit.isAdmin()) {
+            Page<Map<String, Object>> projects = projectService.list(null, projectName);
+            Page wrapped = new ProjectWrapper(projects).wrap();
+            return LayuiPageFactory.createPageInfo(wrapped);
+        } else {
+            DataScope dataScope = new DataScope(ShiroKit.getDeptDataScope());
+            Page<Map<String, Object>> projects = projectService.list(dataScope, projectName);
+            Page wrapped = new ProjectWrapper(projects).wrap();
+            return LayuiPageFactory.createPageInfo(wrapped);
+        }
+    }
 
     /**
      * 跳转到录入项目信息详细页
@@ -113,7 +119,7 @@ public class ProjectController extends BaseController {
     @RequestMapping(value = "/project_add")
     @Permission
     @ResponseBody
-     public ResponseData add(Project project) {
+    public ResponseData add(Project project) {
         this.projectService.addProject(project);
         return SUCCESS_TIP;
     }
@@ -137,6 +143,7 @@ public class ProjectController extends BaseController {
 
         return PREFIX + "project_edit.html";
     }
+
     /**
      * 客户信息详细页信息
      *
@@ -152,6 +159,7 @@ public class ProjectController extends BaseController {
         BeanUtil.copyProperties(project, projectDto);
         return projectDto;
     }
+
     /**
      * 修改项目信息
      *
@@ -166,6 +174,7 @@ public class ProjectController extends BaseController {
         projectService.editProject(project);
         return SUCCESS_TIP;
     }
+
     /**
      * 删除部门
      *
@@ -181,5 +190,39 @@ public class ProjectController extends BaseController {
         projectService.removeById(projectId);
 
         return SUCCESS_TIP;
+    }
+
+    /**
+     * 获取所有考勤类型
+     *
+     * @author liuyang
+     * @Date 2019/12/24 22:43
+     */
+    @RequestMapping("/attendance-type")
+    @ResponseBody
+    public Object listAllAttendanceType() {
+        List<AttendanceType> attendanceTypes = attendanceService.listAllAttendanceType();
+
+        List<Map<String, Object>> attendanceTypeSelect = Lists.newArrayList();
+
+        attendanceTypes.forEach((AttendanceType attendanceType) -> attendanceTypeSelect.add(makeAttendanceTypeSelect(attendanceType)));
+
+        return attendanceTypeSelect;
+    }
+
+
+    private Map<String, Object> makeAttendanceTypeSelect(AttendanceType attendanceType) {
+
+        StringBuffer attendanceTypeShow = new StringBuffer();
+
+        attendanceTypeShow.append("最短时长：").append(attendanceType.getStandardMinTime()).append(";  ")
+                .append("最长时长：").append(attendanceType.getStandardMaxTime());
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("attendanceType", attendanceType.getAttendanceType());
+        map.put("attendanceTypeShow", attendanceTypeShow.toString());
+
+        return map;
+
+
     }
 }

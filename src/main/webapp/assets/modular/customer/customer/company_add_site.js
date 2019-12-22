@@ -25,7 +25,6 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
         }, function (data) {
             Feng.error("添加失败！" + data.responseJSON.message)
         });
-        alert(JSON.stringify(data.field))
         ajax.set(data.field);
         ajax.start();
     });

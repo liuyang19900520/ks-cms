@@ -24,6 +24,7 @@ import cn.stylefeng.guns.core.common.constant.dictmap.ProjectDict;
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
+import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
 import cn.stylefeng.guns.modular.company.entity.CustomerSite;
 import cn.stylefeng.guns.modular.company.entity.Project;
 import cn.stylefeng.guns.modular.company.service.CompanyService;
@@ -64,6 +65,8 @@ public class CustomerSiteController extends BaseController {
     private ProjectService projectService;
     @Autowired
     private CompanyService companyService;
+
+
 
 
     @RequestMapping("")
@@ -220,4 +223,6 @@ public class CustomerSiteController extends BaseController {
     public Object getCompanies() {
         return companyService.listForSelect();
     }
+
+
 }

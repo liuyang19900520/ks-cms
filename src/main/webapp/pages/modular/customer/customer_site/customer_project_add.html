@@ -1,12 +1,12 @@
-@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/customer/project/customer_site_project_add.js"]}){
+@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/customer/customer_site/customer_site_project_add.js"]}){
 <form id="projectForm" lay-filter="projectForm" class="layui-form model-form">
     <!--input name="projectId" type="hidden"/-->
-    <input name="customerSiteID" type="hidden"/>
+    <input id="ipt-add-customer-site-id" name="customerSiteID" type="hidden"/>
     <!--input name="customerSiteId" type="hidden"/-->
     <div class="layui-form-item">
         <label class="layui-form-label">项目名称<span style="color: red;">*</span></label>
         <div class="layui-input-block">
-            <input name="projectName" placeholder="项目名称" type="text" class="layui-input" lay-verify="required" required/>
+            <input name="projectName" placeholder="项目名称" type="text" class="layui-input" lay-verify="required" required autocomplete="off"/>
         </div>
     </div>
     <div class="layui-form-item">
@@ -18,9 +18,19 @@
     <div class="layui-form-item">
         <label class="layui-form-label">项目技术<span style="color: red;">*</span></label>
         <div class="layui-input-block">
-            <input id="projectTech" name="projectTech" placeholder="请输入项目技术" type="text" class="layui-input"/>
+            <input id="projectTech" name="projectTech" placeholder="请输入项目技术" type="text" class="layui-input" required autocomplete="off"/>
         </div>
     </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">考勤类别<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <select id="sel-attendance-type" name="attendanceType" lay-filter="sel-attendance-type" lay-verify="required">
+            </select>
+        </div>
+    </div>
+
+
     <div class="layui-form-item text-right">
         <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
         <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>

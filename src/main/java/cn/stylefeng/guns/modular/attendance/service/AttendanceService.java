@@ -42,12 +42,12 @@ public class AttendanceService {
     EmployeeMapper employeeMapper;
 
 
-    public List<ViewAttendance> listMyAttendanceByMonth(Date selectMonth,Long userId) {
+    public List<ViewAttendance> listMyAttendanceByMonth(Date selectMonth, Long userId) {
         Employee employee = employeeMapper.selectEmployeeByUserId(userId);
         Long employeeId = employee.getEmployeeId();
 
         //将这个employeeId传入查询视图的mapper中
-        List<ViewAttendance> viewAttendances = attendanceMapper.selectMyAttendanceByMonth(selectMonth,employeeId);
+        List<ViewAttendance> viewAttendances = attendanceMapper.selectMyAttendanceByMonth(selectMonth, employeeId);
 
         return viewAttendances;
 
@@ -58,7 +58,7 @@ public class AttendanceService {
         Employee employee = employeeMapper.selectEmployeeByUserId(currentUser.getId());
         Long employeeId = employee.getEmployeeId();
         Map<String, Object> mapResult = attendanceMapper.selectCustomerSiteInfoForAddForm(employeeId);
-        ViewAttendance customerSiteInfo=new ViewAttendance();
+        ViewAttendance customerSiteInfo = new ViewAttendance();
 
         customerSiteInfo.setCompanyName((String) mapResult.get("COMPANY_NAME"));
         customerSiteInfo.setProjectName((String) mapResult.get("PROJECT_NAME"));
@@ -230,71 +230,74 @@ public class AttendanceService {
 
         return Float.parseFloat(p);
     }
-    
-//添加考勤
-	public void addAttendancer(ViewAttendance attendance) {
-		Long userId = ShiroKit.getUser().getId();
-		attendance.setUserId(userId);
-		attendanceMapper.insertAttendance(attendance);
-		
-	}
-	//获取我的考勤缓存
-	
 
-	public ViewAttendance selectMonthEmployee(Date workMonth) {
-		ShiroUser currentUser = ShiroKit.getUser();
+    //添加考勤
+    public void addAttendancer(ViewAttendance attendance) {
+        Long userId = ShiroKit.getUser().getId();
+        attendance.setUserId(userId);
+        attendanceMapper.insertAttendance(attendance);
+
+    }
+    //获取我的考勤缓存
+
+
+    public ViewAttendance selectMonthEmployee(Date workMonth) {
+        ShiroUser currentUser = ShiroKit.getUser();
         Employee employee = employeeMapper.selectEmployeeByUserId(currentUser.getId());
         Long employeeId = employee.getEmployeeId();
-                      
-        Map<String, Object> mapResult = attendanceMapper.selectMonthEmployeeID(employeeId,workMonth);
-        ViewAttendance monthEmployee=new ViewAttendance();
+
+        Map<String, Object> mapResult = attendanceMapper.selectMonthEmployeeID(employeeId, workMonth);
+        ViewAttendance monthEmployee = new ViewAttendance();
 
         monthEmployee.setWorkMonth((Date) mapResult.get("WORK_MONTH"));
         monthEmployee.setEmployeeId((Long) mapResult.get("EMPLOYEE_ID"));
         monthEmployee.setEmployeeNameCN((String) mapResult.get("EMPLOYEE_NAME_CN"));
-        monthEmployee.setCompanyName((String)mapResult.get("COMPANY_NAME"));
+        monthEmployee.setCompanyName((String) mapResult.get("COMPANY_NAME"));
         monthEmployee.setCustomerSiteName((String) mapResult.get("CUSTOMER_SITE_NAME"));
         monthEmployee.setProjectName((String) mapResult.get("PROJECT_NAME"));
-        monthEmployee.setWorkTime((Float) mapResult.get("WORK_TIME"));               
+        monthEmployee.setWorkTime((Float) mapResult.get("WORK_TIME"));
         return monthEmployee;
-	}
+    }
 
-	public void editAttendanceService(ViewAttendance attendance) {
-		if (ToolUtil.isOneEmpty(attendance, attendance.getWorkMonth(), attendance.getEmployeeId(), attendance.getEmployeeNameCN(), 
-				attendance.getCompanyName(), attendance.getCustomerSiteName(), attendance.getProjectName(), attendance.getWorkTime())) {
+    public void editAttendanceService(ViewAttendance attendance) {
+        if (ToolUtil.isOneEmpty(attendance, attendance.getWorkMonth(), attendance.getEmployeeId(), attendance.getEmployeeNameCN(),
+                attendance.getCompanyName(), attendance.getCustomerSiteName(), attendance.getProjectName(), attendance.getWorkTime())) {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
 
-		Date workMonth=attendance.getWorkMonth();
-		Float workTime=attendance.getWorkTime();
-		Long employeeId=attendance.getEmployeeId();
-        attendanceMapper.updateMonthEmployeeID(workMonth,workTime,employeeId);
-		
-	}
-//删除考勤
-	public void deleteAttendanceService(Date workMonth) {
-		if (ToolUtil.isOneEmpty(workMonth)) {
-			throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
+        Date workMonth = attendance.getWorkMonth();
+        Float workTime = attendance.getWorkTime();
+        Long employeeId = attendance.getEmployeeId();
+        attendanceMapper.updateMonthEmployeeID(workMonth, workTime, employeeId);
+
+    }
+
+    //删除考勤
+    public void deleteAttendanceService(Date workMonth) {
+        if (ToolUtil.isOneEmpty(workMonth)) {
+            throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
-		ShiroUser currentUser = ShiroKit.getUser();
+        ShiroUser currentUser = ShiroKit.getUser();
         Employee employee = employeeMapper.selectEmployeeByUserId(currentUser.getId());
         Long employeeId = employee.getEmployeeId();
-	        attendanceMapper.deleteMonthEmployeeID(workMonth,employeeId);
-        }
+        attendanceMapper.deleteMonthEmployeeID(workMonth, employeeId);
+    }
 
-	public List<AttendanceAllRecord> selectAllAttendance(Date currentMonth, String currentId, String isok) {
-		
-		 List<AttendanceAllRecord> attendanceAllRecord = attendanceMapper.selectAllMyAttendance(currentMonth,currentId,isok);
-	        return attendanceAllRecord;
-	}
+    public List<AttendanceAllRecord> selectAllAttendance(Date currentMonth, String currentId, String isok) {
 
-	public List<Dict> getEmployee() {
-		
-		return null;
-	}
-		
-	
+        List<AttendanceAllRecord> attendanceAllRecord = attendanceMapper.selectAllMyAttendance(currentMonth, currentId, isok);
+        return attendanceAllRecord;
+    }
 
-	
+    public List<Dict> getEmployee() {
+
+        return null;
+    }
+
+
+    public List<AttendanceType> listAllAttendanceType() {
+        return attendanceTypeMapper.selectList(null);
+    }
+
 
 }
