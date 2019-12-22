@@ -12,7 +12,8 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     var Project = {
         tableId: "projectTable",    //表格id
         condition: {
-            projectName: ""
+            projectName: "",
+            attendanceType:""
         }
     };
     /**
@@ -26,6 +27,9 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             {field: 'projectName', sort: true, title: '项目名称'},
             {field: 'projectProcess', sort: true, title: '项目情况'},
             {field: 'projectTech', sort: true, title: '项目技术'},
+            {field: 'standardMaxTime', sort: true, title: '最大时长'},
+            {field: 'standardMinTime', sort: true, title: '最小时长'},
+            {field: 'noon', sort: true, title: '午休时长'},
             {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 280}
         ]];
     };

@@ -72,6 +72,6 @@ public class ProjectService extends ServiceImpl<ProjectMapper, Project> {
         String projectName=project.getProjectName();
         String projectProcess=project.getProjectProcess();
         String projectTech=project.getProjectTech();
-        projectMapper.updateByProjetId(projectId,projectName,projectProcess,projectTech);
+        projectMapper.updateByProjectId(projectId,projectName,projectProcess,projectTech);
     }
 }

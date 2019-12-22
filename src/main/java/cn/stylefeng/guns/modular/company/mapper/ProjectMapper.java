@@ -21,5 +21,6 @@ public interface ProjectMapper extends BaseMapper<Project> {
      * 获取所有部门列表
      */
 	Page<Map<String, Object>> list(@Param("page") Page page, @Param("dataScope") DataScope dataScope, @Param("projectName") String projectName);
-    Integer updateByProjetId(@Param("projectId") Long projectId,@Param("projectName") String projectName, @Param("projectProcess")String projectProcess, @Param("projectTech") String projectTech);
+
+    Integer updateByProjectId(@Param("projectId") Long projectId,@Param("projectName") String projectName, @Param("projectProcess")String projectProcess, @Param("projectTech") String projectTech);
 }

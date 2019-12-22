@@ -88,7 +88,37 @@ public class ProjectController extends BaseController {
     public Object list(@RequestParam(required = false) String projectName) {
         if (ShiroKit.isAdmin()) {
             Page<Map<String, Object>> projects = projectService.list(null, projectName);
-            Page wrapped = new ProjectWrapper(projects).wrap();
+            List<Map<String, Object>> records = projects.getRecords();
+            //将数据库取出的数据list转成records2ShowList
+            List<Map<String, Object>> records2ShowList = Lists.newArrayList();
+
+            for (int i = 0; i < records.size(); i++) {
+                Map<String, Object> projectWithAttendance = records.get(i);
+                //创建这个新的是为了添加上records2ShowList
+                Map<String, Object> projectWithAttendance2Show = Maps.newHashMap();
+
+                Object projectIdFromDB = projectWithAttendance.get("projectId");
+                Object projectNameFromDB = projectWithAttendance.get("projectName");
+                Object projectProcessFromDB = projectWithAttendance.get("projectProcess");
+                Object projectTechFromDB = projectWithAttendance.get("projectTech");
+                Object standardMaxTimeFromDB = projectWithAttendance.get("standardMaxTime");
+                Object standardMinTimeFromDB = projectWithAttendance.get("standardMinTime");
+                Object noonStartFromDB = projectWithAttendance.get("noonStart");
+                Object noonEndFromDB = projectWithAttendance.get("noonEnd");
+                Object noonFromDB = noonStartFromDB + "~" + noonEndFromDB;
+                projectWithAttendance2Show.put("projectId", projectIdFromDB);
+                projectWithAttendance2Show.put("projectName", projectNameFromDB);
+                projectWithAttendance2Show.put("projectProcess", projectProcessFromDB);
+                projectWithAttendance2Show.put("projectTech", projectTechFromDB);
+                projectWithAttendance2Show.put("standardMaxTime", standardMaxTimeFromDB);
+                projectWithAttendance2Show.put("standardMinTime", standardMinTimeFromDB);
+                projectWithAttendance2Show.put("noon", noonFromDB);
+                records2ShowList.add(projectWithAttendance2Show);
+            }
+            Page<Map<String, Object>> projects2Show = LayuiPageFactory.defaultPage();
+            projects2Show.setRecords(records2ShowList);
+
+            Page wrapped = new ProjectWrapper(projects2Show).wrap();
             return LayuiPageFactory.createPageInfo(wrapped);
         } else {
             DataScope dataScope = new DataScope(ShiroKit.getDeptDataScope());

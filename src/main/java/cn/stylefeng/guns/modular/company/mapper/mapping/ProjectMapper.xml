@@ -31,14 +31,26 @@
     </sql>
     <select id="list" resultType="map">
         select
-        <include refid="Base_Column_List"></include>
-        from project
+        a.PROJECT_ID as projectId,
+        a.CUSTOMER_SITE_ID as customerSiteID,
+        a.PROJECT_NAME as projectName,
+        a.PROJECT_PROCESS as projectProcess,
+        a.PROJECT_TECH as projectTech,
+        a.ATTENDANCE_TYPE as attendanceType,
+        b.STANDARD_MIN_TIME as standardMinTime,
+        b.STANDARD_MAX_TIME as standardMaxTime,
+        b.NOON_START as noonStart ,
+        b.NOON_END as noonEnd,
+        b.EVENING_START as eveningStart,
+        b.EVENING_END as eveningEnd
+        from project a
+        left join attendance_type b on a.ATTENDANCE_TYPE=b.ATTENDANCE_TYPE
         <if test="projectName != null and projectName != ''">
-            where PROJECT_NAME like CONCAT('%',#{projectName},'%')
+            where a.PROJECT_NAME like CONCAT('%',#{projectName},'%')
         </if>
-        order by CREATE_TIME DESC
+        order by a.CREATE_TIME DESC
     </select>
-    <update id="updateByProjetId" parameterType="cn.stylefeng.guns.modular.company.entity.Project">
+    <update id="updateByProjectId" parameterType="cn.stylefeng.guns.modular.company.entity.Project">
         UPDATE project
         SET PROJECT_NAME=#{projectName},PROJECT_PROCESS=#{projectProcess},PROJECT_TECH=#{projectTech}
         WHERE PROJECT_ID=#{projectId}
