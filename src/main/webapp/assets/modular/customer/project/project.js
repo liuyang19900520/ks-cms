@@ -29,8 +29,8 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             {field: 'projectTech', sort: true, title: '项目技术'},
             {field: 'standardMaxTime', sort: true, title: '最大时长'},
             {field: 'standardMinTime', sort: true, title: '最小时长'},
-            {field: 'noon', sort: true, title: '午休时长'},
-            {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 280}
+            {field: 'noon', sort: true, title: '午休时长',minWidth: 250},
+            {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 250}
         ]];
     };
 

@@ -185,9 +185,7 @@ public class ProjectController extends BaseController {
     @ResponseBody
     public Object detail(@PathVariable("projectId") Long projectId) {
         Project project = projectService.getById(projectId);
-        ProjectDto projectDto = new ProjectDto();
-        BeanUtil.copyProperties(project, projectDto);
-        return projectDto;
+        return project;
     }
 
     /**
@@ -240,9 +238,7 @@ public class ProjectController extends BaseController {
         return attendanceTypeSelect;
     }
 
-
     private Map<String, Object> makeAttendanceTypeSelect(AttendanceType attendanceType) {
-
         StringBuffer attendanceTypeShow = new StringBuffer();
 
         attendanceTypeShow.append("最短时长：").append(attendanceType.getStandardMinTime()).append(";  ")
@@ -250,9 +246,8 @@ public class ProjectController extends BaseController {
         Map<String, Object> map = Maps.newHashMap();
         map.put("attendanceType", attendanceType.getAttendanceType());
         map.put("attendanceTypeShow", attendanceTypeShow.toString());
-
         return map;
-
-
     }
+
+
 }

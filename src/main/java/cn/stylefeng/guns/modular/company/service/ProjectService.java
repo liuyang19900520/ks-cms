@@ -1,12 +1,14 @@
 package cn.stylefeng.guns.modular.company.service;
+
 import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
-import cn.stylefeng.guns.modular.company.entity.Company;
+import cn.stylefeng.guns.modular.company.entity.CustomerSite;
 import cn.stylefeng.guns.modular.company.entity.Project;
 import cn.stylefeng.guns.modular.company.mapper.ProjectMapper;
 import cn.stylefeng.roses.core.datascope.DataScope;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -35,9 +37,9 @@ public class ProjectService extends ServiceImpl<ProjectMapper, Project> {
      * @author fengshuonan
      * @Date 2018/12/23 5:16 PM
      */
-    public Page<Map<String, Object>> list(DataScope dataScope,String projectName) {
+    public Page<Map<String, Object>> list(DataScope dataScope, String projectName) {
         Page page = LayuiPageFactory.defaultPage();
-        return this.baseMapper.list(page, dataScope,projectName);
+        return this.baseMapper.list(page, dataScope, projectName);
     }
 
     /**
@@ -52,6 +54,12 @@ public class ProjectService extends ServiceImpl<ProjectMapper, Project> {
         if (ToolUtil.isOneEmpty(project)) {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
+        Long pId = projectMapper.getProjectId();
+        if (pId == null) {
+            pId = 1L;
+        }
+        project.setProjectId(pId);
+
         this.save(project);
     }
 
@@ -64,14 +72,12 @@ public class ProjectService extends ServiceImpl<ProjectMapper, Project> {
     @Transactional(rollbackFor = Exception.class)
     public void editProject(Project project) {
 
-        if (ToolUtil.isOneEmpty(project, project.getProjectId(),project.getProjectName(),project.getProjectProcess()
-                ,project.getProjectTech())) {
+        if (ToolUtil.isOneEmpty(project, project.getProjectId(), project.getProjectName(), project.getProjectProcess()
+                , project.getProjectTech())) {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
-        Long projectId=project.getProjectId();
-        String projectName=project.getProjectName();
-        String projectProcess=project.getProjectProcess();
-        String projectTech=project.getProjectTech();
-        projectMapper.updateByProjectId(projectId,projectName,projectProcess,projectTech);
+
+        this.updateById(project);
     }
+
 }

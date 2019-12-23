@@ -20,7 +20,7 @@ public class Company implements Serializable {
 	/**
 	 * 客户ID
 	 */
-	@TableId(value = "CUSTOMER_ID")
+	@TableId(value = "CUSTOMER_ID",type = IdType.AUTO)
 	private Long customerID;
 	/**
 	 * 客户公司名称

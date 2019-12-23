@@ -50,6 +50,9 @@
         </if>
         order by a.CREATE_TIME DESC
     </select>
+    <select id="getProjectId" resultType="java.lang.Long">
+         select max(PROJECT_ID)+1 from project;
+    </select>
     <update id="updateByProjectId" parameterType="cn.stylefeng.guns.modular.company.entity.Project">
         UPDATE project
         SET PROJECT_NAME=#{projectName},PROJECT_PROCESS=#{projectProcess},PROJECT_TECH=#{projectTech}
