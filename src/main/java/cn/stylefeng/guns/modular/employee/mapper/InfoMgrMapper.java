@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.employee.mapper;
 
 import java.util.Map;
 
+import cn.stylefeng.guns.modular.employee.entity.ProjectRelation;
 import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -18,8 +19,7 @@ import cn.stylefeng.guns.modular.employee.entity.InfoMgr;
  * @since 2019-10-29
  */
 public interface InfoMgrMapper extends BaseMapper<InfoMgr> {
-    /**
-     * 获取所有部门列表
-     */
 	Page<Map<String, Object>> list(@Param("page") Page page, @Param("condition") String condition);
+
+    Integer insertProjectRelation(ProjectRelation projectRelation);
 }

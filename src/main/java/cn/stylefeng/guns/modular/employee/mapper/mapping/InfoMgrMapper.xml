@@ -10,19 +10,26 @@
         <result column="CUSTOMER_SITE_NAME" property="customerSiteName"/>
         <result column="COMPANY_NAME" property="companyName"/>
     </resultMap>
+	<insert id="insertProjectRelation" parameterType="cn.stylefeng.guns.modular.employee.entity.ProjectRelation">
+		INSERT INTO project_relation ( PROJECT_ID, USER_ID, EMPLOYEE_ID, POSITIOIN_CUSTOMER, CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER, VERSION )
+		VALUES
+		(#{projectId},#{userId},#{employeeId},NULL,CURRENT_TIMESTAMP,#{userId},CURRENT_TIMESTAMP,#{userId},NULL)
 
-    <select id="list" resultType="map">
-	select 
+	</insert>
+
+	<select id="list" resultType="map">
+	select
+		e.USER_ID as userId,
 		e.EMPLOYEE_ID as employeeId,
 		e.EMPLOYEE_NAME_CN as employeeNameCn,
 		c.COMPANY_NAME as companyName,
 		cs.CUSTOMER_SITE_NAME as customerSiteName,
 		p.PROJECT_NAME as projectName
 	from
-		project_relation  pr
+		employee e
+		left join project_relation pr on pr.USER_ID = e.USER_ID
 		left join project p on pr.PROJECT_ID = p.PROJECT_ID
-		left join employee e on pr.USER_ID = e.USER_ID
-		left join customer_site cs on pr.CUSTOMER_SITE_ID = cs.CUSTOMER_SITE_ID
+		left join customer_site cs on p.CUSTOMER_SITE_ID = cs.CUSTOMER_SITE_ID
 		left join customer c on cs.CUSTOMER_ID = c.CUSTOMER_ID
 		<if test="condition != null and condition != ''">
 	            where EMPLOYEE_NAME_CN like CONCAT('%',#{condition},'%') 

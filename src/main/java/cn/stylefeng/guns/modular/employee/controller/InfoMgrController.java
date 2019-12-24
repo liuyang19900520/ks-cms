@@ -15,11 +15,25 @@
  */
 package cn.stylefeng.guns.modular.employee.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import cn.hutool.core.collection.CollectionUtil;
+import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
+import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
+import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.modular.company.service.CompanyService;
 import cn.stylefeng.guns.modular.company.service.CustomerSiteService;
+import cn.stylefeng.guns.modular.company.service.ProjectService;
+import cn.stylefeng.guns.modular.employee.entity.ProjectRelation;
+import cn.stylefeng.guns.modular.employee.service.InfoMgrService;
+import cn.stylefeng.guns.modular.employee.wrapper.InfoMgrWrapper;
+import cn.stylefeng.guns.modular.system.entity.Employee;
+import cn.stylefeng.guns.modular.system.entity.User;
+import cn.stylefeng.guns.modular.system.factory.UserFactory;
+import cn.stylefeng.guns.modular.system.service.UserService;
+import cn.stylefeng.roses.core.base.controller.BaseController;
+import cn.stylefeng.roses.core.reqres.response.ResponseData;
+import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,32 +42,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollectionUtil;
-import cn.stylefeng.guns.core.common.annotion.BussinessLog;
-import cn.stylefeng.guns.core.common.annotion.Permission;
-import cn.stylefeng.guns.core.common.constant.dictmap.CompanyDict;
-import cn.stylefeng.guns.core.common.constant.dictmap.UserDict;
-import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
-import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
-import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
-import cn.stylefeng.guns.core.log.LogObjectHolder;
-import cn.stylefeng.guns.modular.company.entity.Company;
-import cn.stylefeng.guns.modular.employee.entity.InfoMgr;
-import cn.stylefeng.guns.modular.employee.service.InfoMgrService;
-import cn.stylefeng.guns.modular.employee.wrapper.InfoMgrWrapper;
-import cn.stylefeng.guns.modular.system.entity.Employee;
-import cn.stylefeng.guns.modular.system.entity.User;
-import cn.stylefeng.guns.modular.system.factory.UserFactory;
-import cn.stylefeng.guns.modular.system.model.CompanyDto;
-import cn.stylefeng.guns.modular.system.service.UserService;
-import cn.stylefeng.roses.core.base.controller.BaseController;
-import cn.stylefeng.roses.core.reqres.response.ResponseData;
-import cn.stylefeng.roses.core.util.ToolUtil;
-import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
-import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 员工客户信息控制器
@@ -75,6 +65,8 @@ public class InfoMgrController extends BaseController {
     private CompanyService companyService;
     @Autowired
     private CustomerSiteService customerSiteService;
+    @Autowired
+    private ProjectService projectService;
 
     /**
      * 跳转到员工信息管理首页
@@ -128,7 +120,7 @@ public class InfoMgrController extends BaseController {
      */
     @RequestMapping("/getUserInfo")
     @ResponseBody
-    public Object getUserInfo(@RequestParam Long userId) {
+    public Object getUserInfo(@RequestParam("userId") Long userId) {
         if (ToolUtil.isEmpty(userId)) {
             throw new RequestEmptyException();
         }
@@ -141,6 +133,8 @@ public class InfoMgrController extends BaseController {
 
         HashMap<Object, Object> hashMap = CollectionUtil.newHashMap();
         hashMap.putAll(map);
+        hashMap.put("userId",employeeInfo.getUserId());
+        hashMap.put("employeeId",employeeInfo.getEmployeeId());
         hashMap.put("roleName", ConstantFactory.me().getRoleName(user.getRoleId()));
         hashMap.put("deptName", ConstantFactory.me().getDeptName(user.getDeptId()));
 
@@ -154,8 +148,7 @@ public class InfoMgrController extends BaseController {
         hashMap.put("employeeNameJP", employeeInfo.getEmployeeNameJP());
         hashMap.put("employeeNameCN", employeeInfo.getEmployeeNameCN());
 
-
-        return ResponseData.success(hashMap);
+        return hashMap;
     }
 
     /**
@@ -167,6 +160,14 @@ public class InfoMgrController extends BaseController {
     @RequestMapping("/project/assign")
     public String projAssign(Model model) {
         return PREFIX + "projAssign.html";
+    }
+
+    @RequestMapping("/project/assign/add")
+    @ResponseBody
+    public Object assignProject(ProjectRelation projectRelation) {
+        infoMgrService.addProjectRelation(projectRelation);
+
+        return SUCCESS_TIP;
     }
 
     /**
@@ -191,6 +192,18 @@ public class InfoMgrController extends BaseController {
     @ResponseBody
     public Object getCustomerSites(@PathVariable Long customerId) {
         return customerSiteService.listForSelect(customerId);
+    }
+
+    /**
+     * 获取所有客户信息
+     *
+     * @author liuyang
+     * @Date 2018/12/24 22:43
+     */
+    @RequestMapping("/project/{customerSiteID}")
+    @ResponseBody
+    public Object getProjects(@PathVariable Long customerSiteID) {
+        return projectService.selectProjects(customerSiteID);
     }
 
 }

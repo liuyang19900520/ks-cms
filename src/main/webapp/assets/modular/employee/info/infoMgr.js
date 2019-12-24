@@ -12,7 +12,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     var infoMgr = {
         tableId: "employeeInfoTable",    //表格id
         condition: {
-        	employeeNameCn: ""
+            employeeNameCn: ""
         }
     };
 
@@ -22,7 +22,8 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     infoMgr.initColumn = function () {
         return [[
             {type: 'checkbox'},
-            {field: 'employeeId', sort: true, sort: true, title: '员工号'},
+            {field: 'userId', sort: true, hidden:true},
+            {field: 'employeeId', sort: true, title: '员工号'},
             {field: 'employeeNameCn', sort: true, title: '姓名'},
             {field: 'companyName', sort: true, title: '所属客户'},
             {field: 'customerSiteName', sort: true, title: '所在现场'},
@@ -50,7 +51,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         top.layui.admin.open({
             type: 2,
             title: '员工个人信息',
-            content: Feng.ctxPath + 'info/open_detail?userId=' + data.userId,
+            content: Feng.ctxPath + '/info/open_detail?userId=' + data.userId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(infoMgr.tableId);
             }
@@ -84,7 +85,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
-    	infoMgr.search();
+        infoMgr.search();
     });
 
 
@@ -94,9 +95,9 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         var layEvent = obj.event;
 
         if (layEvent === 'detail') {
-        	infoMgr.onOpenDetail(data);
+            infoMgr.onOpenDetail(data);
         } else if (layEvent === 'projAssign') {
-        	infoMgr.onProjAssign(data);
+            infoMgr.onProjAssign(data);
         }
     });
 });

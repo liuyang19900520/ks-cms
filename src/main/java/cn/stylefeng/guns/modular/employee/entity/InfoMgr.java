@@ -16,6 +16,8 @@ import lombok.Data;
 public class InfoMgr implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	private Long userId;
 	/**
 	 * 员工号
 	 */

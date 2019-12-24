@@ -2,7 +2,6 @@ package cn.stylefeng.guns.modular.company.service;
 
 import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
-import cn.stylefeng.guns.modular.company.entity.CustomerSite;
 import cn.stylefeng.guns.modular.company.entity.Project;
 import cn.stylefeng.guns.modular.company.mapper.ProjectMapper;
 import cn.stylefeng.roses.core.datascope.DataScope;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,6 +78,14 @@ public class ProjectService extends ServiceImpl<ProjectMapper, Project> {
         }
 
         this.updateById(project);
+    }
+
+
+    public List<Project> selectProjects(Long customerSiteId) {
+        QueryWrapper query = new QueryWrapper<Project>();
+        query.eq("CUSTOMER_SITE_ID", customerSiteId);
+        return this.list(query);
+
     }
 
 }
