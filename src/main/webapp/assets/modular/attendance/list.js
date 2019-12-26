@@ -67,10 +67,6 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
      * 点击搜索按钮
      */
     AttendanceRecord.search = function () {
-    var check=null;
-    if($('#check-box').is(':checked')) {
-    check=1;
-     }
         queryData['currentMonthDate'] = $("#ipt-current-month").val();
         queryData['currentId'] = $("#ipt-current-name").val();
         queryData['isok']=check;

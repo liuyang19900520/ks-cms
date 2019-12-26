@@ -22,6 +22,7 @@ public class AttendanceAllRecord implements Serializable {
     private Date updateTime;
     private Long createUser;
     private Long updateUser;
+    private Integer status;
 
 
 }

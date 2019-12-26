@@ -22,7 +22,6 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     infoMgr.initColumn = function () {
         return [[
             {type: 'checkbox'},
-            {field: 'userId', sort: true, hidden:true},
             {field: 'employeeId', sort: true, title: '员工号'},
             {field: 'employeeNameCn', sort: true, title: '姓名'},
             {field: 'companyName', sort: true, title: '所属客户'},
@@ -51,7 +50,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         top.layui.admin.open({
             type: 2,
             title: '员工个人信息',
-            content: Feng.ctxPath + '/info/open_detail?userId=' + data.userId,
+            content: Feng.ctxPath + 'employee/info/open_detail?userId=' + data.userId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(infoMgr.tableId);
             }

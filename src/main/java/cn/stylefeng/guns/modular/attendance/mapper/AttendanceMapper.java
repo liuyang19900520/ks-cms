@@ -29,18 +29,18 @@ public interface AttendanceMapper {
 
     List<AttendanceAllRecord> selectUsers();
 
-    List<ViewAttendance> selectMyAttendanceByMonth(@Param("currentMonth") Date currentMonth,@Param("employeeId") Long employeeId);
+    List<ViewAttendance> selectMyAttendanceByMonth(@Param("currentMonth") Date currentMonth, @Param("employeeId") Long employeeId);
 
-    Map<String,Object> selectCustomerSiteInfoForAddForm(@Param("employeeId") Long employeeId);
+    Map<String, Object> selectCustomerSiteInfoForAddForm(@Param("employeeId") Long employeeId);
 
     Integer insertAttendance(ViewAttendance attendance);
 
-	Map<String, Object> selectMonthEmployeeID(@Param("employeeId")Long employeeId, @Param("workMonth")Date workMonth);
+    Map<String, Object> selectMonthEmployeeID(@Param("employeeId") Long employeeId, @Param("workMonth") Date workMonth);
 
-	Integer updateMonthEmployeeID(@Param("workMonth")Date workMonth, @Param("workTime")Float workTime,@Param("employeeId") Long employeeId);
+    Integer updateMonthEmployeeID(@Param("workMonth") Date workMonth, @Param("workTime") Float workTime, @Param("employeeId") Long employeeId);
 
-	Integer deleteMonthEmployeeID(@Param("workMonth") Date workMonth,@Param("employeeId") Long employeeId);
+    Integer deleteMonthEmployeeID(@Param("workMonth") Date workMonth, @Param("employeeId") Long employeeId);
 
-	List<AttendanceAllRecord> selectAllMyAttendance(@Param("currentMonth") Date currentMonth,@Param("currentId") String currentId,@Param("isok") String isok);
+    List<AttendanceAllRecord> selectAllMyAttendance(@Param("currentMonth") Date currentMonth, @Param("empId") Long empId, @Param("status") Integer status);
 
 }

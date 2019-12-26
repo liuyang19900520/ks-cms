@@ -1,9 +1,6 @@
 package cn.stylefeng.guns.modular.attendance.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.annotation.TableName;
-
-import cn.stylefeng.guns.modular.system.entity.User;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -17,6 +14,7 @@ public class ViewAttendance implements Serializable {
     private Date workMonth;
     private Long employeeId;
     private Long userId;
+    private String userName;
     private String employeeNameCN;
     private String companyName;
     private String customerSiteName;
@@ -24,6 +22,8 @@ public class ViewAttendance implements Serializable {
     private Float workTime;
     private Integer standardMinTime;
     private Integer standardMaxTime;
-   
-	
+    private String status;
+    private Integer hours;
+
+
 }

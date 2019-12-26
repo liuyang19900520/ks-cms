@@ -14,7 +14,6 @@
 		INSERT INTO project_relation ( PROJECT_ID, USER_ID, EMPLOYEE_ID, POSITIOIN_CUSTOMER, CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER, VERSION )
 		VALUES
 		(#{projectId},#{userId},#{employeeId},NULL,CURRENT_TIMESTAMP,#{userId},CURRENT_TIMESTAMP,#{userId},NULL)
-
 	</insert>
 
 	<select id="list" resultType="map">

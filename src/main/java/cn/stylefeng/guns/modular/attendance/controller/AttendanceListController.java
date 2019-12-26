@@ -62,10 +62,9 @@ public class AttendanceListController extends BaseController {
     @ResponseBody
     public Object list() {
 
-    	 Date currentMonth = null;
-         String currentId=null;
-         String isok=null;
-        List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance(currentMonth,currentId,isok);
+        Date workMonthDate = LDateUtils.stringToDate(LDateUtils.dateToString(new Date(), "yyyyMM"), "yyyyMM");
+
+        List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance(workMonthDate, null, false);
         HashMap<String, Object> result = Maps.newHashMap();
         result.put("code", "0");
         result.put("msg", "success");
@@ -73,16 +72,16 @@ public class AttendanceListController extends BaseController {
         result.put("data", attendanceAllRecords);
         return result;
     }
-    
+
     @RequestMapping(value = "/checklist")
     @ResponseBody
-    public Object checklist(@RequestParam String currentMonthDate,@RequestParam String currentId,@RequestParam String isok) {
+    public Object checklist(@RequestParam String currentMonthDate, @RequestParam Long empId, @RequestParam boolean status) {
 
-    	 Date currentMonth = null;
-         if (currentMonthDate != null && !currentMonthDate.equals("")) {
-             currentMonth = LDateUtils.stringToDate(currentMonthDate, "yyyyMM");
-         }
-        List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance(currentMonth,currentId,isok);
+        Date currentMonth = null;
+        if (currentMonthDate != null && !currentMonthDate.equals("")) {
+            currentMonth = LDateUtils.stringToDate(currentMonthDate, "yyyyMM");
+        }
+        List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance(currentMonth, empId, status);
         HashMap<String, Object> result = Maps.newHashMap();
         result.put("code", "0");
         result.put("msg", "success");
@@ -90,7 +89,7 @@ public class AttendanceListController extends BaseController {
         result.put("data", attendanceAllRecords);
         return result;
     }
-    
+
     @RequestMapping(value = "/getEmployeeType")
     @ResponseBody
     public List<Dict> getEmployeeType() {

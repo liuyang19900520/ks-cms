@@ -1,24 +1,95 @@
-@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/employee/info/projAssign.js"]}){
+@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/system/user/user_edit.js"]}){
 <form id="userForm" lay-filter="userForm" class="layui-form model-form">
     <input name="userId" type="hidden"/>
     <div class="layui-form-item">
-        <label class="layui-form-label">客户<span style="color: red;">*</span></label>
+        <label class="layui-form-label">姓名<span style="color: red;">*</span></label>
         <div class="layui-input-block">
-            <input name="name" placeholder="请输入" type="text" class="layui-input" lay-verify="required" required/>
+            <input name="name" placeholder="请输入姓名" type="text" class="layui-input" lay-verify="required" required/>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">现场</label>
+        <label class="layui-form-label">出生日期</label>
         <div class="layui-input-block">
-            <input id="birthday" name="birthday" placeholder="请输入" type="text" class="layui-input" autocomplete="off"/>
+            <input id="birthday" name="birthday" placeholder="请输入生日" type="text" class="layui-input" autocomplete="off"/>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">项目<span style="color: red;">*</span></label>
+        <label class="layui-form-label">邮箱<span style="color: red;">*</span></label>
         <div class="layui-input-block">
-            <input name="email" placeholder="请输入" type="text" class="layui-input" lay-verify="required|email" required />
+            <input name="email" placeholder="请输入邮箱" type="text" class="layui-input" lay-verify="required|email" required />
         </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="sex" value="M" title="男" checked/>
+            <input type="radio" name="sex" value="F" title="女"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input id="deptId" name="deptId" type="hidden">
+            <input id="deptName" name="deptName" placeholder="请输入部门" type="text" class="layui-input" lay-verify="required" required autocomplete="off"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">电话</label>
+        <div class="layui-input-block">
+            <input name="phone" placeholder="请输入电话" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">中文名</label>
+        <div class="layui-input-block">
+            <input name="employeeNameCN" placeholder="中文名" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">日文名</label>
+        <div class="layui-input-block">
+            <input name="employeeNameJP" placeholder="日文名" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">カナ</label>
+        <div class="layui-input-block">
+            <input name="employeeNameKANA" placeholder="カナ" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">入职时间</label>
+        <div class="layui-input-block">
+            <input id="entryTime" name="entryTime" placeholder="入职时间" type="text" class="layui-input" autocomplete="off"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">籍贯省份</label>
+        <div class="layui-input-block">
+            <input name="province" placeholder="籍贯省份" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">籍贯城市</label>
+        <div class="layui-input-block">
+            <input name="city" placeholder="籍贯城市" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">车站</label>
+        <div class="layui-input-block">
+            <input name="station" placeholder="车站" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">现住址</label>
+        <div class="layui-input-block">
+            <input name="address" placeholder="现住址" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item text-right">
+        <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>
     </div>
 </form>
 @}
-

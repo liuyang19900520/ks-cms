@@ -16,17 +16,12 @@ import cn.stylefeng.guns.modular.system.entity.Employee;
 import cn.stylefeng.guns.modular.system.mapper.EmployeeMapper;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
-
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -283,9 +278,15 @@ public class AttendanceService {
         attendanceMapper.deleteMonthEmployeeID(workMonth, employeeId);
     }
 
-    public List<AttendanceAllRecord> selectAllAttendance(Date currentMonth, String currentId, String isok) {
+    public List<AttendanceAllRecord> selectAllAttendance(Date currentMonth, Long empId, boolean status) {
 
-        List<AttendanceAllRecord> attendanceAllRecord = attendanceMapper.selectAllMyAttendance(currentMonth, currentId, isok);
+        Integer attendanceStatus = 1;
+
+        if (status) {
+            attendanceStatus = 0;
+        }
+
+        List<AttendanceAllRecord> attendanceAllRecord = attendanceMapper.selectAllMyAttendance(currentMonth, empId, attendanceStatus);
         return attendanceAllRecord;
     }
 
