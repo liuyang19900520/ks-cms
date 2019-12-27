@@ -11,7 +11,7 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     var AttendanceRecord = {
         tableId: "attendanceListTable",
         condition: {
-            currentMonth: ""
+            currentMonthDate: ""
         }
     };
 
@@ -28,10 +28,13 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
             console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
 
-            var queryData = {};
-            queryData['currentMonth'] = value            
-            table.reload(AttendanceRecord.tableId, {where: queryData});
-            
+
+            queryData['currentMonthDate'] = value
+            queryData['empId'] = null
+            queryData['status'] = false
+
+            AttendanceRecord.search();
+
         }
     });
 
@@ -53,11 +56,10 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     };
 
     var queryData = {};
-    //var currentMonth = $dateformatter(new Date(), "yyyyMM")
-    queryData['currentMonth'] = null;
-    
+    queryData['currentMonthDate'] = null;
 
- // 搜索按钮点击事件
+
+    // 搜索按钮点击事件
     $('#btnSearch').click(function () {
         AttendanceRecord.search();
     });
@@ -67,17 +69,13 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
      * 点击搜索按钮
      */
     AttendanceRecord.search = function () {
-        queryData['currentMonthDate'] = $("#ipt-current-month").val();
-        queryData['currentId'] = $("#ipt-current-name").val();
-        queryData['isok']=check;
-        //table.reload(AttendanceRecord.tableId, {where: queryData});
         var tableResult = table.render({
-        elem: '#' + AttendanceRecord.tableId,
-        url: Feng.ctxPath + '/attendance/list/checklist',
-        where: queryData,
-        height: "full-158",
-        cols: AttendanceRecord.initColumn()
-    });
+            elem: '#' + AttendanceRecord.tableId,
+            url: Feng.ctxPath + '/attendance/list/checklist',
+            where: queryData,
+            height: "full-158",
+            cols: AttendanceRecord.initColumn()
+        });
     };
 
 
@@ -90,37 +88,36 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
         cols: AttendanceRecord.initColumn()
     });
 
-    
-function init() { 
-    	//打开页面时初始化下拉列表
-    	getClaimType();
-        }; 
-        init(); 
-        //获取姓名
-        function getClaimType(){
-        	$.ajax({
-        		type: 'POST',
-        		url: Feng.ctxPath + "/attendance/list/getEmployeeType",
-        		data: {
-        			
-        		},
-        		dataType: "json",
-        		error: function (request) {
 
-        		},
-        		success: function (data) {
-        			$("#claimType").empty();
-        			$("#claimType").append("<option value="+0+">---请选择员工---</option>");
-        			
-        			$.each(data, function(i){
-        				$("#claimType").append("<option value="+data[i].code+">"+data[i].name+"</option>");
-        			});
-        			form.render();
-        		}
-        	});
-        	
-         }
-   
+    function init() {
+        //打开页面时初始化下拉列表
+        getClaimType();
+    };
+    init();
+
+    //获取姓名
+    function getClaimType() {
+        $.ajax({
+            type: 'POST',
+            url: Feng.ctxPath + "/attendance/list/getEmployeeType",
+            data: {},
+            dataType: "json",
+            error: function (request) {
+
+            },
+            success: function (data) {
+                $("#claimType").empty();
+                $("#claimType").append("<option value=" + 0 + ">---请选择员工---</option>");
+
+                $.each(data, function (i) {
+                    $("#claimType").append("<option value=" + data[i].code + ">" + data[i].name + "</option>");
+                });
+                form.render();
+            }
+        });
+
+    }
+
 
 });
 

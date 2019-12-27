@@ -123,9 +123,6 @@ public class MyselfController extends BaseController {
         if (ToolUtil.isEmpty(claimId)) {
             throw new RequestEmptyException();
         }
-        //缓存部门修改前详细信息
-        Myself myself = myselfService.getById(claimId);
-
 
         return PREFIX + "myself_edit.html";
     }
