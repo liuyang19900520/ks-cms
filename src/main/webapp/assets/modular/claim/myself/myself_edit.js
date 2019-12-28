@@ -24,12 +24,17 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
                 $("#claimType").append("<option value=" + data[i].code + ">" + data[i].name + "</option>");
             });
             form.render();
+
             //获取部门信息
             var ajax = new $ax(Feng.ctxPath + "/claim/myself/detail/" + Feng.getUrlParam("claimId"));
             var result = ajax.start();
             form.val('claimForm', result);
+
         }
     });
+
+
+
 
 
 

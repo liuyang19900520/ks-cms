@@ -56,11 +56,13 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     };
 
     var queryData = {};
-    queryData['currentMonthDate'] = null;
+    queryData['empId'] = null
+    queryData['status'] = false
 
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
+
         AttendanceRecord.search();
     });
 
@@ -69,6 +71,9 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
      * 点击搜索按钮
      */
     AttendanceRecord.search = function () {
+        queryData['currentMonthDate'] = $('#ipt-current-month').val();
+        queryData['empId'] = null
+        queryData['status'] = false
         var tableResult = table.render({
             elem: '#' + AttendanceRecord.tableId,
             url: Feng.ctxPath + '/attendance/list/checklist',
