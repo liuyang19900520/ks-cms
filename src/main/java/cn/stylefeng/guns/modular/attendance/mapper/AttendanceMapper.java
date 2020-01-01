@@ -43,4 +43,5 @@ public interface AttendanceMapper {
 
     List<AttendanceAllRecord> selectAllMyAttendance(@Param("currentMonth") Date currentMonth, @Param("empId") Long empId, @Param("status") Integer status);
 
+    void updateStatus(@Param("employeeId")Long employeeId, @Param("status")String status,@Param("workMonth")Date workMonth);
 }

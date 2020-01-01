@@ -15,6 +15,7 @@
                             </div>
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                                <button id="multiConfirm" class="layui-btn icon-btn layui-btn-normal">批量确认</button>
                             </div>
                         </div>
                     </div>
@@ -24,7 +25,7 @@
         </div>
     </div>
 </div>
-<script type="text/html" id="tableBar">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="ok">确认</a>  
+<script type="text/html" id="statusTpl">
+    <input type="checkbox" lay-filter="attendanceStatus"  value="{{d.employeeId}}" name="{{d.workMonth}}" lay-skin="switch" lay-text="已确认|未确认" {{d.status=='1'?'checked':''}} />
 </script>
 @}

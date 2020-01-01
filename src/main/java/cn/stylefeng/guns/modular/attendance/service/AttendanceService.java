@@ -301,4 +301,7 @@ public class AttendanceService {
     }
 
 
+    public void updateStatus(Long employeeId, String status,Date workMonth) {
+        attendanceMapper.updateStatus(employeeId, status,workMonth);
+    }
 }

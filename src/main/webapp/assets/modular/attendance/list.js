@@ -1,9 +1,11 @@
-layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
+layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'], function () {
     var $ = layui.$;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
     var $dateformatter = layui.dateformatter;
+    var form = layui.form;
+    var layer = layui.layer;
 
     /**
      * 系统管理--部门管理
@@ -51,7 +53,7 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             {field: 'projectName', sort: true, title: '项目名称', edit: "text"},
             {field: 'customerSiteName', sort: true, title: '现场名称', edit: "text"},
             {field: 'companyName', sort: true, title: '客户名称', edit: "text"},
-            {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 150}
+            {field: 'status', sort: true, title: '状态', templet: '#statusTpl'}
         ]];
     };
 
@@ -73,7 +75,7 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     AttendanceRecord.search = function () {
         queryData['currentMonthDate'] = $('#ipt-current-month').val();
         queryData['empId'] = null
-        queryData['status'] = false
+        /*queryData['status'] = false*/
         var tableResult = table.render({
             elem: '#' + AttendanceRecord.tableId,
             url: Feng.ctxPath + '/attendance/list/checklist',
@@ -123,7 +125,66 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
 
     }
 
+    /**
+     * 修改"确认"状态
+     *
+     * @param employeeId 员工id
+     * @param checked 是否选中（true,false），选中就是已确认，未选中就是未确认
+     */
+    AttendanceRecord.changeUserStatus = function (employeeId, checked,workMonth) {
+        if (checked) {
+            var ajax = new $ax(Feng.ctxPath + "/attendance/list/confirm", function (data) {
+                Feng.success("确认成功!");
+            }, function (data) {
+                Feng.error("确认失败!" + data.responseJSON.message + "!");
+                table.reload(AttendanceRecord.tableId);
+            });
+            ajax.set("employeeId", employeeId);
+            ajax.start();
+        } else {
+            var ajax = new $ax(Feng.ctxPath + "/attendance/list/unconfirm", function (data) {
+                Feng.success("取消确认成功!");
+            }, function (data) {
+                Feng.error("取消确认失败!");
+                table.reload(AttendanceRecord.tableId);
+            });
+            ajax.set("employeeId", employeeId);
+            ajax.start();
+        }
+    };
 
+    // 修改user状态
+    form.on('switch(attendanceStatus)', function (obj) {
+        var employeeId = obj.elem.value;
+        var checked = obj.elem.checked ? true : false;
+        var workMonth = obj.elem.name;
+        AttendanceRecord.changeUserStatus(employeeId, checked,workMonth);
+    });
+
+    /**
+     * 一键审批
+     */
+    AttendanceRecord.multiConfirm = function () {
+        var checkRows = table.checkStatus(AttendanceRecord.tableId);
+        if (checkRows.data.length == 0) {
+            layer.alert("请选择要进行确认的数据")
+        }
+        else {
+            layer.confirm("确认更改所选项的状态", function () {
+                layer.close(layer.index);
+                checkRows.data.forEach(function (item) {
+                    AttendanceRecord.changeUserStatus(item.employeeId, true,item.workMonth);
+                })
+                table.reload(AttendanceRecord.tableId);
+            })
+        }
+    }
+
+
+    //点击“批量确认”按钮，批量确认员工考勤状态
+    $("#multiConfirm").click(function () {
+        AttendanceRecord.multiConfirm();
+    })
 });
 
 

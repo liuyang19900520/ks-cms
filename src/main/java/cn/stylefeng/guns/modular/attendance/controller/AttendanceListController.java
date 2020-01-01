@@ -15,11 +15,17 @@
  */
 package cn.stylefeng.guns.modular.attendance.controller;
 
+import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.util.LDateUtils;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceAllRecord;
+import cn.stylefeng.guns.modular.attendance.entity.AttendanceConfirmStatus;
+import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
 import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
 import cn.stylefeng.guns.modular.system.entity.Dict;
 import cn.stylefeng.roses.core.base.controller.BaseController;
+import cn.stylefeng.roses.core.reqres.response.ResponseData;
+import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +70,7 @@ public class AttendanceListController extends BaseController {
     public Object list() {
 
         Date workMonthDate = LDateUtils.stringToDate(LDateUtils.dateToString(new Date(), "yyyyMM"), "yyyyMM");
+        System.out.println(workMonthDate);
 
         List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance(workMonthDate, null, false);
         HashMap<String, Object> result = Maps.newHashMap();
@@ -81,6 +89,7 @@ public class AttendanceListController extends BaseController {
         if (currentMonthDate != null && !currentMonthDate.equals("")) {
             currentMonth = LDateUtils.stringToDate(currentMonthDate, "yyyyMM");
         }
+        System.out.println(currentMonth);
         List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance(currentMonth, empId, status);
         HashMap<String, Object> result = Maps.newHashMap();
         result.put("code", "0");
@@ -96,4 +105,35 @@ public class AttendanceListController extends BaseController {
         List<Dict> list = attendanceService.getEmployee();
         return list;
     }
-}
+
+
+    /**
+     *  修改考勤审批状态
+     *  将状态从已确认改为未确认
+     */
+    @RequestMapping("/unconfirm")
+    @ResponseBody
+    public ResponseData unconfirm(@RequestParam Long employeeId,Date workMonth){
+        if(ToolUtil.isEmpty(employeeId)){
+            throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
+        }
+        System.out.println(workMonth);
+        this.attendanceService.updateStatus(employeeId, AttendanceConfirmStatus.UNCONFIRMED.getCode(),workMonth);
+        return SUCCESS_TIP;
+    }
+
+    /**
+     *  修改考勤审批状态
+     *  将状态从未确认改为已确认
+     */
+    @RequestMapping("/confirm")
+    @ResponseBody
+    public ResponseData confirm(@RequestParam Long employeeId,Date workMonth){
+        if(ToolUtil.isEmpty(employeeId)){
+            throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
+        }
+        this.attendanceService.updateStatus(employeeId, AttendanceConfirmStatus.CONFIRMED.getCode(),workMonth);
+
+        return SUCCESS_TIP;
+        }
+    }

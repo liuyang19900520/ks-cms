@@ -31,7 +31,7 @@
         <result column="PROJECT_NAME" property="projectName"/>
         <result column="CUSTOMER_SITE_NAME" property="customerSiteName"/>
         <result column="COMPANY_NAME" property="companyName"/>
-
+        <result column="STATUS" property="status"/>
     </resultMap>
 
 
@@ -143,7 +143,7 @@
 
     <select id="selectAllMyAttendance" resultMap="listMap">
         select
-      EMPLOYEE_ID,EMPLOYEE_NAME_CN,WORK_MONTH,WORK_TIME, PROJECT_NAME ,CUSTOMER_SITE_NAME,COMPANY_NAME
+      EMPLOYEE_ID,EMPLOYEE_NAME_CN,WORK_MONTH,WORK_TIME, PROJECT_NAME ,CUSTOMER_SITE_NAME,COMPANY_NAME,STATUS,EMPLOYEE_ID
         from v_attendance
         where 1=1
         <if test="currentMonth != null">
@@ -152,9 +152,22 @@
         <if test="empId != null">
             AND EMPLOYEE_ID=#{empId}
         </if>
-        <if test="status != 0">
+<!--        <if test="status != null">
             AND STATUS != '0'
-        </if>
+        </if>-->
         order by WORK_MONTH desc
     </select>
+
+    <update id="updateStatus" parameterType="cn.stylefeng.guns.modular.attendance.entity.ViewAttendance">
+      update attendance_quick_record
+      set STATUS=#{status}
+      where 1=1
+        <if test="workMonth != null">
+            and WORK_MONTH=#{workMonth}
+        </if>
+          <if test="employeeId !=null">
+             and EMPLOYEE_ID=#{employeeId}
+          </if>
+
+    </update>
 </mapper>
