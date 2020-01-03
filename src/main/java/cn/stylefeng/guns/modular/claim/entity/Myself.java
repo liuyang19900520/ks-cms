@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.claim.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Date;
  * @since 2018-12-07
  */
 @TableName("claim")
+@Data
 public class Myself implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -26,7 +28,7 @@ public class Myself implements Serializable {
 	 * 员工ID
 	 */
 	@TableId(value = "EMPLOYEE_ID")
-	private String employeeId;
+	private Long employeeId;
 	/**
 	 * 员工名
 	 */
@@ -87,91 +89,4 @@ public class Myself implements Serializable {
 	 */
 	@TableField(value = "VERSION", fill = FieldFill.UPDATE)
 	private Long version;
-	public Long getClaimId() {
-		return claimId;
-	}
-	public void setClaimId(Long claimId) {
-		this.claimId = claimId;
-	}
-	public String getEmployeeId() {
-		return employeeId;
-	}
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
-	}
-	public String getEmployeeName() {
-		return employeeName;
-	}
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
-	}
-	public String getClaimDate() {
-		return claimDate;
-	}
-	public void setClaimDate(String claimDate) {
-		this.claimDate = claimDate;
-	}
-	public String getPrice() {
-		return price;
-	}
-	public void setPrice(String price) {
-		this.price = price;
-	}
-	public String getPicUrl() {
-		return picUrl;
-	}
-	public void setPicUrl(String picUrl) {
-		this.picUrl = picUrl;
-	}
-	public String getClaimType() {
-		return claimType;
-	}
-	public void setClaimType(String claimType) {
-		this.claimType = claimType;
-	}
-	public String getClaimStatus() {
-		return claimStatus;
-	}
-	public void setClaimStatus(String claimStatus) {
-		this.claimStatus = claimStatus;
-	}
-	public String getRemark() {
-		return remark;
-	}
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-	public Date getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-	public Long getCreateUser() {
-		return createUser;
-	}
-	public void setCreateUser(Long createUser) {
-		this.createUser = createUser;
-	}
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
-	public Long getUpdateUser() {
-		return updateUser;
-	}
-	public void setUpdateUser(Long updateUser) {
-		this.updateUser = updateUser;
-	}
-	public Long getVersion() {
-		return version;
-	}
-	public void setVersion(Long version) {
-		this.version = version;
-	}
-
-	
-
 }

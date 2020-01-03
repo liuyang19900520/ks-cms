@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.claim.mapper.SummaryMapper">
+
+    <select id="listSummary" resultType="java.util.Map">
+        SELECT
+            EMPLOYEE_ID as 'employeeId',
+            EMPLOYEE_NAME as 'employeeName',
+            DATE_FORMAT( CLAIM_DATE, '%Y-%m' ) as 'claimMonth',
+            SUM( PRICE ) as 'claimAccount'
+        FROM
+            claim
+        WHERE
+            DATE_FORMAT( CLAIM_DATE, '%Y-%m' ) = #{selectedMonth}
+        GROUP BY
+            EMPLOYEE_ID
+    </select>
+    <select id="listDetail" resultType="java.util.Map">
+        SELECT
+            EMPLOYEE_ID as 'employeeId',
+            EMPLOYEE_NAME as 'employeeName',
+            DATE_FORMAT( CLAIM_DATE, '%Y-%m-%d' ) as 'claimDate',
+            PRICE  as 'price',
+            CLAIM_TYPE as 'claimTypeCode',
+            REMARK as 'remark'
+
+        FROM
+            claim
+        WHERE
+            DATE_FORMAT( CLAIM_DATE, '%Y-%m' ) = #{selectedMonth}
+        AND
+            EMPLOYEE_ID = #{employeeId}
+    </select>
+</mapper>

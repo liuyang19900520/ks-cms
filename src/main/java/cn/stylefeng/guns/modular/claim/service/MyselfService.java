@@ -5,6 +5,10 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import cn.stylefeng.guns.core.shiro.ShiroKit;
+import cn.stylefeng.guns.modular.system.entity.Employee;
+import cn.stylefeng.guns.modular.system.mapper.EmployeeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +37,9 @@ public class MyselfService extends ServiceImpl<MyselfMapper, Myself> {
 	
 	@Resource
 	private DictMapper dictMapper;
+
+	@Autowired
+    private EmployeeMapper employeeMapper;
 	
     /**
      * 获取所有客户信息列表
@@ -56,6 +63,10 @@ public class MyselfService extends ServiceImpl<MyselfMapper, Myself> {
         if (ToolUtil.isOneEmpty(myself)) {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
+        Employee employee=employeeMapper.selectEmployeeByUserId(ShiroKit.getUser().getId());
+        myself.setEmployeeId(employee.getEmployeeId());
+        myself.setEmployeeName(employee.getEmployeeNameCN());
+        myself.setClaimStatus("1");
         this.save(myself);
     }
     /**
