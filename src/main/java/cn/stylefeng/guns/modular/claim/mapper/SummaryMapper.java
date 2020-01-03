@@ -21,4 +21,5 @@ public interface SummaryMapper {
 
     Page<Map<String, Object>> listDetail(@Param("page") Page page, @Param("selectedMonth") String conditionMonth, @Param("employeeId") Long employeeId);
 
+    Integer updateStatusCode(@Param("selectedMonth") String conditionMonth, @Param("employeeId") Long employeeId, @Param("code") String code);
 }

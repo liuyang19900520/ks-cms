@@ -27,9 +27,12 @@ public class SummaryService {
         return summaryMapper.listSummary(page, selectedMonth);
     }
 
-
     public Page<Map<String, Object>> listDetail(String selectedMonth, Long employeeId) {
         Page page = LayuiPageFactory.defaultPage();
         return summaryMapper.listDetail(page, selectedMonth, employeeId);
+    }
+
+    public void setStatus(Long employeeId, String selectedMonth, String statusCode) {
+        summaryMapper.updateStatusCode(selectedMonth, employeeId, statusCode);
     }
 }

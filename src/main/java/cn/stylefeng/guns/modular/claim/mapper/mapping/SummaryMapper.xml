@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.stylefeng.guns.modular.claim.mapper.SummaryMapper">
+    <update id="updateStatusCode">
+        UPDATE claim
+        SET CLAIM_STATUS=#{code}
+        WHERE
+            DATE_FORMAT( CLAIM_DATE, '%Y-%m' ) = #{selectedMonth}
+        AND
+            EMPLOYEE_ID = #{employeeId}
+
+
+    </update>
 
     <select id="listSummary" resultType="java.util.Map">
         SELECT
             EMPLOYEE_ID as 'employeeId',
             EMPLOYEE_NAME as 'employeeName',
             DATE_FORMAT( CLAIM_DATE, '%Y-%m' ) as 'claimMonth',
-            SUM( PRICE ) as 'claimAccount'
+            SUM( PRICE ) as 'claimAccount',
+            CLAIM_STATUS as 'claimStatus'
         FROM
             claim
         WHERE
@@ -23,7 +34,6 @@
             PRICE  as 'price',
             CLAIM_TYPE as 'claimTypeCode',
             REMARK as 'remark'
-
         FROM
             claim
         WHERE

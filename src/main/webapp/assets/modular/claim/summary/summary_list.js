@@ -42,7 +42,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'laydate', 'dateformatter'],
             {field: 'claimMonth', sort: true, title: '月份'},
             {field: 'claimAccount', sort: true, title: '金额'},
             {align: 'center', toolbar: '#tableBar', title: '操作'},
-            {field: 'status', sort: true, title: '状态', templet: '#statusTpl'}
+            {field: 'claimStatus', sort: true, title: '状态', templet: '#statusTpl'}
         ]];
     };
 
@@ -76,14 +76,13 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'laydate', 'dateformatter'],
     });
 
     $('#btnAudit').click(function () {
-        claimSummary.openAddMyClaim();
+        claimSummary.auditAll();
     });
 
     // 工具条点击事件
     table.on('tool(' + claimSummary.tableId + ')', function (obj) {
         var data = obj.data;
         var layEvent = obj.event;
-
         if (layEvent === 'detail') {
             claimSummary.onDetail(data);
         }
@@ -101,6 +100,57 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax', 'laydate', 'dateformatter'],
             }
         });
     };
+
+    form.on('switch(claimStatus)', function (obj) {
+        console.log($(obj.elem).parent().parent().parent().children().eq(3).children().text())
+        var empId = obj.elem.value;
+        var claimMonth = $(obj.elem).parent().parent().parent().children().eq(3).children().text();
+        var checked = obj.elem.checked ? true : false;
+        claimSummary.changeUserStatus(empId, claimMonth, checked);
+    });
+
+    claimSummary.changeUserStatus = function (employeeId, claimMonth, checked) {
+        if (checked) {
+            var statusCode = 0;
+            var ajax = new $ax(Feng.ctxPath + "/claim/summary/status/" + statusCode, function (data) {
+                Feng.success("该月报销内容已确认!");
+            }, function (data) {
+                Feng.error("该月报销内容确认失败!");
+                table.reload(claimSummary.tableId);
+            });
+            ajax.set("employeeId", employeeId);
+            ajax.set("claimMonth", claimMonth);
+            ajax.start();
+        } else {
+            var statusCode = 1;
+            var ajax = new $ax(Feng.ctxPath + "/claim/summary/status/" + statusCode, function (data) {
+                Feng.success("该月报销内容已驳回");
+            }, function (data) {
+                Feng.error("该月报销内容驳回失败!" + data.responseJSON.message + "!");
+                table.reload(claimSummary.tableId);
+            });
+            ajax.set("employeeId", employeeId);
+            ajax.set("claimMonth", claimMonth);
+            ajax.start();
+        }
+    };
+
+
+    claimSummary.auditAll = function () {
+        var checkRows = table.checkStatus(claimSummary.tableId);
+        if (checkRows.data.length == 0) {
+            layer.alert("请选择要进行确认的数据")
+        }
+        else {
+            layer.confirm("确认更改所选项的状态", function () {
+                layer.close(layer.index);
+                checkRows.data.forEach(function (item) {
+                    claimSummary.changeUserStatus(item.employeeId, item.claimMonth, true);
+                })
+                table.reload(claimSummary.tableId);
+            })
+        }
+    }
 
 
 });
