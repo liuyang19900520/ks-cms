@@ -13,7 +13,7 @@ import lombok.Getter;
 public enum AttendanceConfirmStatus {
 
 
-        CONFIRMED("1", "已确认"), UNCONFIRMED("0", "未确认");
+        CONFIRMED("0", "已确认"), UNCONFIRMED("1", "未确认");
 
         String code;
         String message;
