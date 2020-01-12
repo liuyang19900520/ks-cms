@@ -1,4 +1,4 @@
-layui.use(['layer', 'form', 'admin','laydate', 'ax'], function () {
+layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
@@ -13,13 +13,21 @@ layui.use(['layer', 'form', 'admin','laydate', 'ax'], function () {
     laydate.render({
         elem: '#visaUpdateTime'
     });
-// 渲染时间选择框
-    laydate.render({
-        elem: '#visaUpdateTime'
-    });
+
     laydate.render({
         elem: '#visaExpireTime'
     });
+
+    //公司信息
+    var ajax = new $ax(Feng.ctxPath + "/employee/visa/unregister");
+    var result = ajax.start();
+    var optionsEmployee = '<option value="">请选择员工</option> ';
+
+    $.each(result, function (key, value) {  //循环遍历后台传过来的json数据
+        optionsEmployee += "<option value=\"" + value.employeeSelectValue + "\" >" + value.employeeNameCn + "</option>";
+    });
+    $("#sel-employee").append(optionsEmployee);
+    form.render('select');//select是固定写法 不是选择器
 
     // 表单提交事件
     form.on('submit(btnSubmit)', function (data) {

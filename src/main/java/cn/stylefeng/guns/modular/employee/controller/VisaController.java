@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 package cn.stylefeng.guns.modular.employee.controller;
+
 import cn.stylefeng.guns.core.common.annotion.BussinessLog;
 import cn.stylefeng.guns.core.common.annotion.Permission;
-import cn.stylefeng.guns.core.common.constant.dictmap.CompanyDict;
 import cn.stylefeng.guns.core.common.constant.dictmap.VisaDict;
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
-import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
-import cn.stylefeng.guns.modular.company.entity.Company;
 import cn.stylefeng.guns.modular.employee.entity.Visa;
 import cn.stylefeng.guns.modular.employee.service.VisaService;
 import cn.stylefeng.guns.modular.employee.wrapper.VisaWrapper;
@@ -29,7 +27,6 @@ import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -57,7 +54,9 @@ public class VisaController extends BaseController {
      * @Date 2019/10/28 14:58 PM
      */
     @RequestMapping("")
-    public String index() { return PREFIX + "visa.html";}
+    public String index() {
+        return PREFIX + "visa.html";
+    }
 
     /**
      * 获取员工签证信息列表
@@ -84,7 +83,8 @@ public class VisaController extends BaseController {
     public String companyAdd() {
         return PREFIX + "visa_add.html";
     }
-     /**
+
+    /**
      * 录入签证信息
      *
      * @author fengshuonan
@@ -97,6 +97,19 @@ public class VisaController extends BaseController {
     public ResponseData add(Visa visa) {
         this.visaService.addVisa(visa);
         return SUCCESS_TIP;
+    }
+
+
+    /**
+     * 获取未注册签证信息的人员
+     *
+     * @author fengshuonan
+     * @Date 2018/12/23 4:57 PM
+     */
+    @RequestMapping(value = "/unregister")
+    @ResponseBody
+    public Object selectUnregister() {
+        return this.visaService.getUnregister();
     }
 
 }

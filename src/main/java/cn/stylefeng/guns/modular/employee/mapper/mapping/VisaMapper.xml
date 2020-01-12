@@ -2,10 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.stylefeng.guns.modular.employee.mapper.VisaMapper">
 
-	<!-- 通用查询映射结果 -->
+    <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.employee.entity.Visa">
-        <id column="USER_ID" property="userID"/>
         <id column="EMPLOYEE_ID" property="employeeId"/>
+        <result column="EMPLOYEE_NAME_CN" property="employeeNameCn"/>
+        <result column="USER_ID" property="userId"/>
+        <result column="EMPLOYEE_SELECT_VALUE" property="employeeSelectValue"/>
         <result column="VISA_TYPE" property="visaType"/>
         <result column="CREATE_TIME" property="createTime"/>
         <result column="CREATE_USER" property="createUser"/>
@@ -14,6 +16,16 @@
         <result column="VERSION" property="version"/>
         <result column="DELETE_FLG" property="deleteFlg"/>
     </resultMap>
+    <insert id="insertVisa" parameterType="cn.stylefeng.guns.modular.employee.entity.Visa">
+        insert into employee_visa (USER_ID,
+        EMPLOYEE_ID,VISA_TYPE,VISA_UPDATE_TIME, VISA_EXPIRE_TIME,
+        CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER)
+        values
+        (#{userId},#{employeeId},#{visaType},#{visaUpdateTime},#{visaExpireTime},
+        CURRENT_TIMESTAMP,#{userId},CURRENT_TIMESTAMP,#{userId})
+
+
+    </insert>
 
     <select id="list" resultType="map">
         select
@@ -27,10 +39,16 @@
         <if test="employeeNameCn != null and employeeNameCn != ''">
             where b.EMPLOYEE_NAME_CN like CONCAT('%',#{employeeNameCn},'%')
         </if>
-              order by a.VISA_UPDATE_TIME DESC
+        order by a.VISA_UPDATE_TIME DESC
     </select>
-    <select id="getEmployeeNameCn" resultType="java.lang.String">
-         select max(EMPLOYEE_NAME_CN)+1 from employee_visa;
+
+
+    <select id="getUnregister" resultMap="BaseResultMap">
+        SELECT
+          *,CONCAT(USER_ID,",",EMPLOYEE_ID) as 'EMPLOYEE_SELECT_VALUE'
+        FROM
+          employee
+        WHERE EMPLOYEE_ID NOT IN(SELECT EMPLOYEE_ID FROM employee_visa)
     </select>
 
     <!--insert id="insertVisa" parameterType="cn.stylefeng.guns.modular.employee.entity.visa">
