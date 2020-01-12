@@ -131,7 +131,8 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'],
      * @param employeeId 员工id
      * @param checked 是否选中（true,false），选中就是已确认，未选中就是未确认
      */
-    AttendanceRecord.changeUserStatus = function (employeeId, checked,workMonth) {
+    AttendanceRecord.changeUserStatus = function (employeeId, checked, workMonth) {
+        alert(workMonth);
         if (checked) {
             var ajax = new $ax(Feng.ctxPath + "/attendance/list/confirm", function (data) {
                 Feng.success("确认成功!");
@@ -139,7 +140,14 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'],
                 Feng.error("确认失败!" + data.responseJSON.message + "!");
                 table.reload(AttendanceRecord.tableId);
             });
-            ajax.set("employeeId", employeeId);
+            var data = {
+                "employeeId": employeeId,
+                "workMonth": workMonth
+            }
+            ajax.setContentType("application/json")
+            ajax.setData(JSON.stringify(data))
+            // ajax.set("employeeId", employeeId);
+            // ajax.set("workMonth", workMonth);
             ajax.start();
         } else {
             var ajax = new $ax(Feng.ctxPath + "/attendance/list/unconfirm", function (data) {
@@ -149,6 +157,7 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'],
                 table.reload(AttendanceRecord.tableId);
             });
             ajax.set("employeeId", employeeId);
+            ajax.set("workMonth", workMonth);
             ajax.start();
         }
     };
@@ -158,7 +167,7 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'],
         var employeeId = obj.elem.value;
         var checked = obj.elem.checked ? true : false;
         var workMonth = obj.elem.name;
-        AttendanceRecord.changeUserStatus(employeeId, checked,workMonth);
+        AttendanceRecord.changeUserStatus(employeeId, checked, workMonth);
     });
 
     /**
@@ -173,7 +182,7 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'],
             layer.confirm("确认更改所选项的状态", function () {
                 layer.close(layer.index);
                 checkRows.data.forEach(function (item) {
-                    AttendanceRecord.changeUserStatus(item.employeeId, true,item.workMonth);
+                    AttendanceRecord.changeUserStatus(item.employeeId, true, item.workMonth);
                 })
                 table.reload(AttendanceRecord.tableId);
             })

@@ -29,11 +29,11 @@ import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -108,32 +108,32 @@ public class AttendanceListController extends BaseController {
 
 
     /**
-     *  修改考勤审批状态
-     *  将状态从已确认改为未确认
+     * 修改考勤审批状态
+     * 将状态从已确认改为未确认
      */
     @RequestMapping("/unconfirm")
     @ResponseBody
-    public ResponseData unconfirm(@RequestParam Long employeeId,Date workMonth){
-        if(ToolUtil.isEmpty(employeeId)){
+    public ResponseData unconfirm(@RequestBody ViewAttendance viewAttendance) {
+        if (ToolUtil.isEmpty(viewAttendance.getEmployeeId())) {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
-        System.out.println(workMonth);
-        this.attendanceService.updateStatus(employeeId, AttendanceConfirmStatus.UNCONFIRMED.getCode(),workMonth);
+        System.out.println(viewAttendance.getWorkMonth());
+        this.attendanceService.updateStatus(viewAttendance.getEmployeeId(), AttendanceConfirmStatus.UNCONFIRMED.getCode(), viewAttendance.getWorkMonth());
         return SUCCESS_TIP;
     }
 
     /**
-     *  修改考勤审批状态
-     *  将状态从未确认改为已确认
+     * 修改考勤审批状态
+     * 将状态从未确认改为已确认
      */
     @RequestMapping("/confirm")
     @ResponseBody
-    public ResponseData confirm(@RequestParam Long employeeId,Date workMonth){
-        if(ToolUtil.isEmpty(employeeId)){
+    public ResponseData confirm(@RequestBody ViewAttendance viewAttendance) {
+        if (ToolUtil.isEmpty(viewAttendance.getEmployeeId())) {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
-        this.attendanceService.updateStatus(employeeId, AttendanceConfirmStatus.CONFIRMED.getCode(),workMonth);
+        this.attendanceService.updateStatus(viewAttendance.getEmployeeId(), AttendanceConfirmStatus.CONFIRMED.getCode(), viewAttendance.getWorkMonth());
 
         return SUCCESS_TIP;
-        }
     }
+}
