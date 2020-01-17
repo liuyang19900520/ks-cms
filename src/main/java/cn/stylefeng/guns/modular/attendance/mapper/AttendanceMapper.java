@@ -3,6 +3,7 @@ package cn.stylefeng.guns.modular.attendance.mapper;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceAllRecord;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord;
 import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -41,7 +42,7 @@ public interface AttendanceMapper {
 
     Integer deleteMonthEmployeeID(@Param("workMonth") Date workMonth, @Param("employeeId") Long employeeId);
 
-    List<AttendanceAllRecord> selectAllMyAttendance(@Param("currentMonth") Date currentMonth, @Param("empId") Long empId, @Param("status") Integer status);
+    List<AttendanceAllRecord> selectAllMyAttendance(@Param("currentMonth") Date currentMonth, @Param("empId") Long empId, @Param("status") String status);
 
     void updateStatus(@Param("employeeId")Long employeeId, @Param("status")String status,@Param("workMonth")Date workMonth);
 }

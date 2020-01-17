@@ -26,10 +26,6 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             console.log(value); //得到日期生成的值，如：2017-08-18
             console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
             console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-
-            var queryData = {};
-            queryData['currentMonth'] = value
-            table.reload(AttendanceRecord.tableId, {where: queryData});
         }
     });
 
@@ -49,16 +45,11 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             {field: 'standardMinTime', sort: true, title: '最低工作时长'},
             {field: 'standardMaxTime', sort: true, title: '加班计算工时'},
             {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 150}
-            // {
-            //     field: 'workTime', sort: true, title: '工作时长', templet: function (d) {
-            //         return d.dayPeriod.toFixed(2) + ' h'
-            //     }
-            // },
         ]];
     };
 
     var queryData = {};
-    // var currentMonth = $dateformatter(new Date(), "yyyyMM")
+    //var currentMonth = $dateformatter(new Date(), "yyyyMM")
     queryData['currentMonth'] = null;
 
     /**
@@ -68,17 +59,21 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
     var queryData = {};
         queryData['currentMonth'] = $("#ipt-current-month").val();
         queryData['employeeId'] = AttendanceRecord.condition.employeeId;
-        table.reload(AttendanceRecord.tableId, {where: queryData});
+        table.reload(AttendanceRecord.tableId, {where: queryData,page:true,limit:2});
     };
 
 
 
     // 渲染表格
-    var tableResult = table.render({
+   /* var tableResult =*/
+    table.render({
         elem: '#' + AttendanceRecord.tableId,
         url: Feng.ctxPath + '/attendance/myself/list',
         where: queryData,
         height: "full-158",
+        page:true,
+        limit:2,
+        limits:[2,4,6,8],
         cols: AttendanceRecord.initColumn()
     });
 
@@ -127,7 +122,8 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             title: '编辑考勤',
             content: Feng.ctxPath + '/attendance/myself/attendance_edit?workMonth='+ data.workMonth,
             end: function () {
-                admin.getTempData('formOk') && table.reload(AttendanceRecord.tableId);
+                admin.getTempData('formOk') && table.reload(AttendanceRecord.tableId,{page:true,
+                    limit:2});
             }
         });
     };
@@ -142,7 +138,8 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
         var operation = function () {
             var ajax = new $ax(Feng.ctxPath + '/attendance/myself/attendance_delete?workMonth=' + data.workMonth, function () {
                 Feng.success("删除成功!");
-                table.reload(data.workMonth);
+                table.reload(data.workMonth,{page:true,
+                    limit:2,});
             }, function (data) {
                 Feng.error("删除失败!" + data.responseJSON.message + "!");
             });
@@ -162,7 +159,8 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
             title: '考勤录入',
             content: Feng.ctxPath + '/attendance/myself/input',
             end: function () {
-                admin.getTempData('formOk') && table.reload();
+                admin.getTempData('formOk') && table.reload({page:true,
+                    limit:2});
                 window.location.reload();
             }
         });

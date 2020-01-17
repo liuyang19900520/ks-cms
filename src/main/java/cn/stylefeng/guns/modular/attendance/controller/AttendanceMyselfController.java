@@ -29,6 +29,7 @@ import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.core.reqres.response.SuccessResponseData;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,7 +83,9 @@ public class AttendanceMyselfController extends BaseController {
     //渲染表格
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(@RequestParam String currentMonth) {
+    public Object list(@RequestParam String currentMonth,
+                       @RequestParam(value="page",required = false)Integer page,
+                       @RequestParam(value = "limit",required = false)Integer limit) {
 
         Date currentMonthDate = null;
         if (currentMonth != null && !currentMonth.equals("")) {
@@ -90,12 +93,12 @@ public class AttendanceMyselfController extends BaseController {
         }
 
         ShiroUser currentUser = ShiroKit.getUser();
-        List<ViewAttendance> viewAttendances = attendanceService.listMyAttendanceByMonth(currentMonthDate, currentUser.getId());
+        PageInfo<ViewAttendance> viewAttendances = attendanceService.listMyAttendanceByMonth(page,limit,currentMonthDate, currentUser.getId());
         HashMap<String, Object> result = Maps.newHashMap();
         result.put("code", "0");
         result.put("msg", "success");
-        result.put("count", viewAttendances.size());
-        result.put("data", viewAttendances);
+        result.put("count", viewAttendances.getTotal());
+        result.put("data", viewAttendances.getList());
         return result;
     }
 

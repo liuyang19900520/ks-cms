@@ -16,16 +16,22 @@
 package cn.stylefeng.guns.modular.attendance.controller;
 
 import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
+import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.core.util.LDateUtils;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceAllRecord;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceConfirmStatus;
 import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
 import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
 import cn.stylefeng.guns.modular.system.entity.Dict;
+import cn.stylefeng.guns.modular.system.warpper.LogWrapper;
+import cn.stylefeng.guns.modular.system.warpper.UserWrapper;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +43,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 部门控制器
@@ -56,7 +63,6 @@ public class AttendanceListController extends BaseController {
 
     /**
      * 我的考勤
-     *
      * @return
      */
     @RequestMapping("")
@@ -65,39 +71,37 @@ public class AttendanceListController extends BaseController {
     }
 
 
+
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list() {
+    public Object list(@RequestParam(value = "workMonth",required = false) String workMonth,
+                         @RequestParam(value = "employeeId",required = false) Long empId,
+                         @RequestParam(value = "status",required = false) String status,
+                        @RequestParam(value = "page",required = false) Integer page,
+                        @RequestParam(value = "limit",required = false) Integer limit
+                        ){
 
-        Date workMonthDate = LDateUtils.stringToDate(LDateUtils.dateToString(new Date(), "yyyyMM"), "yyyyMM");
-        System.out.println(workMonthDate);
+        PageInfo<AttendanceAllRecord> attendanceAllRecords;
+        Date searchMonth;
 
-        List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance(workMonthDate, null, false);
-        HashMap<String, Object> result = Maps.newHashMap();
-        result.put("code", "0");
-        result.put("msg", "success");
-        result.put("count", attendanceAllRecords.size());
-        result.put("data", attendanceAllRecords);
-        return result;
-    }
+        if (workMonth != null && !workMonth.equals("")) {
+            searchMonth = LDateUtils.stringToDate(workMonth, "yyyyMM");
+            attendanceAllRecords = attendanceService.selectAllAttendance(page,limit,searchMonth,empId,status);
 
-    @RequestMapping(value = "/checklist")
-    @ResponseBody
-    public Object checklist(@RequestParam String currentMonthDate, @RequestParam Long empId, @RequestParam boolean status) {
-
-        Date currentMonth = null;
-        if (currentMonthDate != null && !currentMonthDate.equals("")) {
-            currentMonth = LDateUtils.stringToDate(currentMonthDate, "yyyyMM");
+        }else{
+            attendanceAllRecords = attendanceService.selectAllAttendance(page,limit,null,empId,status);
         }
-        System.out.println(currentMonth);
-        List<AttendanceAllRecord> attendanceAllRecords = attendanceService.selectAllAttendance(currentMonth, empId, status);
-        HashMap<String, Object> result = Maps.newHashMap();
-        result.put("code", "0");
-        result.put("msg", "success");
-        result.put("count", attendanceAllRecords.size());
-        result.put("data", attendanceAllRecords);
-        return result;
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("code",0);
+        map.put("msg","查询成功");
+        map.put("count",attendanceAllRecords.getTotal());
+        map.put("data",attendanceAllRecords.getList());
+
+        return map;
+
     }
+
 
     @RequestMapping(value = "/getEmployeeType")
     @ResponseBody
@@ -132,6 +136,7 @@ public class AttendanceListController extends BaseController {
         if (ToolUtil.isEmpty(viewAttendance.getEmployeeId())) {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
+
         this.attendanceService.updateStatus(viewAttendance.getEmployeeId(), AttendanceConfirmStatus.CONFIRMED.getCode(), viewAttendance.getWorkMonth());
 
         return SUCCESS_TIP;

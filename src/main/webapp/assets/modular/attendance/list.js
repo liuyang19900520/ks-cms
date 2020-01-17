@@ -6,6 +6,7 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'],
     var $dateformatter = layui.dateformatter;
     var form = layui.form;
     var layer = layui.layer;
+    var laydate = layui.laydate;
 
     /**
      * 系统管理--部门管理
@@ -17,25 +18,18 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'],
         }
     };
 
-    var laydate = layui.laydate;
-
     //执行一个laydate实例
     laydate.render({
         elem: '#ipt-current-month', //指定元素
         type: 'month',
-        value: new Date(),
+        /*value: new Date(),*/
         format: 'yyyyMM',
         done: function (value, date, endDate) {
             console.log(value); //得到日期生成的值，如：2017-08-18
             console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
             console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
 
-
-            queryData['currentMonthDate'] = value
-            queryData['empId'] = null
-            queryData['status'] = false
-
-            AttendanceRecord.search();
+            /*renderTable(value)*/
 
         }
     });
@@ -53,48 +47,82 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'],
             {field: 'projectName', sort: true, title: '项目名称', edit: "text"},
             {field: 'customerSiteName', sort: true, title: '现场名称', edit: "text"},
             {field: 'companyName', sort: true, title: '客户名称', edit: "text"},
-            {field: 'status', sort: true, title: '状态', templet: '#statusTpl'}
+            {field: 'status', sort: true, title: '审批状态', templet: '#statusTpl'}
         ]];
     };
 
     var queryData = {};
-    queryData['empId'] = null
-    queryData['status'] = false
 
 
     // 搜索按钮点击事件
+    /***
+     *
+     * 点击搜索按钮，按条件搜索
+     */
     $('#btnSearch').click(function () {
+        var searchDate = $('#ipt-current-month').val()
+        var employeeId = $('#ipt-empId').val()
+        var status=$('#ipt-status').val();
 
-        AttendanceRecord.search();
+        if ( status =="已确认") {
+            status = "0"
+        }
+        else if ( status =="未确认") {
+            status = "1"
+        }
+        else if (status == "") {
+            status= ""
+        }
+        else{
+            alert("审批状态为‘已确认’或‘未确认’")
+            return;
+        }
+        renderTable(searchDate,employeeId,status)
+
+        $('#ipt-current-month').val("");
+        $('#ipt-empId').val("");
+        $('#ipt-status').val("");
     });
 
 
     /**
-     * 点击搜索按钮
+     * 定义渲染页面的函数
      */
-    AttendanceRecord.search = function () {
-        queryData['currentMonthDate'] = $('#ipt-current-month').val();
-        queryData['empId'] = null
-        /*queryData['status'] = false*/
-        var tableResult = table.render({
+    function renderTable(workMonth,employeeId,status){
+        queryData["workMonth"] = workMonth;
+        queryData["employeeId"] = employeeId;
+        queryData["status"] = status
+
+         table.render({
             elem: '#' + AttendanceRecord.tableId,
-            url: Feng.ctxPath + '/attendance/list/checklist',
+            url: Feng.ctxPath + '/attendance/list/list',
             where: queryData,
             height: "full-158",
-            cols: AttendanceRecord.initColumn()
-        });
-    };
+             page:{
+                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                 ,limit:2
+                 ,limits:[2,4,6,8]
+                 ,groups: 1 //只显示 1 个连续页码
+                 ,first: false //不显示首页
+                 ,last: false //不显示尾页
+             },
+             cols: AttendanceRecord.initColumn()
+        })
+/*        layPage.render({
+            elem:AttendanceRecord.tableId,
+            count:10,
+            limit:2,
+            limits:[2,4,6,8],
+            groups:1,
+            first:false,
+            last:false,
+        })*/
+    }
 
-
-    // 渲染表格
-    var tableResult = table.render({
-        elem: '#' + AttendanceRecord.tableId,
-        url: Feng.ctxPath + '/attendance/list/list',
-        where: queryData,
-        height: "full-158",
-        cols: AttendanceRecord.initColumn()
-    });
-
+    /**
+     * 页面初始化时，渲染表格
+     */
+    renderTable();
 
     function init() {
         //打开页面时初始化下拉列表
@@ -132,7 +160,6 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'],
      * @param checked 是否选中（true,false），选中就是已确认，未选中就是未确认
      */
     AttendanceRecord.changeUserStatus = function (employeeId, checked, workMonth) {
-        alert(workMonth);
         if (checked) {
             var ajax = new $ax(Feng.ctxPath + "/attendance/list/confirm", function (data) {
                 Feng.success("确认成功!");
@@ -156,8 +183,12 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'],
                 Feng.error("取消确认失败!");
                 table.reload(AttendanceRecord.tableId);
             });
-            ajax.set("employeeId", employeeId);
-            ajax.set("workMonth", workMonth);
+            var data = {
+                "employeeId": employeeId,
+                "workMonth": workMonth
+            }
+            ajax.setContentType("application/json")
+            ajax.setData(JSON.stringify(data))
             ajax.start();
         }
     };
