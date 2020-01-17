@@ -80,7 +80,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             title: '添加项目信息',
             content: Feng.ctxPath + 'customer/site/customerSite_add_project?customerSiteID=' + data.customerSiteID,
             end: function () {
-                admin.getTempData('formOk') && table.reload(Customer.tableId);
+                location.href="/customer/project";
             }
         });
     };

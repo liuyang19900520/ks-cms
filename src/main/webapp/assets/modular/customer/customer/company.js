@@ -71,10 +71,9 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             title: '添加现场信息',
             content: Feng.ctxPath + 'customer/company/company_add_site?customerID=' + data.customerID,
             end: function () {
-                $("#aaa").click(function(){
-                    location.href="/customer/site";
 
-                });
+                $('.layui-this').removeClass('layui-this');
+                location.href="/customer/site";
             }
         });
     };
