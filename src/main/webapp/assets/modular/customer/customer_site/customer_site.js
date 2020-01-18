@@ -80,7 +80,16 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             title: '添加项目信息',
             content: Feng.ctxPath + 'customer/site/customerSite_add_project?customerSiteID=' + data.customerSiteID,
             end: function () {
-                location.href="/customer/project";
+                // location.href="/customer/project"
+                var x = {
+                    "indexTabs": [{
+                        "menuId": "/customer/project",
+                        "menuPath": "/customer/project",
+                        "menuName": "项目管理"
+                    }], "tabPosition": "/customer/project", "formOk": true
+                }
+                sessionStorage.setItem("tempData", JSON.stringify(x));
+                top.location.reload()
             }
         });
     };

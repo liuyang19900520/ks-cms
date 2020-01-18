@@ -1,10 +1,12 @@
-layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
+layui.use(['layer', 'form', 'table', 'admin', 'ax','element'], function () {
     var $ = layui.$;
     var layer = layui.layer;
     var form = layui.form;
     var table = layui.table;
     var $ax = layui.ax;
     var admin = layui.admin;
+    var nav = layui.element;
+
 
     /**
      * 系统管理--角色管理
@@ -12,7 +14,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     var Company = {
         tableId: "companyTable",    //表格id
         condition: {
-        	customerID: ""
+            customerID: ""
         }
     };
 
@@ -40,7 +42,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     Company.search = function () {
         var queryData = {};
         // queryData['condition'] = $("#condition").val();
-         queryData['companyName'] = $("#companyName").val();
+        queryData['companyName'] = $("#companyName").val();
         //queryData['customerID'] = Company.condition.customerID;
         table.reload(Company.tableId, {where: queryData});
     };
@@ -71,9 +73,15 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             title: '添加现场信息',
             content: Feng.ctxPath + 'customer/company/company_add_site?customerID=' + data.customerID,
             end: function () {
-
-                $('.layui-this').removeClass('layui-this');
-                location.href="/customer/site";
+                var x = {
+                    "indexTabs": [{
+                        "menuId": "/customer/site",
+                        "menuPath": "/customer/site",
+                        "menuName": "现场管理"
+                    }], "tabPosition": "/customer/site", "formOk": true
+                }
+                sessionStorage.setItem("tempData", JSON.stringify(x));
+                top.location.reload()
             }
         });
     };
@@ -96,7 +104,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         });
     };
 
-       /**
+    /**
      * 点击删除角色
      *
      * @param data 点击按钮时候的行数据
@@ -128,12 +136,12 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
-    	Company.search();
+        Company.search();
     });
 
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
-    	Company.openAddCompany();
+        Company.openAddCompany();
     });
 
     // 工具条点击事件
@@ -142,14 +150,13 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
         var layEvent = obj.event;
 
         if (layEvent === 'edit') {
-        	Company.onEditCompany(data);
+            Company.onEditCompany(data);
         } else if (layEvent === 'delete') {
-        	Company.onDeleteCompany(data);
-        } else if (layEvent === 'add'){
+            Company.onDeleteCompany(data);
+        } else if (layEvent === 'add') {
             Company.openAdd1Company(data);
         }
     });
-
 
 
 });
