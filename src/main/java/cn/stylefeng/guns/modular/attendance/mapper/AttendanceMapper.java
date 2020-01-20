@@ -3,7 +3,9 @@ package cn.stylefeng.guns.modular.attendance.mapper;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceAllRecord;
 import cn.stylefeng.guns.modular.attendance.entity.AttendanceRecord;
 import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +32,7 @@ public interface AttendanceMapper {
 
     List<AttendanceAllRecord> selectUsers();
 
-    List<ViewAttendance> selectMyAttendanceByMonth(@Param("currentMonth") Date currentMonth, @Param("employeeId") Long employeeId);
+    Page<ViewAttendance> selectMyAttendanceByMonth(@Param("page") Page page,@Param("currentMonth") Date currentMonth, @Param("employeeId") Long employeeId);
 
     Map<String, Object> selectCustomerSiteInfoForAddForm(@Param("employeeId") Long employeeId);
 
@@ -42,7 +44,9 @@ public interface AttendanceMapper {
 
     Integer deleteMonthEmployeeID(@Param("workMonth") Date workMonth, @Param("employeeId") Long employeeId);
 
-    List<AttendanceAllRecord> selectAllMyAttendance(@Param("currentMonth") Date currentMonth, @Param("empId") Long empId, @Param("status") String status);
+    List<AttendanceAllRecord> selectAllMyAttendance(@Param("currentMonth") Date currentMonth, @Param("empId") Long empId, @Param("status") String status,@Param("start")Long start,@Param("end")Long end);
 
     void updateStatus(@Param("employeeId")Long employeeId, @Param("status")String status,@Param("workMonth")Date workMonth);
+
+    Long selectDataSize();
 }

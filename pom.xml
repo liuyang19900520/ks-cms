@@ -159,19 +159,11 @@
             <optional>true</optional>
         </dependency>
 
-<!--        &lt;!&ndash;PageHelper&ndash;&gt;
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-            <version>5.1.11</version>
-        </dependency>-->
-
-        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
-        <dependency>
+<!--        <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.12</version>
-        </dependency>
+        </dependency>-->
 
 
         <!--需要分布式session的话需要放开注释-->

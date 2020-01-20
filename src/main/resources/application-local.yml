@@ -6,15 +6,6 @@ spring:
     filters: wall,mergeStat
 
 
-#pageHelper的配置
-pagehelper:
-  helper-dialect: mysql
-  reasonable: true
-  support-methods-arguments: true
-  params: count=countSql
-  row-bounds-with-count: true
-
-
 #多数据源情况的配置
 guns:
   muti-datasource:

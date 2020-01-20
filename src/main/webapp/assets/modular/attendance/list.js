@@ -108,15 +108,6 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter', 'form', 'layer'],
              },
              cols: AttendanceRecord.initColumn()
         })
-/*        layPage.render({
-            elem:AttendanceRecord.tableId,
-            count:10,
-            limit:2,
-            limits:[2,4,6,8],
-            groups:1,
-            first:false,
-            last:false,
-        })*/
     }
 
     /**

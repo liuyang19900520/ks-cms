@@ -18,8 +18,6 @@ import cn.stylefeng.guns.modular.system.mapper.EmployeeMapper;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,16 +40,16 @@ public class AttendanceService {
     EmployeeMapper employeeMapper;
 
 
-    public PageInfo<ViewAttendance> listMyAttendanceByMonth(Integer page,Integer limit,Date selectMonth, Long userId) {
+    public Page<ViewAttendance> listMyAttendanceByMonth(Date selectMonth, Long userId) {
         Employee employee = employeeMapper.selectEmployeeByUserId(userId);
         Long employeeId = employee.getEmployeeId();
 
-        PageHelper.startPage(page,limit);
-        //将这个employeeId传入查询视图的mapper中
-        List<ViewAttendance> viewAttendances = attendanceMapper.selectMyAttendanceByMonth(selectMonth, employeeId);
-        PageInfo<ViewAttendance> result = new PageInfo<>(viewAttendances);
+        Page page = LayuiPageFactory.defaultPage();
 
-        return result;
+        //将这个employeeId传入查询视图的mapper中
+        Page<ViewAttendance> viewAttendances = attendanceMapper.selectMyAttendanceByMonth(page,selectMonth, employeeId);
+
+        return viewAttendances;
 
     }
 
@@ -285,14 +283,23 @@ public class AttendanceService {
         attendanceMapper.deleteMonthEmployeeID(workMonth, employeeId);
     }
 
-    public PageInfo<AttendanceAllRecord> selectAllAttendance(Integer page,Integer limit,Date currentMonth, Long empId, String status) {
+    public Page<AttendanceAllRecord> selectAllAttendance(Date currentMonth, Long empId, String status) {
 
-        PageHelper.startPage(page,limit);
-        List<AttendanceAllRecord> attendanceAllRecords = attendanceMapper.selectAllMyAttendance(currentMonth, empId, status);
-        PageInfo<AttendanceAllRecord> pageInfo = new PageInfo<>(attendanceAllRecords);
+        Page page = LayuiPageFactory.defaultPage();
 
-         return pageInfo;
+        Long currentPage = page.getCurrent();
+        Long size = page.getSize();
 
+        Long start = (currentPage-1)*size;
+        Long end = size;
+
+        List<AttendanceAllRecord> attendanceAllRecords = attendanceMapper.selectAllMyAttendance(currentMonth, empId, status,start,end);
+        Long totalData = attendanceMapper.selectDataSize();
+
+        page.setRecords(attendanceAllRecords);
+        page.setTotal(totalData);
+
+        return page;
 
     }
 

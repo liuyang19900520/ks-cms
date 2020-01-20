@@ -106,6 +106,7 @@
         order by WORK_MONTH desc
     </select>
 
+
     <select id="selectCustomerSiteInfoForAddForm" resultType="java.util.Map">
        select  DISTINCT EMPLOYEE_ID,CUSTOMER_SITE_NAME,PROJECT_NAME,COMPANY_NAME from v_attendance
         where EMPLOYEE_ID=#{employeeId}
@@ -142,7 +143,7 @@
     </delete>
 
     <select id="selectAllMyAttendance" resultMap="listMap">
-        select
+      select
       EMPLOYEE_ID,
       EMPLOYEE_NAME_CN,
       WORK_MONTH,
@@ -163,7 +164,15 @@
             AND STATUS = #{status}
         </if>
         order by WORK_MONTH desc
+        limit #{start},#{end}
     </select>
+
+
+    <select id="selectDataSize" resultType="Long">
+        select count(1)
+        from v_attendance
+    </select>
+
 
     <update id="updateStatus" parameterType="cn.stylefeng.guns.modular.attendance.entity.ViewAttendance">
       update attendance_quick_record

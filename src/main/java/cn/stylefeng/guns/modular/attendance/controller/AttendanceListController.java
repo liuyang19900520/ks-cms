@@ -23,16 +23,12 @@ import cn.stylefeng.guns.modular.attendance.entity.AttendanceConfirmStatus;
 import cn.stylefeng.guns.modular.attendance.entity.ViewAttendance;
 import cn.stylefeng.guns.modular.attendance.service.AttendanceService;
 import cn.stylefeng.guns.modular.system.entity.Dict;
-import cn.stylefeng.guns.modular.system.warpper.LogWrapper;
-import cn.stylefeng.guns.modular.system.warpper.UserWrapper;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,9 +37,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 /**
  * 部门控制器
@@ -71,34 +66,23 @@ public class AttendanceListController extends BaseController {
     }
 
 
-
     @RequestMapping(value = "/list")
     @ResponseBody
     public Object list(@RequestParam(value = "workMonth",required = false) String workMonth,
                          @RequestParam(value = "employeeId",required = false) Long empId,
-                         @RequestParam(value = "status",required = false) String status,
-                        @RequestParam(value = "page",required = false) Integer page,
-                        @RequestParam(value = "limit",required = false) Integer limit
-                        ){
+                         @RequestParam(value = "status",required = false) String status
+                       ){
 
-        PageInfo<AttendanceAllRecord> attendanceAllRecords;
+        Page<AttendanceAllRecord> attendanceAllRecords;
         Date searchMonth;
 
         if (workMonth != null && !workMonth.equals("")) {
             searchMonth = LDateUtils.stringToDate(workMonth, "yyyyMM");
-            attendanceAllRecords = attendanceService.selectAllAttendance(page,limit,searchMonth,empId,status);
-
+            attendanceAllRecords = attendanceService.selectAllAttendance(searchMonth,empId,status);
         }else{
-            attendanceAllRecords = attendanceService.selectAllAttendance(page,limit,null,empId,status);
+            attendanceAllRecords = attendanceService.selectAllAttendance(null,empId,status);
         }
-
-        Map<String,Object> map = new HashMap<>();
-        map.put("code",0);
-        map.put("msg","查询成功");
-        map.put("count",attendanceAllRecords.getTotal());
-        map.put("data",attendanceAllRecords.getList());
-
-        return map;
+        return LayuiPageFactory.createPageInfo(attendanceAllRecords);
 
     }
 
