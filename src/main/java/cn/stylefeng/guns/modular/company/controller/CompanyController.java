@@ -15,6 +15,7 @@
  */
 package cn.stylefeng.guns.modular.company.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import cn.stylefeng.guns.core.common.constant.Const;
@@ -26,6 +27,7 @@ import cn.stylefeng.guns.modular.system.warpper.CustomerSiteWrapper;
 import cn.stylefeng.roses.core.datascope.DataScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,6 +67,7 @@ public class CompanyController extends BaseController {
     private CompanyService companyService;
     @Autowired
     private CustomerSiteService customerSiteService;
+
 
     /**
      * 跳转到客户信息管理首页
@@ -210,9 +213,16 @@ public class CompanyController extends BaseController {
     @RequestMapping(value = "/delete")
     @Permission
     @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
     public ResponseData delete(@RequestParam Long customerID) {
-
+        //根据customerId在company表格中删除数据
         companyService.removeById(customerID);
+
+        //根据customerId在customer_site中删除数据
+        List<Long> customerSiteId = customerSiteService.getCustomerSiteIdByCustomerId(customerID);
+        for(Long id:customerSiteId){
+            customerSiteService.deleteCustomerSiteByCustomerSiteID(id);
+        }
 
         return SUCCESS_TIP;
     }

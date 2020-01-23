@@ -52,4 +52,11 @@
         SET CUSTOMER_SITE_NAME=#{customerSiteName},CUSTOMER_SITE_ADDRESS=#{customerSiteAddress},CUSTOMER_SITE_STATION=#{customerSiteStation}
         WHERE CUSTOMER_ID=#{customerID}
     </update>
+
+    <select id="getCustomerSiteIdByCustomerId" resultType="long" parameterType="cn.stylefeng.guns.modular.company.entity.CustomerSite">
+        select CUSTOMER_SITE_ID
+        from customer_site
+        where
+          CUSTOMER_ID=#{customerID}
+    </select>
 </mapper>
