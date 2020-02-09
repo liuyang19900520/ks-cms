@@ -22,6 +22,7 @@ import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.modular.employee.entity.Visa;
 import cn.stylefeng.guns.modular.employee.service.VisaService;
 import cn.stylefeng.guns.modular.employee.wrapper.VisaWrapper;
+import cn.stylefeng.guns.modular.system.entity.Dict;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -110,6 +112,19 @@ public class VisaController extends BaseController {
     @ResponseBody
     public Object selectUnregister() {
         return this.visaService.getUnregister();
+    }
+
+    /**
+     * 获取签证类型
+     *
+     * @author liuyang
+     * @Date 2018/12/24 22:43
+     */
+    @RequestMapping(value = "/getVisaType")
+    @ResponseBody
+    public List<Dict> getVisaType() {
+        List<Dict> list = this.visaService.getVisaType();
+        return list;
     }
 
 }
