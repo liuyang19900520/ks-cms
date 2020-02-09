@@ -1,20 +1,19 @@
 package cn.stylefeng.guns.modular.employee.service;
 
-import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
+
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.modular.employee.entity.Visa;
-import cn.stylefeng.guns.modular.employee.mapper.InfoMgrMapper;
 import cn.stylefeng.guns.modular.employee.mapper.VisaMapper;
-import cn.stylefeng.roses.core.util.ToolUtil;
-import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import cn.stylefeng.guns.modular.system.entity.Dict;
+import cn.stylefeng.guns.modular.system.mapper.DictMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * <p>
@@ -27,6 +26,8 @@ import java.util.UUID;
 @Service
 public class VisaService extends ServiceImpl<VisaMapper, Visa> {
 
+    @Resource
+    private DictMapper dictMapper;
 
     @Autowired
     private VisaMapper visaMapper;
@@ -63,4 +64,15 @@ public class VisaService extends ServiceImpl<VisaMapper, Visa> {
         return visaMapper.getUnregister();
 
     }
+    //public List<Map<String, Object>> listForSelect() {
+
+        //return visaMapper.listForSelect();
+
+    //}
+
+    public List<Dict> getVisaType() {
+        List<Dict> returnList = dictMapper.selectByParentCode("VISA_TYPE");
+        return returnList;
+    }
+
 }
