@@ -17,6 +17,10 @@ layui.use(['table', 'admin', 'ax', 'laydate', 'dateformatter'], function () {
 
     var laydate = layui.laydate;
 
+    var page={
+
+    }
+
     //执行一个laydate实例
     laydate.render({
         elem: '#ipt-current-month', //指定元素

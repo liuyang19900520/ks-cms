@@ -10,10 +10,12 @@ import cn.stylefeng.guns.modular.system.model.CompanyDto;
 import cn.stylefeng.roses.core.datascope.DataScope;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -90,5 +92,6 @@ public class CompanyService extends ServiceImpl<CompanyMapper, Company> {
     public List<Company> listForSelect(){
         return  this.list();
     }
+
 
 }
