@@ -66,22 +66,23 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax','element'], function () {
      * 弹出窗口
      */
     Company.openAdd1Company = function (data) {
-
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
             title: '添加现场信息',
             content: Feng.ctxPath + 'customer/company/company_add_site?customerID=' + data.customerID,
             end: function () {
-                var x = {
-                    "indexTabs": [{
-                        "menuId": "/customer/site",
-                        "menuPath": "/customer/site",
-                        "menuName": "现场管理"
-                    }], "tabPosition": "/customer/site", "formOk": true
+                if(admin.getTempData('formOk')){
+                    var x = {
+                        "indexTabs": [{
+                            "menuId": "/customer/site",
+                            "menuPath": "/customer/site",
+                            "menuName": "现场管理"
+                        }], "tabPosition": "/customer/site", "formOk": true
+                    }
+                    sessionStorage.setItem("tempData", JSON.stringify(x));
+                    top.location.reload()
                 }
-                sessionStorage.setItem("tempData", JSON.stringify(x));
-                top.location.reload()
             }
         });
     };
