@@ -37,6 +37,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     Customer.search = function () {
         var queryData = {};
         queryData['customerSiteName'] = $("#customerSiteName").val();
+        queryData['customerSiteId'] = $("#customerSiteId").val();
         table.reload(Customer.tableId, {where: queryData});
     };
     /**

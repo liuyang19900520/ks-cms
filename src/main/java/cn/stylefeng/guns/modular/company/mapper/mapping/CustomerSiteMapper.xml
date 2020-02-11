@@ -38,8 +38,12 @@
         select
         <include refid="Base_Column_List"></include>
         from customer_site
-        <if test="customersiteName != null and customersiteName != ''">
-            where CUSTOMER_SITE_NAME like CONCAT('%',#{customerSiteName},'%')
+        where 1=1
+        <if test="customerSiteName != null and customerSiteName != ''">
+            and CUSTOMER_SITE_NAME like CONCAT('%',#{customerSiteName},'%')
+        </if>
+        <if test="customerSiteId != null and customerSiteId != ''">
+            and CUSTOMER_SITE_ID like CONCAT('%',#{customerSiteId},'%')
         </if>
         order by CUSTOMER_ID asc
     </select>
