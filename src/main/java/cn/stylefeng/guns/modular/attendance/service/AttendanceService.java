@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.jnlp.IntegrationService;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -47,7 +46,7 @@ public class AttendanceService {
         Page page = LayuiPageFactory.defaultPage();
 
         //将这个employeeId传入查询视图的mapper中
-        Page<ViewAttendance> viewAttendances = attendanceMapper.selectMyAttendanceByMonth(page,selectMonth, employeeId);
+        Page<ViewAttendance> viewAttendances = attendanceMapper.selectMyAttendanceByMonth(page, selectMonth, employeeId);
 
         return viewAttendances;
 
@@ -290,10 +289,10 @@ public class AttendanceService {
         Long currentPage = page.getCurrent();
         Long size = page.getSize();
 
-        Long start = (currentPage-1)*size;
+        Long start = (currentPage - 1) * size;
         Long end = size;
 
-        List<AttendanceAllRecord> attendanceAllRecords = attendanceMapper.selectAllMyAttendance(currentMonth, empId, status,start,end);
+        List<AttendanceAllRecord> attendanceAllRecords = attendanceMapper.selectAllMyAttendance(currentMonth, empId, status, start, end);
         Long totalData = attendanceMapper.selectDataSize();
 
         page.setRecords(attendanceAllRecords);
@@ -314,7 +313,7 @@ public class AttendanceService {
     }
 
 
-    public void updateStatus(Long employeeId, String status,Date workMonth) {
-        attendanceMapper.updateStatus(employeeId, status,workMonth);
+    public void updateStatus(Long employeeId, String status, Date workMonth) {
+        attendanceMapper.updateStatus(employeeId, status, workMonth);
     }
 }
