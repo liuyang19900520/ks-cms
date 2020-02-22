@@ -15,20 +15,34 @@
  */
 package cn.stylefeng.guns.modular.employee.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.stylefeng.guns.core.common.annotion.BussinessLog;
 import cn.stylefeng.guns.core.common.annotion.Permission;
+import cn.stylefeng.guns.core.common.constant.dictmap.CustomerSiteDict;
+import cn.stylefeng.guns.core.common.constant.dictmap.DeptDict;
+import cn.stylefeng.guns.core.common.constant.dictmap.MyselfDict;
 import cn.stylefeng.guns.core.common.constant.dictmap.VisaDict;
+import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
+import cn.stylefeng.guns.core.log.LogObjectHolder;
+import cn.stylefeng.guns.modular.claim.entity.Myself;
+import cn.stylefeng.guns.modular.company.entity.CustomerSite;
 import cn.stylefeng.guns.modular.employee.entity.Visa;
 import cn.stylefeng.guns.modular.employee.service.VisaService;
 import cn.stylefeng.guns.modular.employee.wrapper.VisaWrapper;
 import cn.stylefeng.guns.modular.system.entity.Dict;
+import cn.stylefeng.guns.modular.system.model.MyselfDto;
+import cn.stylefeng.guns.modular.system.model.VisaDto;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
+import cn.stylefeng.roses.core.util.ToolUtil;
+import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -125,6 +139,67 @@ public class VisaController extends BaseController {
     public List<Dict> getVisaType() {
         List<Dict> list = this.visaService.getVisaType();
         return list;
+    }
+    /**
+     * 删除部门
+     *
+     * @author fengshuonan
+     * @Date 2018/12/23 4:57 PM
+     */
+    @BussinessLog(value = "删除部门", key = "employeeId", dict = VisaDict.class)
+    @RequestMapping(value = "/delete")
+    @Permission
+    @ResponseBody
+    public ResponseData delete(@RequestParam Long employeeId) {
+
+        visaService.removeById(employeeId);
+
+        return SUCCESS_TIP;
+    }
+    /**
+     * 跳转到修改签证信息详细页
+     *
+     * @author fengshuonan
+     * @Date 2018/12/23 4:56 PM
+     */
+    @Permission
+    @RequestMapping("/visa_edit")
+    public String openEditPage(@RequestParam("employeeId") Long employeeId) {
+
+        if (ToolUtil.isEmpty(employeeId)) {
+            throw new RequestEmptyException();
+        }
+
+        return PREFIX + "visa_edit.html";
+    }
+    /**
+     * 签证信息详细页信息
+     *
+     * @author fengshuonan
+     * @Date 2018/12/23 4:57 PM
+     */
+    @RequestMapping(value = "/detail/{employee，employeeId}")
+    @Permission
+    @ResponseBody
+    public Object detail(@PathVariable("employeeId") Long employeeId) {
+        Visa visa = visaService.getById(employeeId);
+        VisaDto visaDto = new VisaDto();
+        BeanUtil.copyProperties(visa, visaDto);
+        return visaDto;
+    }
+    /**
+     * 修改客户信息
+     *
+     * @author fengshuonan
+     * @Date 2018/12/23 4:57 PM
+     */
+    @BussinessLog(value = "修改签证信息", key = "employeeId", dict = VisaDict.class)
+    @RequestMapping(value = "/visaEdit")
+    @Permission
+    @ResponseBody
+    public ResponseData myselfEdit(Visa visa) {
+        visaService.editVisa(visa);
+        return SUCCESS_TIP;
     }
 
 }
