@@ -64,6 +64,7 @@ public class VisaWrapper extends BaseControllerWrapper {
     @Override
     protected void wrapTheMap(Map<String, Object> map) {
         String code = (String) map.get("visaType");
+        map.put("visaTypeCode", code);
         //code转value
         List<Dict> list = dictMapper.selectByCode(code);
         if (ToolUtil.isNotEmpty(list)) {

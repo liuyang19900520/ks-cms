@@ -25,4 +25,10 @@ public interface VisaMapper extends BaseMapper<Visa> {
 
     int insertVisa(Visa visa);
 
+    Map<String, Object> selectVisaByEid(@Param("employeeId") Long eid);
+
+    int updateVisa(Visa visa);
+
+
+
 }

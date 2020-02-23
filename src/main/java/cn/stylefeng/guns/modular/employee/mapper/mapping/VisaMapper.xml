@@ -23,9 +23,13 @@
         values
         (#{userId},#{employeeId},#{visaType},#{visaUpdateTime},#{visaExpireTime},
         CURRENT_TIMESTAMP,#{userId},CURRENT_TIMESTAMP,#{userId})
-
-
     </insert>
+    <update id="updateVisa" parameterType="cn.stylefeng.guns.modular.employee.entity.Visa">
+        update employee_visa
+        set VISA_TYPE=#{visaType},VISA_UPDATE_TIME=#{visaUpdateTime},VISA_EXPIRE_TIME=#{visaExpireTime}
+        where EMPLOYEE_ID=#{employeeId}
+
+    </update>
 
     <select id="list" resultType="map">
         select
@@ -49,6 +53,18 @@
         FROM
           employee
         WHERE EMPLOYEE_ID NOT IN(SELECT EMPLOYEE_ID FROM employee_visa)
+    </select>
+
+    <select id="selectVisaByEid" resultType="java.util.Map">
+        select
+        a.EMPLOYEE_ID as employeeId,
+        b.EMPLOYEE_NAME_CN as employeeNameCn,
+        a.VISA_TYPE as visaType,
+        a.VISA_UPDATE_TIME as visaUpdateTime,
+        a.VISA_EXPIRE_TIME as visaExpireTime
+        from employee_visa a
+        left join employee b on a.USER_ID=b.USER_ID
+        where b.EMPLOYEE_ID like #{employeeId}
     </select>
 
     <!--insert id="insertVisa" parameterType="cn.stylefeng.guns.modular.employee.entity.visa">

@@ -11,11 +11,13 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
 
     // 渲染时间选择框
     laydate.render({
-        elem: '#visaUpdateTime'
+        elem: '#visaUpdateTime',
+        trigger:'click'
     });
 
     laydate.render({
-        elem: '#visaExpireTime'
+        elem: '#visaExpireTime',
+        trigger:'click'
     });
 
     //公司信息

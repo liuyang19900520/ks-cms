@@ -51,12 +51,16 @@ public class VisaService extends ServiceImpl<VisaMapper, Visa> {
     }
 
     //添加签证信息
-    public void addVisa(Visa visa) {
+    public Map<String, Object> selectVisaDetailById(Long id) {
 
+        return visaMapper.selectVisaByEid(id);
+    }
+
+    //添加签证信息
+    public void addVisa(Visa visa) {
         String[] split = visa.getEmployeeSelectValue().split(",");
         visa.setUserId(Long.parseLong(split[0]));
         visa.setEmployeeId(Long.parseLong(split[1]));
-
         visaMapper.insertVisa(visa);
     }
 
@@ -71,11 +75,6 @@ public class VisaService extends ServiceImpl<VisaMapper, Visa> {
         return visaMapper.getUnregister();
 
     }
-    //public List<Map<String, Object>> listForSelect() {
-
-        //return visaMapper.listForSelect();
-
-    //}
 
     public List<Dict> getVisaType() {
         List<Dict> returnList = dictMapper.selectByParentCode("VISA_TYPE");
@@ -90,10 +89,9 @@ public class VisaService extends ServiceImpl<VisaMapper, Visa> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void editVisa(Visa visa) {
-
         if (ToolUtil.isOneEmpty(visa, visa.getEmployeeId())) {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
-        this.updateById(visa);
+        visaMapper.updateVisa(visa);
     }
 }

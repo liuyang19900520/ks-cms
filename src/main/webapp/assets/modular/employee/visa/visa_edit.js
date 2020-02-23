@@ -7,31 +7,28 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
 
     // 让当前iframe弹层高度适应
     admin.iframeAuto();
-
-
-
     $.ajax({
         type: 'POST',
         url: Feng.ctxPath + "/employee/visa/getVisaType",
-        data: {},
+        data: {
+        },
         dataType: "json",
         error: function (request) {
         },
         success: function (data) {
-            $("#sel-employee").empty();
-            $("#sel-employee").append("<option value=" + 0 + ">---请选择---</option>");
-            $.each(data, function (i) {
-                $("#sel-employee").append("<option value=" + data[i].employeeSelectValue  + ">" + data[i].employeeNameCn + "</option>");
+            $("#visaType").empty();
+            $("#visaType").append("<option value="+0+">---请选择签证类型---</option>");
+            $.each(data, function(i){
+                $("#visaType").append("<option value="+data[i].code+">"+data[i].name+"</option>");
             });
             form.render();
-
             //获取部门信息
             var ajax = new $ax(Feng.ctxPath + "/employee/visa/detail/" + Feng.getUrlParam("employeeId"));
             var result = ajax.start();
-            form.val('employeeForm', result);
-
+            form.val('visaForm', result);
         }
     });
+
     // 表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         var ajax = new $ax(Feng.ctxPath + "/employee/visa/visaEdit", function (data) {

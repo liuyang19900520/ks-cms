@@ -148,7 +148,6 @@ public class VisaController extends BaseController {
      */
     @BussinessLog(value = "删除部门", key = "employeeId", dict = VisaDict.class)
     @RequestMapping(value = "/delete")
-    @Permission
     @ResponseBody
     public ResponseData delete(@RequestParam Long employeeId) {
 
@@ -178,14 +177,15 @@ public class VisaController extends BaseController {
      * @author fengshuonan
      * @Date 2018/12/23 4:57 PM
      */
-    @RequestMapping(value = "/detail/{employee，employeeId}")
-    @Permission
+    @RequestMapping(value = "/detail/{employeeId}")
     @ResponseBody
     public Object detail(@PathVariable("employeeId") Long employeeId) {
-        Visa visa = visaService.getById(employeeId);
-        VisaDto visaDto = new VisaDto();
-        BeanUtil.copyProperties(visa, visaDto);
-        return visaDto;
+        Map<String, Object> stringObjectMap = visaService.selectVisaDetailById(employeeId);
+        String code = (String) stringObjectMap.get("visaType");
+        Map<String, Object> wrap = new VisaWrapper(stringObjectMap).wrap();
+        wrap.put("visaType", code);
+
+        return wrap;
     }
     /**
      * 修改客户信息
@@ -193,9 +193,7 @@ public class VisaController extends BaseController {
      * @author fengshuonan
      * @Date 2018/12/23 4:57 PM
      */
-    @BussinessLog(value = "修改签证信息", key = "employeeId", dict = VisaDict.class)
     @RequestMapping(value = "/visaEdit")
-    @Permission
     @ResponseBody
     public ResponseData myselfEdit(Visa visa) {
         visaService.editVisa(visa);
