@@ -35,6 +35,6 @@ public class VisaDict extends AbstractDictMap {
 
     @Override
     protected void initBeWrapped() {
-        putFieldWrapperMethodName("employeeId	", "getEmployeeNameCn");
+
     }
 }

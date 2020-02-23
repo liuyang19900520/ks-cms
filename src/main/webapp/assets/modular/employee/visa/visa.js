@@ -66,8 +66,56 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             }
         });
     };
+
+     /**
+         * 点击删除现场按钮
+         *
+         * @param data 点击按钮时候的行数据
+         */
+        visa.onDeleteUser = function (data) {
+            var operation = function () {
+                var ajax = new $ax(Feng.ctxPath + "/employee/visa/delete", function () {
+                    table.reload(visa.tableId);
+                    Feng.success("删除成功!");
+                }, function (data) {
+                    Feng.error("删除失败!" + data.responseJSON.message + "!");
+                });
+                ajax.set("employeeId", data.employeeId);
+                ajax.start();
+            };
+            Feng.confirm("是否删除项目" + data.employeeNameCn + "?", operation);
+        };
+
+        /**
+             * 点击编辑角色
+             *
+             * @param data 点击按钮时候的行数据
+             */
+            visa.onEditVisa = function (data) {
+                admin.putTempData('formOk', false);
+                top.layui.admin.open({
+                    type: 2,
+                    title: '修改员工签证信息',
+                    content: Feng.ctxPath + 'employee/visa/visa_edit?employeeId=' + data.employeeId,
+                    end: function () {
+                        admin.getTempData('formOk') && table.reload(visa.tableId);
+                    }
+                });
+            };
+
     // 添加按钮点击事件
     $('#btnAdd').click(function () {
         visa.openAddCompany();
     });
+    // 工具条点击事件
+        table.on('tool(' + visa.tableId + ')', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if (layEvent === 'edit') {
+                visa.onEditVisa(data);
+            } else if (layEvent === 'delete') {
+                visa.onDeleteUser(data);
+            }
+        });
 });
