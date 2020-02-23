@@ -83,14 +83,15 @@ public class CustomerSiteController extends BaseController {
     @RequestMapping(value = "/list")
     @Permission
     @ResponseBody
-    public Object list(@RequestParam(required = false) String customerSiteName) {
+    public Object list(@RequestParam(required = false) String customerSiteName,
+                       @RequestParam(required = false) String customerSiteId) {
         if (ShiroKit.isAdmin()) {
-            Page<Map<String, Object>> sites = customerSiteService.list(null, customerSiteName);
+            Page<Map<String, Object>> sites = customerSiteService.list(null, customerSiteName,customerSiteId);
             Page wrapped = new CustomerSiteWrapper(sites).wrap();
             return LayuiPageFactory.createPageInfo(wrapped);
         } else {
             DataScope dataScope = new DataScope(ShiroKit.getDeptDataScope());
-            Page<Map<String, Object>> sites = customerSiteService.list(dataScope, customerSiteName);
+            Page<Map<String, Object>> sites = customerSiteService.list(dataScope, customerSiteName,customerSiteId);
             Page wrapped = new CustomerSiteWrapper(sites).wrap();
             return LayuiPageFactory.createPageInfo(wrapped);
         }

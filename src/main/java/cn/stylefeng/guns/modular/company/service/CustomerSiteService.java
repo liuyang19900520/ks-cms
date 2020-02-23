@@ -32,9 +32,9 @@ public class CustomerSiteService extends ServiceImpl<CustomerSiteMapper, Custome
      * @author fengshuonan
      * @Date 2018/12/23 5:16 PM
      */
-    public Page<Map<String, Object>> list(DataScope dataScope, String customersiteName) {
+    public Page<Map<String, Object>> list(DataScope dataScope, String customerSiteName,String customerSiteId) {
         Page page = LayuiPageFactory.defaultPage();
-        return this.baseMapper.list(page, dataScope, customersiteName);
+        return this.baseMapper.list(page, dataScope, customerSiteName,customerSiteId);
     }
 
     public CustomerSite getCustomerSiteByCustomerSiteID(Long siteId) {

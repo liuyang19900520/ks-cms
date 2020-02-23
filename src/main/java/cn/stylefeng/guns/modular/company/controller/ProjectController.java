@@ -115,10 +115,13 @@ public class ProjectController extends BaseController {
                 projectWithAttendance2Show.put("noon", noonFromDB);
                 records2ShowList.add(projectWithAttendance2Show);
             }
-            Page<Map<String, Object>> projects2Show = LayuiPageFactory.defaultPage();
-            projects2Show.setRecords(records2ShowList);
+/*            Page<Map<String, Object>> projects2Show = LayuiPageFactory.defaultPage();
+            projects2Show.setRecords(records2ShowList);*/
 
-            Page wrapped = new ProjectWrapper(projects2Show).wrap();
+            projects.setRecords(records2ShowList);
+
+
+            Page wrapped = new ProjectWrapper(projects).wrap();
             return LayuiPageFactory.createPageInfo(wrapped);
         } else {
             DataScope dataScope = new DataScope(ShiroKit.getDeptDataScope());
