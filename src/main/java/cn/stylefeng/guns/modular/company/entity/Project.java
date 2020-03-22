@@ -40,6 +40,16 @@ public class Project implements Serializable {
 	@TableField(value = "PROJECT_NAME")
 	private String projectName;
 	/**
+	 * 项目开始时间
+	 */
+	@TableField(value = "PROJECT_START")
+	private String projectStart;
+	/**End
+	 * 项目结束时间
+	 */
+	@TableField(value = "PROJECT_END")
+	private String projectEnd;
+	/**
 	 * 项目过程
 	 */
 	@TableField(value = "PROJECT_PROCESS")
@@ -99,6 +109,13 @@ public class Project implements Serializable {
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
+	public String getProjectStart() { return projectStart;}
+
+	public void setProjectStart(String projectStart) { this.projectStart = projectStart; }
+
+	public String getProjectEnd() { return projectEnd;}
+
+	public void setProjectEnd(String projectEnd) { this.projectEnd = projectEnd;}
 
 	public String getProjectProcess() {
 		return projectProcess;

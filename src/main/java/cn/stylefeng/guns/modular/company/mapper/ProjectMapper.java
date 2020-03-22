@@ -22,7 +22,7 @@ public interface ProjectMapper extends BaseMapper<Project> {
      */
 	Page<Map<String, Object>> list(@Param("page") Page page, @Param("dataScope") DataScope dataScope, @Param("projectName") String projectName);
 
-    Integer updateByProjectId(@Param("projectId") Long projectId,@Param("projectName") String projectName, @Param("projectProcess")String projectProcess, @Param("projectTech") String projectTech);
+    Integer updateByProjectId(@Param("projectId") Long projectId, @Param("projectName") String projectName, @Param("projectStart") String projectStart, @Param("projectEnd") String projectEnd, @Param("projectProcess") String projectProcess, @Param("projectTech") String projectTech);
 
     Long getProjectId();
 }

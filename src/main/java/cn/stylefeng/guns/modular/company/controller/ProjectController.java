@@ -99,6 +99,8 @@ public class ProjectController extends BaseController {
 
                 Object projectIdFromDB = projectWithAttendance.get("projectId");
                 Object projectNameFromDB = projectWithAttendance.get("projectName");
+                Object projectStartFromDB = projectWithAttendance.get("projectStart");
+                Object projectEndFromDB = projectWithAttendance.get("projectEnd");
                 Object projectProcessFromDB = projectWithAttendance.get("projectProcess");
                 Object projectTechFromDB = projectWithAttendance.get("projectTech");
                 Object standardMaxTimeFromDB = projectWithAttendance.get("standardMaxTime");
@@ -108,6 +110,8 @@ public class ProjectController extends BaseController {
                 Object noonFromDB = noonStartFromDB + "~" + noonEndFromDB;
                 projectWithAttendance2Show.put("projectId", projectIdFromDB);
                 projectWithAttendance2Show.put("projectName", projectNameFromDB);
+                projectWithAttendance2Show.put("projectStart", projectStartFromDB);
+                projectWithAttendance2Show.put("projectEnd", projectEndFromDB);
                 projectWithAttendance2Show.put("projectProcess", projectProcessFromDB);
                 projectWithAttendance2Show.put("projectTech", projectTechFromDB);
                 projectWithAttendance2Show.put("standardMaxTime", standardMaxTimeFromDB);
