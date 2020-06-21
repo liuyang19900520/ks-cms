@@ -14,8 +14,8 @@
     <artifactId>guns-vip</artifactId>
     <version>1.0.0</version>
 
-    <name>guns-vip</name>
-    <description>guns开源版</description>
+    <name>ks-cms</name>
+    <description>基于guns开源版开发的ksg内部关系小程序</description>
 
     <packaging>pom</packaging>
 
@@ -59,11 +59,11 @@
                 <artifactId>kernel-validator</artifactId>
                 <version>${kernel.version}</version>
             </dependency>
-            <dependency>
-                <groupId>cn.stylefeng.roses</groupId>
-                <artifactId>kernel-excel</artifactId>
-                <version>${kernel.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>cn.stylefeng.roses</groupId>-->
+<!--                <artifactId>kernel-excel</artifactId>-->
+<!--                <version>${kernel.version}</version>-->
+<!--            </dependency>-->
 
             <!--数据库驱动,可根据自己需要自行删减-->
             <dependency>

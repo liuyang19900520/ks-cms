@@ -2,9 +2,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.11.128:3306/guns_advanced?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
+    url: jdbc:mysql://localhost:3306/guns_advanced?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=CTT
     username: root
-    password: root
+    password: 12345678
     filters: wall,mergeStat
 
     # 连接池大小根据实际情况调整
@@ -20,4 +20,4 @@ spring:
 
 # 邮件发送（改为自己的账号）
 mail:
-  from: sn93@qq.com
+  from: liuyang19900520@hotmail.com
