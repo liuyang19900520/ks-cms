@@ -58,8 +58,6 @@
     <!--</select>-->
 
     <select id="selectUsers" resultType="map">
-
-
         SELECT
         u.USER_ID AS userId,
         u.AVATAR AS avatar,

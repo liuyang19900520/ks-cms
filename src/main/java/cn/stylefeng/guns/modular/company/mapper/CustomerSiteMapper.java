@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,8 +23,10 @@ public interface CustomerSiteMapper extends BaseMapper<CustomerSite> {
     /**
      * 获取所有现场列表
      */
-    Page<Map<String, Object>> list(@Param("page") Page page,@Param("dataScope") DataScope dataScope, @Param("customersiteName") String customersiteName);
+    Page<Map<String, Object>> list(@Param("page") Page page,@Param("dataScope") DataScope dataScope, @Param("customerSiteName") String customerSiteName,
+                                   @Param("customerSiteId") String customerSiteId);
 
     Long getMaxCustomerSiteId();
 
+    List<Long> getCustomerSiteIdByCustomerId(@Param("customerID") Long customerID);
 }

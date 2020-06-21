@@ -25,7 +25,21 @@ layui.use(['layer', 'form', 'admin', 'ax'], function () {
     var ajax = new $ax(Feng.ctxPath + "/customer/project/detail/" + Feng.getUrlParam("projectId"));
     var result = ajax.start();
     form.val('projectForm', result);
-    
+
+    //渲染时间选择框
+    laydate.render({
+        elem: '#projectStart',
+        trigger:'click'
+    });
+
+    laydate.render({
+        elem: '#projectEnd',
+        trigger:'click'
+    });
+
+
+
+
      //表单提交事件
     form.on('submit(btnSubmit)', function (data) {
         var ajax = new $ax(Feng.ctxPath + "/customer/project/projectEdit", function (data) {

@@ -23,15 +23,18 @@ public class CustomerSiteService extends ServiceImpl<CustomerSiteMapper, Custome
     @Resource
     private CustomerSiteMapper customerSiteMapper;
 
+    @Resource
+    private ProjectService projectService;
+
     /**
      * 获取所有现场信息列表
      *
      * @author fengshuonan
      * @Date 2018/12/23 5:16 PM
      */
-    public Page<Map<String, Object>> list(DataScope dataScope, String customersiteName) {
+    public Page<Map<String, Object>> list(DataScope dataScope, String customerSiteName,String customerSiteId) {
         Page page = LayuiPageFactory.defaultPage();
-        return this.baseMapper.list(page, dataScope, customersiteName);
+        return this.baseMapper.list(page, dataScope, customerSiteName,customerSiteId);
     }
 
     public CustomerSite getCustomerSiteByCustomerSiteID(Long siteId) {
@@ -40,11 +43,18 @@ public class CustomerSiteService extends ServiceImpl<CustomerSiteMapper, Custome
         return this.list(queryWhere).get(0);
     }
 
-
+    /**
+     * 关联删除，根据customer_site_id将下级菜单中的数据删除；
+     * @param siteId
+     */
+    @Transactional(rollbackFor = Exception.class)
     public void deleteCustomerSiteByCustomerSiteID(Long siteId) {
         QueryWrapper<CustomerSite> queryWhere = new QueryWrapper<CustomerSite>();
         queryWhere.eq("customer_site_id", siteId);
         this.remove(queryWhere);
+        //根据id删除下级菜单中的数据
+        projectService.removeById(siteId);
+
     }
 
     /**
@@ -79,4 +89,7 @@ public class CustomerSiteService extends ServiceImpl<CustomerSiteMapper, Custome
         this.update(customer,queryWhere);
     }
 
+    public List<Long> getCustomerSiteIdByCustomerId(Long customerID){
+       return  customerSiteMapper.getCustomerSiteIdByCustomerId(customerID);
+    }
 }

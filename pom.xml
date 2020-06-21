@@ -12,7 +12,7 @@
 
     <groupId>cn.stylefeng</groupId>
     <artifactId>guns</artifactId>
-    <version>1.0.0</version>
+    <version>0.1.0</version>
 
     <name>guns-admin</name>
     <description>guns 的spring boot版本</description>
@@ -159,6 +159,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!--        <dependency>
+                    <groupId>com.github.pagehelper</groupId>
+                    <artifactId>pagehelper-spring-boot-starter</artifactId>
+                    <version>1.2.12</version>
+                </dependency>-->
+
+
         <!--需要分布式session的话需要放开注释-->
         <!--<dependency>-->
         <!--<groupId>org.springframework.session</groupId>-->
@@ -185,13 +192,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <configuration>
                     <fork>true</fork><!-- 如果没有该项配置，肯呢个devtools不会起作用，即应用不会restart -->
                 </configuration>
@@ -213,30 +213,30 @@
                     <useDefaultDelimiters>false</useDefaultDelimiters>
                 </configuration>
             </plugin>
-          <!--  <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.26.1</version>
-                <configuration>
-                    <dockerHost>tcp://demo.stylefeng.cn:2376</dockerHost>
-                    <certPath>_dockerCerts</certPath>
-                    <images>
-                        <image>
-                            <alias>service</alias>
-                            <name>stylefeng/${project.artifactId}:latest</name>
-                            <build>
-                                <from>java:8</from>
-                                <assembly>
-                                    <descriptor>docker-assembly.xml</descriptor>
-                                </assembly>
-                                <cmd>
-                                    <shell>java -jar /maven/${project.artifactId}.jar</shell>
-                                </cmd>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-            </plugin>-->
+            <!--  <plugin>
+                  <groupId>io.fabric8</groupId>
+                  <artifactId>docker-maven-plugin</artifactId>
+                  <version>0.26.1</version>
+                  <configuration>
+                      <dockerHost>tcp://demo.stylefeng.cn:2376</dockerHost>
+                      <certPath>_dockerCerts</certPath>
+                      <images>
+                          <image>
+                              <alias>service</alias>
+                              <name>stylefeng/${project.artifactId}:latest</name>
+                              <build>
+                                  <from>java:8</from>
+                                  <assembly>
+                                      <descriptor>docker-assembly.xml</descriptor>
+                                  </assembly>
+                                  <cmd>
+                                      <shell>java -jar /maven/${project.artifactId}.jar</shell>
+                                  </cmd>
+                              </build>
+                          </image>
+                      </images>
+                  </configuration>
+              </plugin>-->
         </plugins>
         <resources>
             <resource>

@@ -7,6 +7,8 @@
         <id column="PROJECT_ID" property="projectId"/>
         <id column="CUSTOMER_SITE_ID" property="customerSiteID"/>
         <result column="PROJECT_NAME" property="projectName"/>
+        <result column="PROJECT_START" property="projectStart"/>
+        <result column="PROJECT_END" property="projectEnd"/>
         <result column="PROJECT_PROCESS" property="projectProcess"/>
         <result column="PROJECT_TECH" property="projectTech"/>
         <result column="ATTENDANCE_TYPE" property="attendanceType"/>
@@ -21,6 +23,8 @@
             PROJECT_ID as projectId,
   			CUSTOMER_SITE_ID as customerSiteID,
         	PROJECT_NAME as projectName,
+        	 PROJECT_START as projectStart,
+            PROJECT_END as projectEnd,
 			PROJECT_PROCESS as projectProcess,
 			PROJECT_TECH as projectTech,
 			ATTENDANCE_TYPE as attendanceType,
@@ -34,6 +38,8 @@
         a.PROJECT_ID as projectId,
         a.CUSTOMER_SITE_ID as customerSiteID,
         a.PROJECT_NAME as projectName,
+        a.PROJECT_START as projectStart,
+        a.PROJECT_END as projectEnd,
         a.PROJECT_PROCESS as projectProcess,
         a.PROJECT_TECH as projectTech,
         a.ATTENDANCE_TYPE as attendanceType,
@@ -55,7 +61,7 @@
     </select>
     <update id="updateByProjectId" parameterType="cn.stylefeng.guns.modular.company.entity.Project">
         UPDATE project
-        SET PROJECT_NAME=#{projectName},PROJECT_PROCESS=#{projectProcess},PROJECT_TECH=#{projectTech}
+        SET PROJECT_NAME=#{projectName},PROJECT_START=#{projectStart},PROJECT_END=#{projectEnd},PROJECT_PROCESS=#{projectProcess},PROJECT_TECH=#{projectTech}
         WHERE PROJECT_ID=#{projectId}
     </update>
 </mapper>

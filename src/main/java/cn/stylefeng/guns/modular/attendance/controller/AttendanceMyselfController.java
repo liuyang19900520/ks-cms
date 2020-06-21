@@ -17,6 +17,7 @@ package cn.stylefeng.guns.modular.attendance.controller;
 
 import cn.stylefeng.guns.core.common.annotion.Permission;
 import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
+import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
@@ -29,6 +30,7 @@ import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.core.reqres.response.SuccessResponseData;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -90,13 +92,8 @@ public class AttendanceMyselfController extends BaseController {
         }
 
         ShiroUser currentUser = ShiroKit.getUser();
-        List<ViewAttendance> viewAttendances = attendanceService.listMyAttendanceByMonth(currentMonthDate, currentUser.getId());
-        HashMap<String, Object> result = Maps.newHashMap();
-        result.put("code", "0");
-        result.put("msg", "success");
-        result.put("count", viewAttendances.size());
-        result.put("data", viewAttendances);
-        return result;
+        Page<ViewAttendance> viewAttendances = attendanceService.listMyAttendanceByMonth(currentMonthDate, currentUser.getId());
+        return LayuiPageFactory.createPageInfo(viewAttendances);
     }
 
 

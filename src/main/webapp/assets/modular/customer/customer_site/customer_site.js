@@ -37,6 +37,7 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
     Customer.search = function () {
         var queryData = {};
         queryData['customerSiteName'] = $("#customerSiteName").val();
+        queryData['customerSiteId'] = $("#customerSiteId").val();
         table.reload(Customer.tableId, {where: queryData});
     };
     /**
@@ -80,8 +81,17 @@ layui.use(['layer', 'form', 'table', 'admin', 'ax'], function () {
             title: '添加项目信息',
             content: Feng.ctxPath + 'customer/site/customerSite_add_project?customerSiteID=' + data.customerSiteID,
             end: function () {
-                admin.getTempData('formOk') && table.reload(Customer.tableId);
-            }
+                if(admin.getTempData('formOk')){
+                var x = {
+                    "indexTabs": [{
+                        "menuId": "/customer/project",
+                        "menuPath": "/customer/project",
+                        "menuName": "项目管理"
+                    }], "tabPosition": "/customer/project", "formOk": true
+                }
+                sessionStorage.setItem("tempData", JSON.stringify(x));
+                top.location.reload()
+            }}
         });
     };
 

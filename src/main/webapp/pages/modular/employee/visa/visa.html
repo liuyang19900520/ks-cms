@@ -1,7 +1,7 @@
-@layout("/common/_container.html",{js:["/assets/modular/customer/customer_site/customer_site.js"]}){
+@layout("/common/_container.html",{js:["/assets/modular/employee/visa/visa.js"]}){
 
 <div class="layui-body-header">
-    <span class="layui-body-header-title">现场管理</span>
+    <span class="layui-body-header-title">员工签证管理</span>
 </div>
 
 <div class="layui-fluid">
@@ -12,33 +12,28 @@
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <input id="customerSiteName" class="layui-input" type="text" placeholder="按客户现场名称查询"/>
-                            </div>
-                            <div class="layui-inline">
-                                <input id="customerSiteId" class="layui-input" type="text" placeholder="按客户现场ID查询"/>
+                                <input id="employeeNameCn" class="layui-input" type="text" placeholder="请输入姓名"/>
                             </div>
                             <div class="layui-inline">
                                 <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                                @if(shiro.hasPermission("/dept/add")){
                                 <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>录入</button>
-
+                                @}
                             </div>
                         </div>
                     </div>
-                    <table class="layui-table" id="customer_siteTable" lay-filter="customer_siteTable"></table>
+                    <table class="layui-table" id="employeeVisaTable" lay-filter="employeeVisaTable"></table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script type="text/html" id="tableBar">
-
+    @if(shiro.hasPermission("/dept/update")){
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-
-
+    @}
+    @if(shiro.hasPermission("/dept/delete")){
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
-
-
-    <a class="layui-btn layui-btn-xs" lay-event="add"><i class="layui-icon">&#xe654;</i>添加项目</a>
-
+    @}
 </script>
 @}

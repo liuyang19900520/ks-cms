@@ -15,6 +15,11 @@
 		VALUES
 		(#{projectId},#{userId},#{employeeId},NULL,CURRENT_TIMESTAMP,#{userId},CURRENT_TIMESTAMP,#{userId},NULL)
 	</insert>
+	<insert id="insertEmployee" parameterType="cn.stylefeng.guns.modular.employee.entity.InfoMgr">
+		INSERT INTO employee ( EMPLOYEE_ID，EMPLOYEE_NAME_CN )
+		VALUES
+		(#{employeeId}，#{employeeNameCn})
+	</insert>
 
 	<select id="list" resultType="map">
 	select

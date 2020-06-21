@@ -1,0 +1,37 @@
+@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/employee/visa/visa_edit.js"]}){
+<form id="visaForm" lay-filter="visaForm" class="layui-form model-form">
+    <input name="employeeId" type="hidden"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">员工姓名<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input name="employeeNameCn" id="employeeNameCn" type="text" class="layui-input" lay-verify="required" disabled
+                   required autocomplete="off"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">签证类型<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <select id="visaType" name="visaType">
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">更新时间<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input name="visaUpdateTime" id="visaUpdateTime" placeholder="请输入签证更新时间" type="text" class="layui-input"
+                   lay-verify="required" required autocomplete="off"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">到期时间<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input id="visaExpireTime" name="visaExpireTime" placeholder="请输入签证到期时间" type="text" class="layui-input"
+                   lay-verify="required" required autocomplete="off"/>
+        </div>
+    </div>
+    <div class="layui-form-item text-right">
+        <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>
+    </div>
+</form>
+@}

@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.modular.attendance.service;
 
 import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
+import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
 import cn.stylefeng.guns.core.util.LDateUtils;
@@ -16,6 +17,7 @@ import cn.stylefeng.guns.modular.system.entity.Employee;
 import cn.stylefeng.guns.modular.system.mapper.EmployeeMapper;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,12 +39,14 @@ public class AttendanceService {
     EmployeeMapper employeeMapper;
 
 
-    public List<ViewAttendance> listMyAttendanceByMonth(Date selectMonth, Long userId) {
+    public Page<ViewAttendance> listMyAttendanceByMonth(Date selectMonth, Long userId) {
         Employee employee = employeeMapper.selectEmployeeByUserId(userId);
         Long employeeId = employee.getEmployeeId();
 
+        Page page = LayuiPageFactory.defaultPage();
+
         //将这个employeeId传入查询视图的mapper中
-        List<ViewAttendance> viewAttendances = attendanceMapper.selectMyAttendanceByMonth(selectMonth, employeeId);
+        Page<ViewAttendance> viewAttendances = attendanceMapper.selectMyAttendanceByMonth(page, selectMonth, employeeId);
 
         return viewAttendances;
 
@@ -278,16 +282,24 @@ public class AttendanceService {
         attendanceMapper.deleteMonthEmployeeID(workMonth, employeeId);
     }
 
-    public List<AttendanceAllRecord> selectAllAttendance(Date currentMonth, Long empId, boolean status) {
+    public Page<AttendanceAllRecord> selectAllAttendance(Date currentMonth, Long empId, String status) {
 
-        Integer attendanceStatus = 1;
+        Page page = LayuiPageFactory.defaultPage();
 
-        if (status) {
-            attendanceStatus = 0;
-        }
+        Long currentPage = page.getCurrent();
+        Long size = page.getSize();
 
-        List<AttendanceAllRecord> attendanceAllRecord = attendanceMapper.selectAllMyAttendance(currentMonth, empId, attendanceStatus);
-        return attendanceAllRecord;
+        Long start = (currentPage - 1) * size;
+        Long end = size;
+
+        List<AttendanceAllRecord> attendanceAllRecords = attendanceMapper.selectAllMyAttendance(currentMonth, empId, status, start, end);
+        Long totalData = attendanceMapper.selectDataSize();
+
+        page.setRecords(attendanceAllRecords);
+        page.setTotal(totalData);
+
+        return page;
+
     }
 
     public List<Dict> getEmployee() {
@@ -301,7 +313,7 @@ public class AttendanceService {
     }
 
 
-    public void updateStatus(Long employeeId, String status,Date workMonth) {
-        attendanceMapper.updateStatus(employeeId, status,workMonth);
+    public void updateStatus(Long employeeId, String status, Date workMonth) {
+        attendanceMapper.updateStatus(employeeId, status, workMonth);
     }
 }

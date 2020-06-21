@@ -72,7 +72,7 @@ public class ProjectService extends ServiceImpl<ProjectMapper, Project> {
     @Transactional(rollbackFor = Exception.class)
     public void editProject(Project project) {
 
-        if (ToolUtil.isOneEmpty(project, project.getProjectId(), project.getProjectName(), project.getProjectProcess()
+        if (ToolUtil.isOneEmpty(project, project.getProjectId(), project.getProjectName(),project.getProjectStart(),project.getProjectEnd(), project.getProjectProcess()
                 , project.getProjectTech())) {
             throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
         }
