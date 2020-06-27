@@ -32,21 +32,19 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax', 'func', 
 
         return [[
             {type: 'checkbox'},
-            {field: 'userId', hide: true, sort: true, title: '用户id'},
-            {field: 'account', align: "center", sort: true, title: langs.FIELD_ACCOUNT},
-            {field: 'name', align: "center", sort: true, title: langs.FIELD_NAME},
-            {field: 'deptName', align: "center", sort: true, title: langs.FIELD_DEPT},
-            {field: 'positionName', align: "center", sort: true, title: langs.FIELD_POST},
-            {field: 'phone', align: "center", sort: true, title: langs.FIELD_PHONE, minWidth: 117},
-            {field: 'chineseName', align: "center", sort: true, title: langs.FIELD_ACCOUNT},
-            {field: 'japaneseName', align: "center", sort: true, title: langs.FIELD_NAME},
-            {field: 'japaneseKana', align: "center", sort: true, title: langs.FIELD_DEPT},
-            {field: 'japanState', align: "center", sort: true, title: langs.FIELD_POST},
-            {field: 'japanCity', align: "center", sort: true, title: langs.FIELD_POST},
-            {field: 'japanAddress', align: "center", sort: true, title: langs.FIELD_POST},
-            {field: 'japanStation', align: "center", sort: true, title: langs.FIELD_POST},
-            {field: 'phone', align: "center", sort: true, title: langs.FIELD_PHONE, minWidth: 117},
-            {align: 'center', toolbar: '#tableBar', title: langs.FIELD_OPERATION, minWidth: 480}
+            {field: 'userId', hide: true, sort: true, title: 'ユーザID'},
+            {field: 'employeeId', hide: true, sort: true, title: '社員番号'},
+            {field: 'account', align: "center", sort: true, title: 'アカウント'},
+            {field: 'deptName', align: "center", sort: true, title: '部門'},
+            {field: 'positionName', align: "center", sort: true, title: '職位'},
+            {field: 'phone', align: "center", sort: true, title: 'Tel', minWidth: 117},
+            {field: 'phone', align: "center", sort: true, title: 'E-Mail', minWidth: 117},
+            {field: 'chineseName', align: "center", sort: true, title: '中国名'},
+            {field: 'japaneseName', align: "center", sort: true, title: '日本語名前'},
+            {field: 'japaneseKana', align: "center", sort: true, title: 'カナ'},
+            {field: 'japanState', align: "center", sort: true, title: '連絡先'},
+            {field: 'japanStation', align: "center", sort: true, title: '出身地'},
+            {align: 'center', toolbar: '#tableBar', title: '', minWidth: 480}
         ]];
     };
 

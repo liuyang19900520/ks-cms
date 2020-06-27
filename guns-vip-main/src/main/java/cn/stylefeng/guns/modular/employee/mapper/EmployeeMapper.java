@@ -27,6 +27,6 @@ public interface EmployeeMapper {
      */
     Page<Map<String, Object>> selectUsers(@Param("page") Page page,
                                           @Param("dataScope") DataScope dataScope,
-                                          @Param("name") String name);
+                                          @Param("chineseName") String name);
 
 }
