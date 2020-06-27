@@ -1,4 +1,4 @@
-@layout("/common/_container.html",{plugins:["ztree"],js:["/assets/demos/excel_import.js"]}){
+@layout("/common/_container.html",{plugins:["ztree"],js:["/assets/employee/employee/employee.js"]}){
 
 <div class="layui-body-header">
     <span class="layui-body-header-title">用户管理</span>
@@ -10,11 +10,17 @@
             <div class="layui-card">
                 <div class="layui-card-body">
                     <div class="layui-form toolbar">
+                        <input id="defaultPassword" class="layui-input" type="hidden" value="${constants.getDefaultPassword()}"/>
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <button id="btnExp" class="layui-btn icon-btn">
-                                    <i class="layui-icon">&#xe67c;</i>导入excel并展示
-                                </button>
+                                <input id="name" class="layui-input" type="text" placeholder="中文名字"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>${lang.get("BTN_SEARCH","搜索")}</button>
+                                @if(shiro.hasPermission("/mgr/add")){
+                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>${lang.get("BTN_ADD","添加")}</button>
+                                @}
+                                <button id="btnExp" class="layui-btn icon-btn"><i class="layui-icon">&#xe67d;</i>${lang.get("BTN_EXPORT","导出")}</button>
                             </div>
                         </div>
                     </div>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.employee.mapper.EmployeeMapper">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.user_id AS "userId",
+        a.avatar AS "avatar",
+        a.account AS "account",
+        a.salt AS "salt",
+        a.name AS "name",
+        a.birthday AS "birthday",
+        a.sex AS "sex",
+        a.email AS "email",
+        a.phone AS "phone",
+        a.role_id AS "roleId",
+        a.dept_id AS "deptId",
+        a.status AS "status",
+        b.employee_id AS "employeeId",
+        b.chinese_name AS "chineseName",
+        b.japanese_name AS "japaneseName",
+        b.japanese_kana AS "japaneseKana",
+        b.china_province AS "chinaProvince",
+        b.china_city AS "chinaCity",
+        b.japan_state AS "japanState",
+        b.japan_city AS "japanCity",
+        b.japan_station AS "japanStation",
+        b.degree AS "degree",
+        b.school AS "school",
+        b.major AS "major"
+    </sql>
+
+    <select id="selectUsers" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user a
+        join ksg_employee_info b
+        on a.user_id =b.user_id
+        where status != 'DELETED'
+        <if test="chineseName != null and chineseName != ''">
+            or chinese_name like CONCAT('%',#{chineseName},'%'))
+        </if>
+    </select>
+
+</mapper>

@@ -69,7 +69,7 @@ public class ExcelController {
         try {
             file.transferTo(new File(fileSavePath + name));
         } catch (Exception e) {
-            log.error("上传那文件出错！", e);
+//            log.error("上传那文件出错！", e);
             throw new ServiceException(BizExceptionEnum.UPLOAD_ERROR);
         }
 
@@ -95,8 +95,8 @@ public class ExcelController {
                 List result = ExcelImportUtil.importExcel(file, ExcelItem.class, params);
 
                 LayuiPageInfo returns = new LayuiPageInfo();
-                returns.setCount(result.size());
-                returns.setData(result);
+//                returns.setCount(result.size());
+//                returns.setData(result);
                 return returns;
             } catch (Exception e) {
                 e.printStackTrace();

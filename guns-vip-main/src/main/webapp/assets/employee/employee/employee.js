@@ -38,28 +38,25 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax', 'func', 
             {field: 'deptName', align: "center", sort: true, title: langs.FIELD_DEPT},
             {field: 'positionName', align: "center", sort: true, title: langs.FIELD_POST},
             {field: 'phone', align: "center", sort: true, title: langs.FIELD_PHONE, minWidth: 117},
-            {field: 'createTime', align: "center", sort: true, title: langs.FIELD_CREATE_TIME, minWidth: 160},
-            {field: 'status', align: "center", sort: true, templet: '#statusTpl', title: langs.FIELD_STATUS},
+            {field: 'chineseName', align: "center", sort: true, title: langs.FIELD_ACCOUNT},
+            {field: 'japaneseName', align: "center", sort: true, title: langs.FIELD_NAME},
+            {field: 'japaneseKana', align: "center", sort: true, title: langs.FIELD_DEPT},
+            {field: 'japanState', align: "center", sort: true, title: langs.FIELD_POST},
+            {field: 'japanCity', align: "center", sort: true, title: langs.FIELD_POST},
+            {field: 'japanAddress', align: "center", sort: true, title: langs.FIELD_POST},
+            {field: 'japanStation', align: "center", sort: true, title: langs.FIELD_POST},
+            {field: 'phone', align: "center", sort: true, title: langs.FIELD_PHONE, minWidth: 117},
             {align: 'center', toolbar: '#tableBar', title: langs.FIELD_OPERATION, minWidth: 480}
         ]];
     };
 
-    /**
-     * 选择部门时
-     */
-    MgrUser.onClickDept = function (obj) {
-        MgrUser.condition.deptId = obj.data.id;
-        MgrUser.search();
-    };
 
     /**
      * 点击查询按钮
      */
     MgrUser.search = function () {
         var queryData = {};
-        queryData['deptId'] = MgrUser.condition.deptId;
-        queryData['name'] = $("#name").val();
-        queryData['timeLimit'] = $("#timeLimit").val();
+        queryData['chineseName'] = $("#chineseName").val();
         table.reload(MgrUser.tableId, {
             where: queryData, page: {curr: 1}
         });
@@ -149,22 +146,6 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax', 'func', 
         });
     };
 
-    /**
-     * 重置密码
-     *
-     * @param data 点击按钮时候的行数据
-     */
-    MgrUser.resetPassword = function (data) {
-        Feng.confirm("是否重置密码为" + $("#defaultPassword").val() + "?", function () {
-            var ajax = new $ax(Feng.ctxPath + "/mgr/reset", function (data) {
-                Feng.success("重置密码成功!");
-            }, function (data) {
-                Feng.error("重置密码失败!" + data.responseJSON.message + "!");
-            });
-            ajax.set("userId", data.userId);
-            ajax.start();
-        });
-    };
 
     /**
      * 修改用户状态
@@ -197,7 +178,7 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax', 'func', 
     // 渲染表格
     var tableResult = table.render({
         elem: '#' + MgrUser.tableId,
-        url: Feng.ctxPath + '/mgr/list',
+        url: Feng.ctxPath + '/employee/list',
         page: true,
         height: "full-98",
         cellMinWidth: 100,
