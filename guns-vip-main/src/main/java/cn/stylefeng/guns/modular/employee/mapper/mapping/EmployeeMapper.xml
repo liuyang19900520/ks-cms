@@ -25,10 +25,12 @@
         b.china_city AS "chinaCity",
         b.japan_state AS "japanState",
         b.japan_city AS "japanCity",
+        b.japan_address AS "japanAddress",
         b.japan_station AS "japanStation",
         b.degree AS "degree",
         b.school AS "school",
-        b.major AS "major"
+        b.major AS "major",
+        b.status AS "ksgStatus"
     </sql>
 
     <select id="selectUsers" resultType="map">
@@ -37,9 +39,9 @@
         from sys_user a
         join ksg_employee_info b
         on a.user_id =b.user_id
-        where status != 'DELETED'
+        where a.status != 'DELETED'
         <if test="chineseName != null and chineseName != ''">
-            or chinese_name like CONCAT('%',#{chineseName},'%'))
+            or b.chinese_name like CONCAT('%',#{chineseName},'%'))
         </if>
     </select>
 

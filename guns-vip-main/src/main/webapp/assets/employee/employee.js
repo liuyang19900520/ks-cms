@@ -34,20 +34,19 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax', 'func', 
             {type: 'checkbox'},
             {field: 'userId', hide: true, sort: true, title: 'ユーザID'},
             {field: 'employeeId', hide: true, sort: true, title: '社員番号'},
-            {field: 'account', align: "center", sort: true, title: 'アカウント'},
-            {field: 'deptName', align: "center", sort: true, title: '部門'},
-            {field: 'positionName', align: "center", sort: true, title: '職位'},
-            {field: 'phone', align: "center", sort: true, title: 'Tel', minWidth: 117},
-            {field: 'phone', align: "center", sort: true, title: 'E-Mail', minWidth: 117},
+            {field: 'account', hide: true,align: "center", sort: true, title: 'アカウント'},
+            {field: 'deptName', hide: true,align: "center", sort: true, title: '部門'},
+            {field: 'positionName', hide: true,align: "center", sort: true, title: '職位'},
             {field: 'chineseName', align: "center", sort: true, title: '中国名'},
             {field: 'japaneseName', align: "center", sort: true, title: '日本語名前'},
             {field: 'japaneseKana', align: "center", sort: true, title: 'カナ'},
-            {field: 'japanState', align: "center", sort: true, title: '連絡先'},
-            {field: 'japanStation', align: "center", sort: true, title: '出身地'},
-            {align: 'center', toolbar: '#tableBar', title: '', minWidth: 480}
+            {field: 'phone', align: "center", sort: true, title: 'Tel', minWidth: 117},
+            {field: 'email', align: "center", sort: true, title: 'E-Mail',},
+            {field: 'japanAddressAll', align: "center", sort: true, title: '連絡先'},
+            {field: 'chinaAddressAll', align: "center", sort: true, title: '出身地'},
+            {align: 'center', toolbar: '#tableBar', title: 'ツールバー', minWidth: 480}
         ]];
     };
-
 
     /**
      * 点击查询按钮
